@@ -1,0 +1,23 @@
+Package: morf
+Type: Package
+Title: Modified Ordered Random Forest for Estimating the Ordered Choice Model
+Version: 0.0.1
+Date: 2022-07-29
+Author: Riccardo Di Francesco [aut, cre]
+Maintainer: Riccardo Di Francesco <difrancesco.riccardo96@gmail.com>
+Description: A machine learning approach to estimate the ordered choice model. 
+          It exploits the ordered structure of the outcome variable and accounts for the correlation in the estimation errors of each class.          
+License: GPL-3
+Imports: 
+    Rcpp,
+    Matrix,
+    stats,
+    crayon,
+    utils
+LinkingTo: Rcpp, RcppEigen
+Depends: R (>= 3.1)
+Encoding: UTF-8
+RoxygenNote: 7.2.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
