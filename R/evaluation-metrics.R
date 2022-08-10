@@ -2,9 +2,9 @@
 #'
 #' Computes the mean squared error for evaluating the accuracy of ordered probability predictions.
 #'
-#' @param predictions Matrix of predictions (\code{num.samples} x \code{M}).
-#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{num.samples} x \code{M}). See the parameter \code{use.true} and the details section.
-#' @param use.true Logical. If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
+#' @param predictions Matrix of predictions (\code{n.samples} x \code{M}).
+#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.
+#' @param use.true If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
 #'
 #' @details 
 #' If \code{use.true = FALSE}, the mean squared error is computed as follows:
@@ -17,7 +17,7 @@
 #' 
 #' where:
 #' 
-#' \deqn{p_m (x) = P(Y_i = m | X_i = x)}
+#' \deqn{p_m (x) = P(Y_i = m \, | \, X_i = x)}
 #' 
 #' The second formula is useful for simulation studies.
 #'
@@ -56,9 +56,9 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 #'
 #' Computes the mean ranked probability score for evaluating the accuracy of ordered probability predictions.
 #'
-#' @param predictions Matrix of predictions (\code{num.samples} x \code{M}).
-#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{num.samples} x \code{M}). See the parameter \code{use.true} and the details section.
-#' @param use.true Logical. If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
+#' @param predictions Matrix of predictions (\code{n.samples} x \code{M}).
+#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.
+#' @param use.true If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
 #'
 #' @details 
 #' If \code{use.true = FALSE}, the mean ranked probability score is computed as follows:
@@ -67,7 +67,7 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 #' 
 #' otherwise:
 #' 
-#' \deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
+#' \deqn{\frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
 #' 
 #' where:
 #' 

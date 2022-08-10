@@ -7,11 +7,11 @@
 mean_ranked_score(y, predictions, use.true = FALSE)
 }
 \arguments{
-\item{y}{Either the observed outcome vector or a matrix of true probabilities (\code{num.samples} x \code{M}). See the parameter \code{use.true} and the details section.}
+\item{y}{Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.}
 
-\item{predictions}{Matrix of predictions (\code{num.samples} x \code{M}).}
+\item{predictions}{Matrix of predictions (\code{n.samples} x \code{M}).}
 
-\item{use.true}{Logical. If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.}
+\item{use.true}{If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.}
 }
 \value{
 The mean ranked probability score of the method.
@@ -26,7 +26,7 @@ If \code{use.true = FALSE}, the mean ranked probability score is computed as fol
 
 otherwise:
 
-\deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
+\deqn{\frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
 
 where:
 

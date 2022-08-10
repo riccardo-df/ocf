@@ -7,7 +7,7 @@
 morf(
   x = NULL,
   y = NULL,
-  num.trees = 1000,
+  n.trees = 1000,
   mtry = NULL,
   min.node.size = 5,
   max.depth = 0,
@@ -20,7 +20,7 @@ morf(
   inbag = NULL,
   holdout = FALSE,
   oob.error = TRUE,
-  num.threads = NULL,
+  n.threads = NULL,
   save.memory = FALSE,
   write.forest = TRUE,
   verbose = TRUE,
@@ -32,7 +32,7 @@ morf(
 
 \item{y}{Outcome vector.}
 
-\item{num.trees}{Number of trees.}
+\item{n.trees}{Number of trees.}
 
 \item{mtry}{Number of covariates to possibly split at in each node. Default is the (rounded down) square root of the number of covariates. Alternatively, one can pass a single-argument function returning an integer, where the argument is the number of covariates.}
 
@@ -40,25 +40,25 @@ morf(
 
 \item{max.depth}{Maximal tree depth. A value of 0 (the default) corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
 
-\item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsample drawn without replacement.}
+\item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement.}
 
 \item{sample.fraction}{Fraction of observations to sample. Default is 1 for bootstrap sampling and 0.632 for sampling without replacement.}
 
 \item{case.weights}{Weights for sampling of training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.}
 
-\item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, a list of size \code{num.trees}, containing split select weight vectors for each tree can be used.}
+\item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, a list of size \code{n.trees}, containing split select weight vectors for each tree can be used.}
 
 \item{always.split.variables}{Character vector with variable names to be always selected in addition to the \code{mtry} variables tried for splitting.}
 
 \item{keep.inbag}{Save how often observations are in-bag in each tree.}
 
-\item{inbag}{Manually set observations per tree. List of size \code{num.trees}, containing in-bag counts for each observation. Can be used for stratified sampling.}
+\item{inbag}{Manually set observations per tree. List of size \code{n.trees}, containing in-bag counts for each observation. Can be used for stratified sampling.}
 
-\item{holdout}{Hold-out mode. Hold-out all samples with case weight 0 and use these for variable importance and prediction error.}
+\item{holdout}{Hold-out mode. Hold-out all samples with zero \code{case.weights} and use these for variable importance and prediction error.}
 
 \item{oob.error}{Compute out-of-bag prediction error. Set to \code{FALSE} to save computation time.}
 
-\item{num.threads}{Number of threads. Default is number of CPUs available.}
+\item{n.threads}{Number of threads. Default is number of CPUs available.}
 
 \item{save.memory}{Use memory saving (but slower) splitting mode. Warning: This option slows down the tree growing, use only if you encounter memory problems.}
 
@@ -75,29 +75,28 @@ Object of class \code{morf} with elements:
   \item{\code{...}}{}
   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
   \item{\code{predictions}}{Matrix of predicted conditional class probabilities, based on out-of-bag samples. Requires \code{oob.error = TRUE} (the default).}
-  \item{\code{mean.squared.error}}{Mean squared error of the model, based on out-of-bag samples. Requires \code{oob.error = TRUE} (the default).}
-  \item{\code{overall.importance}}{Measure of overall variable importance, computed as the sum of the importance of each variable across classes. Relative importance is provided.}
-  \item{\code{importance.mode}}{Variable importance mode.}
+  \item{\code{mean.squared.error}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
+  \item{\code{mean.ranked.score}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
+  \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
   \item{\code{n.classes}}{Number of classes.}
-  \item{\code{num.samples}}{Number of observations.}
-  \item{\code{num.covariates}}{Number of covariates.}
-  \item{\code{splitrule}}{The splitting rule used to grow trees.}
-  \item{\code{treetype}}{The type of the trees.}
-  \item{\code{num.trees}}{Number of trees of each forest.}
+  \item{\code{n.samples}}{Number of observations.}
+  \item{\code{n.covariates}}{Number of covariates.}
+  \item{\code{n.trees}}{Number of trees of each forest.}
   \item{\code{mtry}}{Number of covariates considered for splitting at each step.}
   \item{\code{min.node.size}}{Minimum node size.}
   \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement (bootstrap).}
+  \item{\code{data}}{Training sample.}
   \item{\code{call}}{The system call.}
 }
 \description{
-Estimates the ordered choice model using random forests tailored for this purpose.
+Non-parametric estimation of the ordered choice model using random forests.
 }
 \details{
 \subsection{Splitting Criterion}{
 \code{morf} fits \code{M} random forests, where \code{M} is the number of classes of \code{y}. 
 Each forest computes the conditional probabilities of the \code{m}-th class:
 
-\deqn{p_m (x) = P ( Y_i = m | X_i = x), \,\,\,  m = 1, ..., M}
+\deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x), \,\,\,  m = 1, ..., M}
 
 To estimate this quantity, \code{morf} exploits the following:
 
@@ -115,7 +114,10 @@ ignores potential correlation in the estimation errors of the two surfaces, as s
 \deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
 
 where the last term is the mean correlation error of the estimation. The splitting criterion used by \code{morf} 
-seeks to greedily minimize the above expression, thereby accounting for the correlation term.\cr
+seeks to greedily minimize the above expression, thereby accounting for the correlation term. Therefore, each split
+is chosen to minimize:
+
+\deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}
 }
 
 \subsection{Predictions}{
@@ -127,11 +129,11 @@ Notice that a normalization step may be needed to ensure that the estimated prob
 }
 
 \subsection{Variable Importance}{
-For each covariate, an overall variable importance measure is provided. The \code{m}-th ordered forest computes the 
-importance of each variable for the \code{m}-th class as follows. At each split, the forest assigns to the chosen 
-splitting variable the improvement in the splitting criterion above. Summing over all the trees in the \code{m}-th 
-forest gives the variable importance for the \code{m}-th class. The overall variable importance measure of each 
-covariate is then defined as the mean of the importances in each class.
+For each covariate, an overall variable importance measure is provided. The \code{m}-th forest computes the 
+importance of the j-th covariate for the \code{m}-th class by recording the improvement in the splitting criterion 
+at each split placed on such covariate. Summing over all such splits of the trees in the \code{m}-th 
+forest gives the j-th covariate's importance for the \code{m}-th class. The overall variable importance measure of this 
+covariate is then defined as the mean of its importances in each class.
 }
 }
 \references{
@@ -139,6 +141,10 @@ covariate is then defined as the mean of the importances in each class.
   \item Lechner, M., & Okasa, G. (2019). Random forest estimation of the ordered choice model. arXiv preprint arXiv:1907.02436. \doi{10.48550/arXiv.1907.02436}.
   \item Wright, M. N. & Ziegler, A. (2017). ranger: A fast implementation of random forests for high dimensional data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
 }
+}
+\seealso{
+\code{\link{predict.morf}}, \code{\link{marginal_effects}}, \code{\link{mean_squared_error}},
+\code{\link{mean_ranked_score}}.
 }
 \author{
 Riccardo Di Francesco

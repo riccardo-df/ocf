@@ -9,9 +9,9 @@
   data,
   type = "response",
   predict.all = FALSE,
-  num.trees = object$num.trees,
+  n.trees = object$n.trees,
   inbag.counts = NULL,
-  num.threads = NULL,
+  n.threads = NULL,
   verbose = TRUE,
   seed = NULL,
   ...
@@ -20,17 +20,17 @@
 \arguments{
 \item{object}{\code{morf} object.}
 
-\item{data}{Data set of class \code{data.frame}.}
+\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.}
 
 \item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.}
 
-\item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{num.samples} by \code{num.trees}).}
+\item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}).}
 
-\item{num.trees}{Number of trees used for prediction. The first \code{num.trees} in each forest are used. Default uses all trees in the forests.}
+\item{n.trees}{Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.}
 
 \item{inbag.counts}{Number of times the observations are in-bag in the trees.}
 
-\item{num.threads}{Number of threads. Default is number of CPUs available.}
+\item{n.threads}{Number of threads. Default is number of CPUs available.}
 
 \item{verbose}{Verbose output on or off.}
 
@@ -42,10 +42,9 @@
 Object of class \code{morf.prediction} with elements:
   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-  \item{\code{num.trees}}{Number of trees.}
-  \item{\code{num.covariates}}{Number of covariates.}
-  \item{\code{treetype}}{Type of forest/tree.}
-  \item{\code{num.samples}}{Number of samples.}
+  \item{\code{n.trees}}{Number of trees.}
+  \item{\code{n.covariates}}{Number of covariates.}
+  \item{\code{n.samples}}{Number of samples.}
 }
 \description{
 Predicts conditional class probabilities with a \code{morf.forest} object.

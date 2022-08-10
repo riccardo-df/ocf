@@ -1,24 +1,24 @@
 ##' Modified Ordered Random Forest for Estimating the Ordered Choice Model
 ##' 
-##' Estimates the ordered choice model using random forests tailored for this purpose.
+##' Non-parametric estimation of the ordered choice model using random forests.
 ##'
 ##' @param x Covariate matrix (no intercept).
 ##' @param y Outcome vector.
-##' @param num.trees Number of trees.
+##' @param n.trees Number of trees.
 ##' @param mtry Number of covariates to possibly split at in each node. Default is the (rounded down) square root of the number of covariates. Alternatively, one can pass a single-argument function returning an integer, where the argument is the number of covariates.
 ##' @param write.forest Save \code{morf.forest} object, required for prediction. Set to \code{FALSE} to reduce memory usage if no prediction intended.
 ##' @param min.node.size Minimal node size.
 ##' @param max.depth Maximal tree depth. A value of 0 (the default) corresponds to unlimited depth, 1 to "stumps" (one split per tree).
-##' @param replace If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsample drawn without replacement. 
+##' @param replace If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement. 
 ##' @param sample.fraction Fraction of observations to sample. Default is 1 for bootstrap sampling and 0.632 for sampling without replacement. 
 ##' @param case.weights Weights for sampling of training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.
-##' @param split.select.weights Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, a list of size \code{num.trees}, containing split select weight vectors for each tree can be used.  
+##' @param split.select.weights Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, a list of size \code{n.trees}, containing split select weight vectors for each tree can be used.  
 ##' @param always.split.variables Character vector with variable names to be always selected in addition to the \code{mtry} variables tried for splitting.
 ##' @param keep.inbag Save how often observations are in-bag in each tree. 
-##' @param inbag Manually set observations per tree. List of size \code{num.trees}, containing in-bag counts for each observation. Can be used for stratified sampling.
-##' @param holdout Hold-out mode. Hold-out all samples with case weight 0 and use these for variable importance and prediction error.
+##' @param inbag Manually set observations per tree. List of size \code{n.trees}, containing in-bag counts for each observation. Can be used for stratified sampling.
+##' @param holdout Hold-out mode. Hold-out all samples with zero \code{case.weights} and use these for variable importance and prediction error.
 ##' @param oob.error Compute out-of-bag prediction error. Set to \code{FALSE} to save computation time.
-##' @param num.threads Number of threads. Default is number of CPUs available.
+##' @param n.threads Number of threads. Default is number of CPUs available.
 ##' @param save.memory Use memory saving (but slower) splitting mode. Warning: This option slows down the tree growing, use only if you encounter memory problems.
 ##' @param verbose Show computation status and estimated runtime.
 ##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
@@ -28,7 +28,7 @@
 ##' \code{morf} fits \code{M} random forests, where \code{M} is the number of classes of \code{y}. 
 ##' Each forest computes the conditional probabilities of the \code{m}-th class:
 ##' 
-##' \deqn{p_m (x) = P ( Y_i = m | X_i = x), \,\,\,  m = 1, ..., M}
+##' \deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x), \,\,\,  m = 1, ..., M}
 ##' 
 ##' To estimate this quantity, \code{morf} exploits the following:
 ##' 
@@ -46,7 +46,10 @@
 ##' \deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
 ##' 
 ##' where the last term is the mean correlation error of the estimation. The splitting criterion used by \code{morf} 
-##' seeks to greedily minimize the above expression, thereby accounting for the correlation term.\cr
+##' seeks to greedily minimize the above expression, thereby accounting for the correlation term. Therefore, each split
+##' is chosen to minimize:
+##' 
+##' \deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}
 ##' }
 ##' 
 ##' \subsection{Predictions}{
@@ -58,11 +61,11 @@
 ##' }
 ##' 
 ##' \subsection{Variable Importance}{
-##' For each covariate, an overall variable importance measure is provided. The \code{m}-th ordered forest computes the 
-##' importance of each variable for the \code{m}-th class as follows. At each split, the forest assigns to the chosen 
-##' splitting variable the improvement in the splitting criterion above. Summing over all the trees in the \code{m}-th 
-##' forest gives the variable importance for the \code{m}-th class. The overall variable importance measure of each 
-##' covariate is then defined as the mean of the importances in each class.
+##' For each covariate, an overall variable importance measure is provided. The \code{m}-th forest computes the 
+##' importance of the j-th covariate for the \code{m}-th class by recording the improvement in the splitting criterion 
+##' at each split placed on such covariate. Summing over all such splits of the trees in the \code{m}-th 
+##' forest gives the j-th covariate's importance for the \code{m}-th class. The overall variable importance measure of this 
+##' covariate is then defined as the mean of its importances in each class.
 ##' }
 ##' 
 ##' @return 
@@ -72,23 +75,25 @@
 ##'   \item{\code{...}}{}
 ##'   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
 ##'   \item{\code{predictions}}{Matrix of predicted conditional class probabilities, based on out-of-bag samples. Requires \code{oob.error = TRUE} (the default).}
-##'   \item{\code{mean.squared.error}}{Mean squared error of the model, based on out-of-bag samples. Requires \code{oob.error = TRUE} (the default).}
-##'   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the sum of the importance of each variable across classes. Relative importance is provided.}
-##'   \item{\code{importance.mode}}{Variable importance mode.}
+##'   \item{\code{mean.squared.error}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
+##'   \item{\code{mean.ranked.score}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
+##'   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
 ##'   \item{\code{n.classes}}{Number of classes.}
-##'   \item{\code{num.samples}}{Number of observations.}
-##'   \item{\code{num.covariates}}{Number of covariates.}
-##'   \item{\code{splitrule}}{The splitting rule used to grow trees.}
-##'   \item{\code{treetype}}{The type of the trees.}
-##'   \item{\code{num.trees}}{Number of trees of each forest.}
+##'   \item{\code{n.samples}}{Number of observations.}
+##'   \item{\code{n.covariates}}{Number of covariates.}
+##'   \item{\code{n.trees}}{Number of trees of each forest.}
 ##'   \item{\code{mtry}}{Number of covariates considered for splitting at each step.}
 ##'   \item{\code{min.node.size}}{Minimum node size.}
 ##'   \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement (bootstrap).}
+##'   \item{\code{data}}{Training sample.}
 ##'   \item{\code{call}}{The system call.}
 ##' 
 ##' @importFrom Rcpp evalCpp
 ##' @import utils
 ##' @useDynLib morf
+##' 
+##' @seealso \code{\link{predict.morf}}, \code{\link{marginal_effects}}, \code{\link{mean_squared_error}},
+##' \code{\link{mean_ranked_score}}.
 ##' 
 ##' @author Riccardo Di Francesco
 ##' 
@@ -99,12 +104,12 @@
 ##' }
 ##' @export
 morf <- function(x = NULL, y = NULL, 
-                 num.trees = 1000, mtry = NULL,
+                 n.trees = 1000, mtry = NULL,
                  min.node.size = 5, max.depth = 0, 
                  replace = FALSE, sample.fraction = ifelse(replace, 1, 0.632), case.weights = NULL,
                  split.select.weights = NULL, always.split.variables = NULL,
                  keep.inbag = FALSE, inbag = NULL, holdout = FALSE, oob.error = TRUE,
-                 num.threads = NULL, save.memory = FALSE,
+                 n.threads = NULL, save.memory = FALSE,
                  write.forest = TRUE, verbose = TRUE, seed = NULL) {
   ## Handling inputs and checks.
   # Outcomes and covariates.
@@ -141,7 +146,7 @@ morf <- function(x = NULL, y = NULL,
   if (length(all.independent.variable.names) < 1) stop("No covariates found.", call. = FALSE)
 
   # Number of trees.
-  if (!is.numeric(num.trees) || num.trees < 1) stop("Invalid value for 'num.trees'.", call. = FALSE)
+  if (!is.numeric(n.trees) || n.trees < 1) stop("Invalid value for 'n.trees'.", call. = FALSE)
 
   # mtry.
   if (is.function(mtry)) {
@@ -180,10 +185,10 @@ morf <- function(x = NULL, y = NULL,
   if (!is.logical(keep.inbag)) stop("Invalid value for 'keep.inbag'", call. = FALSE)
   
   # Number of threads.
-  if (is.null(num.threads)) {
-    num.threads <- 0
-  } else if (!is.numeric(num.threads) || num.threads < 0) {
-    stop("Invalid value for 'num.threads'", call. = FALSE)
+  if (is.null(n.threads)) {
+    n.threads <- 0
+  } else if (!is.numeric(n.threads) || n.threads < 0) {
+    stop("Invalid value for 'n.threads'", call. = FALSE)
   }
 
   # Minimum node size.
@@ -218,9 +223,9 @@ morf <- function(x = NULL, y = NULL,
     
     if (use.case.weights) stop("Combination of 'case.weights' and 'inbag' not supported.", call. = FALSE)
     if (length(sample.fraction) > 1) stop("Combination of class-wise sampling and inbag not supported.", call. = FALSE)
-    if (length(inbag) != num.trees) stop("Size of inbag list not equal to the number of trees.", call. = FALSE)
+    if (length(inbag) != n.trees) stop("Size of inbag list not equal to the number of trees.", call. = FALSE)
   } else {
-    stop("Invalid inbag, expects list of vectors of size num.trees.", call. = FALSE)
+    stop("Invalid inbag, expects list of vectors of size n.trees.", call. = FALSE)
   }
 
   # Split select weights: NULL for no weights.
@@ -232,7 +237,7 @@ morf <- function(x = NULL, y = NULL,
     split.select.weights <- list(split.select.weights)
     use.split.select.weights <- TRUE
   } else if (is.list(split.select.weights)) {
-    if (length(split.select.weights) != num.trees) stop("Size of split select weights list not equal to number of trees.", call. = FALSE)
+    if (length(split.select.weights) != n.trees) stop("Size of split select weights list not equal to number of trees.", call. = FALSE)
     use.split.select.weights <- TRUE
   } else {
     stop("Invalid split select weights.", call. = FALSE)
@@ -310,7 +315,7 @@ morf <- function(x = NULL, y = NULL,
     y.mat <- matrix(c(as.numeric(y_m_1), as.numeric(y_m)), ncol = 2) 
     
     class_result <- morfCpp(treetype, x, y.mat, independent.variable.names, mtry,
-                     num.trees, verbose, seed, num.threads, write.forest, importance.mode,
+                     n.trees, verbose, seed, n.threads, write.forest, importance.mode,
                      min.node.size, split.select.weights, use.split.select.weights,
                      always.split.variables, use.always.split.variables,
                      prediction.mode, loaded.forest, snp.data,
@@ -325,11 +330,9 @@ morf <- function(x = NULL, y = NULL,
     
     ## Handling class output.
     # Names for variable importance.
-    if (importance.mode != 0) {
-      names(class_result$variable.importance) <- all.independent.variable.names
-      overall.importance <- overall.importance + class_result$variable.importance
-    }
-    
+    names(class_result$variable.importance) <- all.independent.variable.names
+    overall.importance <- overall.importance + class_result$variable.importance
+  
     # Writing forest object.
     if (write.forest) {
       if (is.factor(y)) {
@@ -346,7 +349,7 @@ morf <- function(x = NULL, y = NULL,
     
     # Saving and removing unnecessary element.
     if (oob.error) class.probabilities[, m] <- class_result$predictions
-    num.trees <- class_result$num.trees
+    n.trees <- class_result$num.trees
     num.covariates <- class_result$num.covariates
     mtry <- class_result$mtry
     min.node.size <- class_result$min.node.size
@@ -379,6 +382,7 @@ morf <- function(x = NULL, y = NULL,
   
   # Prediction error.
   results$mean.squared.error <- mean_squared_error(y, class.probabilities)
+  results$mean.ranked.score <- mean_ranked_score(y, class.probabilities)
   
   # Overall variable importance.
   results$overall.importance <- overall.importance
@@ -388,22 +392,16 @@ morf <- function(x = NULL, y = NULL,
   
   # Number of units.
   if (use.sparse.data) {
-    results$num.samples <- nrow(sparse.x)
+    results$n.samples <- nrow(sparse.x)
   } else {
-    results$num.samples <- nrow(x)
+    results$n.samples <- nrow(x)
   }
   
   # Number of covariates.
-  results$num.covariates <- num.covariates
-  
-  # Splitrule.
-  results$splitrule <- "correlation"
-  
-  # Tree type.
-  results$treetype <- "ordered"
+  results$n.covariates <- num.covariates
   
   # Number of trees.
-  results$num.trees <- num.trees
+  results$n.trees <- n.trees
   
   # Mtry.
   results$mtry <- mtry
@@ -413,6 +411,9 @@ morf <- function(x = NULL, y = NULL,
   
   # Resampling mode.
   results$replace <- replace
+  
+  # Training data.
+  results$data <-data.frame(x)
   
   # Call.
   results$call <- sys.call()

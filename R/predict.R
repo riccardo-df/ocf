@@ -3,22 +3,21 @@
 ##' Predicts conditional class probabilities with a \code{\link{morf}} object.
 ##'
 ##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}.
-##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{num.samples} by \code{num.trees}). 
-##' @param num.trees Number of trees used for prediction. The first \code{num.trees} in each forest are used. Default uses all trees in the forests.
+##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the training sample are provided.
+##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
+##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
 ##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.
 ##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-##' @param num.threads Number of threads. Default is number of CPUs available.
+##' @param n.threads Number of threads. Default is number of CPUs available.
 ##' @param verbose Verbose output on or off.
 ##' @param ... Further arguments passed to or from other methods.
 ##' 
 ##' @return Object of class \code{morf.prediction} with elements:
 ##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
 ##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-##'   \item{\code{num.trees}}{Number of trees.} 
-##'   \item{\code{num.covariates}}{Number of num.covariates.}
-##'   \item{\code{treetype}}{Type of forest/tree.}
-##'   \item{\code{num.samples}}{Number of samples.}
+##'   \item{\code{n.trees}}{Number of trees.} 
+##'   \item{\code{n.covariates}}{Number of covariates.}
+##'   \item{\code{n.samples}}{Number of samples.}
 ##'   
 ##' @details 
 ##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
@@ -39,21 +38,21 @@
 ##' 
 ##' @export
 predict.morf <- function(object, data = NULL, type = "response",
-                         predict.all = FALSE, num.trees = object$num.trees,
-                         num.threads = NULL,
+                         predict.all = FALSE, n.trees = object$n.trees,
+                         n.threads = NULL,
                          verbose = TRUE, seed = NULL, ...) {
   ## Handling inputs and check. It is enough to check the first forest.
-  if (is.null(object$forest.1)) stop("No saved forest in morf object. Please set write.forest to TRUE when calling morf.", call. = FALSE)
-  if (is.null(data)) stop("Argument 'data' is required.") 
-  
   n.classes <- object$n.classes
+  
+  if (is.null(object$forest.1)) stop("No saved forest in morf object. Please set write.forest to TRUE when calling morf.", call. = FALSE)
+  if (is.null(data)) data <- object$data
   
   ## Predicting for each class.
   if (type == "response") {
     predictions <- matrix(NA, nrow = dim(data)[1], ncol = n.classes) 
     
     for (m in seq_len(n.classes)) { # The morf.forest objects are always the first M elements of a morf object.
-      temp <- predict(object[[m]], data, type, predict.all, num.trees, object$inbag.counts, num.threads, verbose, seed, ...)
+      temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
       
       predictions[, m] <- temp$predictions
     }
@@ -64,23 +63,21 @@ predict.morf <- function(object, data = NULL, type = "response",
     
     ## Handling output.
     out <- list("predictions" = predictions,
-                "num.trees" = temp$num.trees,
-                "num.covariates" = temp$num.covariates,
-                "treetype" = temp$treetype,
-                "num.samples" = temp$num.samples)
+                "n.trees" = temp$n.trees,
+                "n.covariates" = temp$n.covariates,
+                "n.samples" = temp$num.samples)
   } else if (type == "terminalNodes") {
     node_ids <- list()
     for (m in seq_len(n.classes)) {
-      temp <- predict(object[[m]], data, type, predict.all, num.trees, object$inbag.counts, num.threads, verbose, seed, ...)
+      temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
       node_ids[[m]] <- temp$predictions
       names(node_ids)[m] <- paste("class", m, sep = ".")
       
       ## Handling output.
       out <- list("predictions" = node_ids,
-                  "num.trees" = temp$num.trees,
-                  "num.covariates" = temp$covariate.names,
-                  "treetype" = temp$treetype,
-                  "num.samples" = temp$num.samples)
+                  "n.trees" = temp$n.trees,
+                  "n.covariates" = temp$covariate.names,
+                  "n.samples" = temp$n.samples)
     }
   }
   
@@ -95,12 +92,12 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##' Predicts conditional class probabilities with a \code{morf.forest} object.
 ##'
 ##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}.
-##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{num.samples} by \code{num.trees}). 
-##' @param num.trees Number of trees used for prediction. The first \code{num.trees} in each forest are used. Default uses all trees in the forests.
+##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
+##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
+##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
 ##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.
 ##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-##' @param num.threads Number of threads. Default is number of CPUs available.
+##' @param n.threads Number of threads. Default is number of CPUs available.
 ##' @param verbose Verbose output on or off.
 ##' @param inbag.counts Number of times the observations are in-bag in the trees.
 ##' @param ... Further arguments passed to or from other methods.
@@ -108,10 +105,9 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##' @return Object of class \code{morf.prediction} with elements:
 ##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
 ##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-##'   \item{\code{num.trees}}{Number of trees.}
-##'   \item{\code{num.covariates}}{Number of covariates.}
-##'   \item{\code{treetype}}{Type of forest/tree.}
-##'   \item{\code{num.samples}}{Number of samples.}
+##'   \item{\code{n.trees}}{Number of trees.}
+##'   \item{\code{n.covariates}}{Number of covariates.}
+##'   \item{\code{n.samples}}{Number of samples.}
 ##'   
 ##' @details 
 ##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
@@ -130,9 +126,9 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##' 
 ##' @export
 predict.morf.forest <- function(object, data, type = "response",
-                                predict.all = FALSE, num.trees = object$num.trees,
+                                predict.all = FALSE, n.trees = object$num.trees,
                                 inbag.counts = NULL,
-                                num.threads = NULL, verbose = TRUE, seed = NULL, ...) {
+                                n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
   ## Handling inputs and checks.
   if (!inherits(object, "morf.forest")) stop("Invalid class of input object.", call. = FALSE) 
   
@@ -179,10 +175,10 @@ predict.morf.forest <- function(object, data, type = "response",
   }
 
   # Number of threads.
-  if (is.null(num.threads)) {
-    num.threads = 0
-  } else if (!is.numeric(num.threads) || num.threads < 0) {
-    stop("Invalid value for num.threads", call. = FALSE)
+  if (is.null(n.threads)) {
+    n.threads = 0
+  } else if (!is.numeric(n.threads) || n.threads < 0) {
+    stop("Invalid value for n.threads", call. = FALSE)
   }
 
   # Seed.
@@ -239,7 +235,7 @@ predict.morf.forest <- function(object, data, type = "response",
   
   ## Calling Morf in prediction mode.
   result <- morfCpp(treetype, x, y, forest$covariate.names, mtry,
-                      num.trees, verbose, seed, num.threads, write.forest, importance,
+                      n.trees, verbose, seed, n.threads, write.forest, importance,
                       min.node.size, split.select.weights, use.split.select.weights,
                       always.split.variables, use.always.split.variables,
                       prediction.mode, forest, snp.data, replace, probability,
