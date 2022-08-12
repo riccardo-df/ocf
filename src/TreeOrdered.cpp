@@ -107,6 +107,7 @@ double TreeOrdered::computePredictionAccuracyInternal(std::vector<double>* predi
   size_t num_predictions = prediction_terminal_nodeIDs.size();
   double sum_of_squares = 0;
   
+  // This is to be corrected. Implement MSE for ordered choice models.
   for (size_t i = 0; i < num_predictions; ++i) {
     size_t terminal_nodeID = prediction_terminal_nodeIDs[i];
     double predicted_value = split_values[terminal_nodeID];

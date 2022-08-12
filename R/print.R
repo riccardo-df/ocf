@@ -1,4 +1,4 @@
-##' Print Method for Morf Objects
+##' Print Method for Morf xs
 ##'
 ##' Prints a \code{morf} object.
 ##'
@@ -19,6 +19,8 @@ print.morf <- function(x, ...) {
   cat("Number of covariates:            ", x$n.covariates, "\n")
   cat("Mtry:                            ", x$mtry, "\n")
   cat("Minimum node size:               ", x$min.node.size, "\n")
+  cat("Honesty:                         ", x$honesty, "\n")
+  cat("Fraction honesty:                ", x$honesty.fraction, "\n")
   cat("MSE:                             ", x$mean.squared.error, "\n")
   cat("RPS:                             ", x$mean.ranked.score)
 }
@@ -44,8 +46,9 @@ print.morf.marginal <- function(x, latex = FALSE, ...) {
   cat("Evaluation:                      ", x$evaluation, "\n")
   cat("Bandwidth:                       ", x$bandwitdh, "\n")
   cat("Number of classes:               ", x$n.classes, "\n")
-  cat("Number of trees:                 ", x$num.trees, "\n")
-  cat("Sample size:                     ", x$num.samples, "\n")
+  cat("Number of trees:                 ", x$n.trees, "\n")
+  cat("Sample size:                     ", x$n.samples, "\n")
+  cat("Honest forest:                   ", x$honesty, "\n")
   
   cat("\n\n")
   

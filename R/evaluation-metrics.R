@@ -3,8 +3,8 @@
 #' Computes the mean squared error for evaluating the accuracy of ordered probability predictions.
 #'
 #' @param predictions Matrix of predictions (\code{n.samples} x \code{M}).
-#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.
-#' @param use.true If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
+#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}).
+#' @param use.true If \code{FALSE}, then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
 #'
 #' @details 
 #' If \code{use.true = FALSE}, the mean squared error is computed as follows:
@@ -57,7 +57,7 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 #' Computes the mean ranked probability score for evaluating the accuracy of ordered probability predictions.
 #'
 #' @param predictions Matrix of predictions (\code{n.samples} x \code{M}).
-#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.
+#' @param y Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). 
 #' @param use.true If \code{FALSE} (the default), then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.
 #'
 #' @details 
@@ -105,6 +105,7 @@ mean_ranked_score <- function(y, predictions, use.true = FALSE){ # Taken from ht
   
   # Looping over the classes to compute the inner sum of squares. 
   for (i in 1:n.classes){
+    # At the i-th iteration, we sum the class probabilities up to the i-th class. 
     cum <- cum + (rowSums(matrix(predictions[, 1:i], ncol = i)) - rowSums(matrix(indicator_mat[, 1:i], ncol = i)))^2
   }
   

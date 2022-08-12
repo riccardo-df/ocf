@@ -9,23 +9,36 @@ marginal_effects(object, data = NULL, eval = "mean", bandwitdh = 0.1)
 \arguments{
 \item{object}{\code{morf} object.}
 
-\item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the training sample.}
+\item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the sample used to fit \code{object}.}
 
 \item{eval}{Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.}
 
 \item{bandwitdh}{How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.}
 }
 \value{
-add
+Object of class \code{morf.marginal} with elements:
+  \item{\code{evaluation.type}}{Where the marginal effects are evaluated.}
+  \item{\code{bandwitdh}}{The bandwitdh parameter.}
+  \item{\code{n.classes}}{Number of classes.}
+  \item{\code{n.samples}}{Number of samples.}
+  \item{\code{n.trees}}{Number of trees in each forest.}
+  \item{\code{marginal.effects}}{Matrix of marginal effects.}
 }
 \description{
-Estimates the marginal effects for a \code{morf} object.
+Non-parametric estimation of marginal effects using a \code{morf} object.
 }
 \details{
-\code{marginal_effects} provides a non-parametric estimation of the marginal effects for a modified ordered random
-forest.\cr
+If the k-th covariate is continuous, its marginal effect relative to the m-th class is defined as: 
 
-Covariates with unique values between 2 and 10 are assumed to be categorical.
+\deqn{ME_{i, k}^m ( x ) = \frac{\partial P( Y_i = m \, | \, X_{i,k} = x_k, X_{i,-k} = x_{-k})}{\partial x_k}}
+
+Otherwise, if k-th covariate is discrete:
+
+\deqn{ME_{i, k}^m ( x ) = P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
+                     P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
+
+The program assumes that covariates with more than 10 unique values are continuous. Otherwise, covariates are assumed
+to be categorical or binary.
 }
 \seealso{
 \code{\link{morf}}.

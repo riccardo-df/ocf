@@ -25,7 +25,7 @@
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-treeInfo <- function(object, tree = 1) {
+tree_info <- function(object, tree = 1) {
   ## Handling inputs and checks.
   if (!inherits(object, "morf.forest")) stop("Invalid class of input object.", call. = FALSE)
   

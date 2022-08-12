@@ -19,9 +19,9 @@
 \arguments{
 \item{object}{\code{morf} object.}
 
-\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the training sample are provided.}
+\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the sample used to fit \code{object} are provided.}
 
-\item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.}
+\item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.}
 
 \item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}).}
 
@@ -47,10 +47,10 @@ Object of class \code{morf.prediction} with elements:
 Predicts conditional class probabilities with a \code{\link{morf}} object.
 }
 \details{
-For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
+For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned.\cr
 
 For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-dataset are returned.
+dataset are returned.\cr
 }
 \references{
 \itemize{
@@ -58,7 +58,7 @@ dataset are returned.
   }
 }
 \seealso{
-\code{\link{morf}}
+\code{\link{morf}}, , \code{\link{marginal_effects}}
 }
 \author{
 Riccardo Di Francesco

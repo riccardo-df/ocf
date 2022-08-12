@@ -7,7 +7,7 @@
 mean_ranked_score(y, predictions, use.true = FALSE)
 }
 \arguments{
-\item{y}{Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}). See the parameter \code{use.true} and the details section.}
+\item{y}{Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}).}
 
 \item{predictions}{Matrix of predictions (\code{n.samples} x \code{M}).}
 

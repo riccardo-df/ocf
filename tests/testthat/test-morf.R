@@ -13,10 +13,10 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               verbose = FALSE)
+               honesty = FALSE, verbose = FALSE)
   
-  avg_split <- morf::treeInfo(morf[[m]])$splitval[1] 
-  predictions <- morf::treeInfo(morf[[m]])$prediction[-1]
+  avg_split <- tree_info(morf[[m]])$splitval[1] 
+  predictions <- tree_info(morf[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -74,10 +74,10 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               verbose = FALSE)
+               honesty = FALSE, verbose = FALSE)
   
-  avg_split <- morf::treeInfo(morf[[m]])$splitval[1] 
-  predictions <- morf::treeInfo(morf[[m]])$prediction[-1]
+  avg_split <- tree_info(morf[[m]])$splitval[1] 
+  predictions <- tree_info(morf[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -117,4 +117,25 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   
   expect_true(check_split)
   expect_setequal(treeR$predictions, predictions)
+})
+
+
+test_that("Standard predictions and weight-based predictions are the same", {
+  ## Generating data.
+  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  
+  n <- sample(1:500, size = 1)
+
+  y <- sample(c(1, 2, 3), size = n, replace = TRUE)
+  x <- data.frame("x1" = rnorm(n))
+  
+  ## Fitting morf objects.
+  set.seed(1986) # Set seed to get same honest split.
+  morf <- morf(x = x, y = y, inference = FALSE, verbose = FALSE)
+  set.seed(1986)
+  morf2 <- morf(x = x, y = y, inference = TRUE, verbose = FALSE)
+  
+  ## Comparing.
+  # expect_equal(sum(round(morf$predictions, 3) == round(morf2$predictions, 3)), n * 3)
+  expect_setequal(round(morf$predictions, 3), round(morf2$predictions, 3))
 })

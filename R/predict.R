@@ -3,10 +3,10 @@
 ##' Predicts conditional class probabilities with a \code{\link{morf}} object.
 ##'
 ##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the training sample are provided.
+##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the sample used to fit \code{object} are provided.
 ##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
 ##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
-##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.
+##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}. 
 ##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
 ##' @param n.threads Number of threads. Default is number of CPUs available.
 ##' @param verbose Verbose output on or off.
@@ -20,17 +20,19 @@
 ##'   \item{\code{n.samples}}{Number of samples.}
 ##'   
 ##' @details 
-##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
+##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned.\cr
 ##' 
 ##' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-##' dataset are returned. 
+##' dataset are returned.\cr
+##' 
+##' If the forests are honest, then \code{predict.morf} yields honest predictions.
 ##' 
 ##' @references
 ##' \itemize{
 ##'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
 ##'   }
 ##'   
-##' @seealso \code{\link{morf}}
+##' @seealso \code{\link{morf}}, , \code{\link{marginal_effects}}
 ##' 
 ##' @importFrom stats predict
 ##' 
@@ -45,16 +47,23 @@ predict.morf <- function(object, data = NULL, type = "response",
   n.classes <- object$n.classes
   
   if (is.null(object$forest.1)) stop("No saved forest in morf object. Please set write.forest to TRUE when calling morf.", call. = FALSE)
-  if (is.null(data)) data <- object$data
+  if (is.null(data)) data <- object$full_data
   
   ## Predicting for each class.
   if (type == "response") {
     predictions <- matrix(NA, nrow = dim(data)[1], ncol = n.classes) 
     
-    for (m in seq_len(n.classes)) { # The morf.forest objects are always the first M elements of a morf object.
-      temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
-      
-      predictions[, m] <- temp$predictions
+    # If the forest is honest, use honest prediction method from rcpp. This is required as we replace leaf estimates each time.
+    if (object$honesty) { 
+      for (m in seq_len(n.classes)) { # The morf.forest objects are always the first M elements of a morf object.
+        temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...) # Needed for output consistency.
+        predictions[, m] <- honest_predictions(object[[m]], object$honest_data, data, m) # morf objects always store the honest sample, so we can use it for predictions.
+      }
+    } else { # Use default prediction method.
+      for (m in seq_len(n.classes)) { 
+        temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
+        predictions[, m] <- temp$predictions
+      }
     }
     
     ## Normalization step.
@@ -94,11 +103,11 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##' @param object \code{morf} object.
 ##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
 ##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
-##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
-##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.
+##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.
+##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.
 ##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
 ##' @param n.threads Number of threads. Default is number of CPUs available.
-##' @param verbose Verbose output on or off.
+##' @param verbose Verbose output.
 ##' @param inbag.counts Number of times the observations are in-bag in the trees.
 ##' @param ... Further arguments passed to or from other methods.
 ##' 
@@ -120,7 +129,7 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
 ##'   }
 ##'   
-##' @seealso \code{\link{morf}}
+##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 ##' 
 ##' @author Riccardo Di Francesco
 ##' 

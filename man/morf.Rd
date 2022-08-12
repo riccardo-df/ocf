@@ -14,12 +14,15 @@ morf(
   replace = FALSE,
   sample.fraction = ifelse(replace, 1, 0.632),
   case.weights = NULL,
+  honesty = TRUE,
+  honesty.fraction = 0.5,
+  inference = FALSE,
   split.select.weights = NULL,
   always.split.variables = NULL,
   keep.inbag = FALSE,
   inbag = NULL,
   holdout = FALSE,
-  oob.error = TRUE,
+  oob.error = FALSE,
   n.threads = NULL,
   save.memory = FALSE,
   write.forest = TRUE,
@@ -38,15 +41,21 @@ morf(
 
 \item{min.node.size}{Minimal node size.}
 
-\item{max.depth}{Maximal tree depth. A value of 0 (the default) corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
+\item{max.depth}{Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
 
 \item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement.}
 
-\item{sample.fraction}{Fraction of observations to sample. Default is 1 for bootstrap sampling and 0.632 for sampling without replacement.}
+\item{sample.fraction}{Fraction of observations to sample.}
 
 \item{case.weights}{Weights for sampling of training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.}
 
-\item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, a list of size \code{n.trees}, containing split select weight vectors for each tree can be used.}
+\item{honesty}{Whether to grow honest forests.}
+
+\item{honesty.fraction}{Fraction of honest sample. Ignored if \code{honesty = FALSE}.}
+
+\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program.}
+
+\item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, one can use a list of size \code{n.trees} containing \code{split.select.weights} vectors, one for each tree.}
 
 \item{always.split.variables}{Character vector with variable names to be always selected in addition to the \code{mtry} variables tried for splitting.}
 
@@ -60,7 +69,7 @@ morf(
 
 \item{n.threads}{Number of threads. Default is number of CPUs available.}
 
-\item{save.memory}{Use memory saving (but slower) splitting mode. Warning: This option slows down the tree growing, use only if you encounter memory problems.}
+\item{save.memory}{Use memory saving splitting mode. Warning: This option slows down the tree growing, use only if you encounter memory problems.}
 
 \item{write.forest}{Save \code{morf.forest} object, required for prediction. Set to \code{FALSE} to reduce memory usage if no prediction intended.}
 
@@ -74,9 +83,9 @@ Object of class \code{morf} with elements:
   \item{\code{forest.2}}{\code{morf.forest} object of the second class.} 
   \item{\code{...}}{}
   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
-  \item{\code{predictions}}{Matrix of predicted conditional class probabilities, based on out-of-bag samples. Requires \code{oob.error = TRUE} (the default).}
-  \item{\code{mean.squared.error}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
-  \item{\code{mean.ranked.score}}{Mean squared error of the model, based on out-of-bag predictions. Requires \code{oob.error = TRUE} (the default).}
+  \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions. Otherwise, they are based on out-of-bag samples if \code{oob.error = TRUE}, or an empty list if \code{oob.error = FALSE}.}
+  \item{\code{mean.squared.error}}{Mean squared error of the model, based on honest predictions if \code{honesty = TRUE} and on out-of-bag predictions otherwise (the latter requires \code{oob.error = TRUE}).}
+  \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on honest predictions if \code{honesty = TRUE} and on out-of-bag predictions otherwise (the latter requires \code{oob.error = TRUE}).}
   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
   \item{\code{n.classes}}{Number of classes.}
   \item{\code{n.samples}}{Number of observations.}
@@ -85,7 +94,10 @@ Object of class \code{morf} with elements:
   \item{\code{mtry}}{Number of covariates considered for splitting at each step.}
   \item{\code{min.node.size}}{Minimum node size.}
   \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement (bootstrap).}
-  \item{\code{data}}{Training sample.}
+  \item{\code{honesty}}{Whether the forest is honest.}
+  \item{\code{honesty.fraction}}{Fraction of units allocated to honest sample.}
+  \item{\code{full_data}}{Whole sample.}
+  \item{\code{honest_data}}{Honest sample.}
   \item{\code{call}}{The system call.}
 }
 \description{
@@ -103,19 +115,19 @@ To estimate this quantity, \code{morf} exploits the following:
 \deqn{p_m (x) = E [\, 1 (Y_i \leq m) \, | \, X_i = x] - E[\, 1 ( Y_i \leq m - 1 ) \, | \, X_i = x]  
                 = \mu_m (x) - \mu_{m-1} (x)}
 
-with \code{1(.)} an indicator of the truth of its argument. It would be tempting to estimate the 
-conditional probabilities as:
+with \code{1(.)} an indicator of the truth of its argument. A straightforward estimator consists of
+estimating the two conditional expectations separately and taking the difference:
 
 \deqn{\hat{p}_m (x) = \hat{\mu}_m (x) - \hat{\mu}_{m-1} (x)}
 
-where the expectations can be estimated via separate regression forests. However, this strategy 
-ignores potential correlation in the estimation errors of the two surfaces, as shown by the following expansion:
+However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative
+approach is to minimize the mean squared error of the particular estimation problem:
 
-\deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
+\deqn{MSE[\check{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
 
-where the last term is the mean correlation error of the estimation. The splitting criterion used by \code{morf} 
-seeks to greedily minimize the above expression, thereby accounting for the correlation term. Therefore, each split
-is chosen to minimize:
+where the last term is the mean correlation error of the estimation. \code{morf} ties the estimators of the two
+conditional expectations together trying to make the correlation term positive. For this purpose, trees are build 
+by greedily minimizing the following expression:
 
 \deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}
 }
@@ -135,6 +147,15 @@ at each split placed on such covariate. Summing over all such splits of the tree
 forest gives the j-th covariate's importance for the \code{m}-th class. The overall variable importance measure of this 
 covariate is then defined as the mean of its importances in each class.
 }
+
+\subsection{Honest Forests}{
+Growing honest forests in a necessary requirements to conduct valid inference on the marginal effects. 
+\code{morf} implements honest estimation as follows. The data set is split into a training sample and a honest
+sample. Forests are grown using only the training sample, thus deriving the set of weights needed for prediction.
+Then, the leaf estimates are replaced using the outcome from the honest sample (using the prediction method
+outlined above). In this way, weights and outcomes are independent of each other, thereby allowing for valid
+weight-based inference.
+}
 }
 \references{
 \itemize{
@@ -143,8 +164,7 @@ covariate is then defined as the mean of its importances in each class.
 }
 }
 \seealso{
-\code{\link{predict.morf}}, \code{\link{marginal_effects}}, \code{\link{mean_squared_error}},
-\code{\link{mean_ranked_score}}.
+\code{\link{predict.morf}}, \code{\link{marginal_effects}}
 }
 \author{
 Riccardo Di Francesco

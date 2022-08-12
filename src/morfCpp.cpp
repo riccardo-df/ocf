@@ -152,7 +152,6 @@ Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::Nu
           result.push_back(forest->getVariableImportanceCasewise(), "variable.importance.local");
         }
       }
-      // result.push_back(forest->getOverallPredictionError(), "prediction.error");
     }
 
     if (keep_inbag) {

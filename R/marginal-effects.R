@@ -1,16 +1,13 @@
 ##' Marginal Effects for Modified Ordered Random Forests
 ##'
-##' Estimates the marginal effects for a \code{morf} object.
+##' Non-parametric estimation of marginal effects using a \code{morf} object.
 ##'
 ##' @param object \code{morf} object.
 ##' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
 ##' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
-##' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the training sample.
+##' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the sample used to fit \code{object}.
 ##' 
 ##' @details
-##' \code{marginal_effects} provides a non-parametric estimation of the marginal effects for a modified ordered random
-##' forest.\cr
-##' 
 ##' If the k-th covariate is continuous, its marginal effect relative to the m-th class is defined as: 
 ##' 
 ##' \deqn{ME_{i, k}^m ( x ) = \frac{\partial P( Y_i = m \, | \, X_{i,k} = x_k, X_{i,-k} = x_{-k})}{\partial x_k}}
@@ -45,7 +42,7 @@ marginal_effects <- function(object, data = NULL, eval = "mean", bandwitdh = 0.1
   n.classes <- object$n.classes
   
   # Data.
-  if (is.null(data)) data <- object$data
+  if (is.null(data)) data <- object$full_data
   if (sum(!(object$forest.1$covariate.names %in% colnames(data))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
   if (length(colnames(data)) != length(object$forest.1$covariate.names) || 
       any(colnames(data) != object$forest.1$covariate.names)) data <- data[, object$forest.1$covariate.names, drop = FALSE]
@@ -138,7 +135,7 @@ marginal_effects <- function(object, data = NULL, eval = "mean", bandwitdh = 0.1
   # conditional class probabilities when the i-th covariate is "shifted".
   numerators <- list()
 
-  for (i in seq_len(length(X_up_data))) {
+  for (i in seq_len(length(X_up_data))) { # predict.morf already considers whether the forest is honest.
     predictions_up <- colMeans(predict(object, X_up_data[[i]])$predictions)
     predictions_down <- colMeans(predict(object, X_down_data[[i]])$predictions)
     
@@ -168,8 +165,9 @@ marginal_effects <- function(object, data = NULL, eval = "mean", bandwitdh = 0.1
   results$evaluation.type <- eval
   results$bandwitdh <- bandwitdh
   results$n.classes <- n.classes
-  results$n.samples <- nrow(data)
+  results$n.samples <- nrow(X)
   results$n.trees <- object$n.trees
+  results$honesty <- object$honesty
   results$marginal.effects <- round(marginal_effects, 3)
   
   class(results) <- "morf.marginal"
@@ -177,21 +175,3 @@ marginal_effects <- function(object, data = NULL, eval = "mean", bandwitdh = 0.1
   ## Output.
   return(results)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,7 +9,7 @@
   data,
   type = "response",
   predict.all = FALSE,
-  n.trees = object$n.trees,
+  n.trees = object$num.trees,
   inbag.counts = NULL,
   n.threads = NULL,
   verbose = TRUE,
@@ -22,17 +22,17 @@
 
 \item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.}
 
-\item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}, with default \code{"response"}. See below for details.}
+\item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.}
 
 \item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}).}
 
-\item{n.trees}{Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.}
+\item{n.trees}{Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.}
 
 \item{inbag.counts}{Number of times the observations are in-bag in the trees.}
 
 \item{n.threads}{Number of threads. Default is number of CPUs available.}
 
-\item{verbose}{Verbose output on or off.}
+\item{verbose}{Verbose output.}
 
 \item{seed}{Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed.}
 
@@ -61,7 +61,7 @@ dataset are returned.
   }
 }
 \seealso{
-\code{\link{morf}}
+\code{\link{morf}}, \code{\link{marginal_effects}}
 }
 \author{
 Riccardo Di Francesco
