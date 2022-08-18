@@ -7,12 +7,12 @@
 \method{print}{morf}(x, ...)
 }
 \arguments{
-\item{x}{\code{morf} x.}
+\item{x}{\code{morf} object.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Prints a \code{morf} x.
+Prints a \code{morf} object.
 }
 \seealso{
 \code{\link{morf}}

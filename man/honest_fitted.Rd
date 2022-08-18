@@ -4,7 +4,7 @@
 \alias{honest_fitted}
 \title{Honest In-Sample Predictions (Internal Use)}
 \usage{
-honest_fitted(forest, train_sample, honest_sample, m)
+honest_fitted(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest)
 }
 \arguments{
 \item{forest}{\code{morf.forest} object.}
@@ -13,7 +13,9 @@ honest_fitted(forest, train_sample, honest_sample, m)
 
 \item{honest_sample}{Honest sample.}
 
-\item{m}{The class for which predictions are desired.}
+\item{y_m_honest}{Indicator variable, whether the outcome is smaller or equal than the m-th class.}
+
+\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.}
 }
 \value{
 In-sample honest predictions.

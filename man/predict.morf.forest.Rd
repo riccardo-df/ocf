@@ -40,20 +40,21 @@
 }
 \value{
 Object of class \code{morf.prediction} with elements:
-  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
+  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-  \item{\code{n.trees}}{Number of trees.}
+  \item{\code{n.trees}}{Number of trees.} 
   \item{\code{n.covariates}}{Number of covariates.}
   \item{\code{n.samples}}{Number of samples.}
 }
 \description{
-Predicts conditional class probabilities with a \code{morf.forest} object.
+Prediction method for class \code{\link{morf.forest}}.
 }
 \details{
-For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
+For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+honest, then these predictions are honest.\cr
 
 For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-dataset are returned.
+dataset are returned.\cr
 }
 \references{
 \itemize{

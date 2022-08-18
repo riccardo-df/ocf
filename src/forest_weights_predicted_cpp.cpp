@@ -1,9 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Forest In-Sample Honest Weights
+//' Forest Out-of-Sample Honest Weights
 //'
-//' Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+//' Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
 //'
 //' @param leaf_IDs_test_list List of size \code{n.trees}, storing the leaf of each tree where training units fall into.
 //' @param leaf_IDs_honest_list List of size \code{n.trees}, storing the leaf of each tree where honest units fall into.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{forest_weights_predicted_cpp}
 \alias{forest_weights_predicted_cpp}
-\title{Forest In-Sample Honest Weights}
+\title{Forest Out-of-Sample Honest Weights}
 \usage{
 forest_weights_predicted_cpp(
   leaf_IDs_test_list,
@@ -21,5 +21,5 @@ forest_weights_predicted_cpp(
 \item{w}{1 if marginal effects are being computed, 0 otherwise for normal prediction.}
 }
 \description{
-Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
 }

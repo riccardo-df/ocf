@@ -22,10 +22,8 @@ morf(
   keep.inbag = FALSE,
   inbag = NULL,
   holdout = FALSE,
-  oob.error = FALSE,
   n.threads = NULL,
   save.memory = FALSE,
-  write.forest = TRUE,
   verbose = TRUE,
   seed = NULL
 )
@@ -47,13 +45,13 @@ morf(
 
 \item{sample.fraction}{Fraction of observations to sample.}
 
-\item{case.weights}{Weights for sampling of training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.}
+\item{case.weights}{Weights for sampling training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.}
 
 \item{honesty}{Whether to grow honest forests.}
 
 \item{honesty.fraction}{Fraction of honest sample. Ignored if \code{honesty = FALSE}.}
 
-\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program.}
+\item{inference}{Whether to conduct weight-based inference. The weights' extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.}
 
 \item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, one can use a list of size \code{n.trees} containing \code{split.select.weights} vectors, one for each tree.}
 
@@ -65,13 +63,9 @@ morf(
 
 \item{holdout}{Hold-out mode. Hold-out all samples with zero \code{case.weights} and use these for variable importance and prediction error.}
 
-\item{oob.error}{Compute out-of-bag prediction error. Set to \code{FALSE} to save computation time.}
-
 \item{n.threads}{Number of threads. Default is number of CPUs available.}
 
-\item{save.memory}{Use memory saving splitting mode. Warning: This option slows down the tree growing, use only if you encounter memory problems.}
-
-\item{write.forest}{Save \code{morf.forest} object, required for prediction. Set to \code{FALSE} to reduce memory usage if no prediction intended.}
+\item{save.memory}{Use memory saving splitting mode. It slows down the tree growing, use only if you encounter memory problems.}
 
 \item{verbose}{Show computation status and estimated runtime.}
 
@@ -83,9 +77,9 @@ Object of class \code{morf} with elements:
   \item{\code{forest.2}}{\code{morf.forest} object of the second class.} 
   \item{\code{...}}{}
   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
-  \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions. Otherwise, they are based on out-of-bag samples if \code{oob.error = TRUE}, or an empty list if \code{oob.error = FALSE}.}
-  \item{\code{mean.squared.error}}{Mean squared error of the model, based on honest predictions if \code{honesty = TRUE} and on out-of-bag predictions otherwise (the latter requires \code{oob.error = TRUE}).}
-  \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on honest predictions if \code{honesty = TRUE} and on out-of-bag predictions otherwise (the latter requires \code{oob.error = TRUE}).}
+  \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions.}
+  \item{\code{mean.squared.error}}{Mean squared error of the model, based on \code{predictions}.}
+  \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on \code{predictions}.}
   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
   \item{\code{n.classes}}{Number of classes.}
   \item{\code{n.samples}}{Number of observations.}
@@ -93,12 +87,12 @@ Object of class \code{morf} with elements:
   \item{\code{n.trees}}{Number of trees of each forest.}
   \item{\code{mtry}}{Number of covariates considered for splitting at each step.}
   \item{\code{min.node.size}}{Minimum node size.}
-  \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement (bootstrap).}
-  \item{\code{honesty}}{Whether the forest is honest.}
+  \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement.}
+  \item{\code{honesty}}{Whether forests are honest.}
   \item{\code{honesty.fraction}}{Fraction of units allocated to honest sample.}
   \item{\code{full_data}}{Whole sample.}
   \item{\code{honest_data}}{Honest sample.}
-  \item{\code{call}}{The system call.}
+  \item{\code{call}}{System call.}
 }
 \description{
 Non-parametric estimation of the ordered choice model using random forests.
@@ -149,12 +143,11 @@ covariate is then defined as the mean of its importances in each class.
 }
 
 \subsection{Honest Forests}{
-Growing honest forests in a necessary requirements to conduct valid inference on the marginal effects. 
-\code{morf} implements honest estimation as follows. The data set is split into a training sample and a honest
-sample. Forests are grown using only the training sample, thus deriving the set of weights needed for prediction.
-Then, the leaf estimates are replaced using the outcome from the honest sample (using the prediction method
-outlined above). In this way, weights and outcomes are independent of each other, thereby allowing for valid
-weight-based inference.
+Growing honest forests is a necessary requirements to conduct valid inference. \code{morf} implements honest estimation 
+as follows. The data set is split into a training sample and a honest sample. Forests are grown using only the training 
+sample. Then, for each prediction point, the weights relative to units from the honest sample are extracted, and 
+predictions are based on the honest outcomes (relying on the prediction method outlined above). This way, weights and
+outcomes are independent of each other, thereby allowing for valid weight-based inference.
 }
 }
 \references{

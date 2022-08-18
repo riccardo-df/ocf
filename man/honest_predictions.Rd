@@ -4,16 +4,24 @@
 \alias{honest_predictions}
 \title{Honest Out-of-Sample Predictions}
 \usage{
-honest_predictions(forest, honest_sample, test_sample, m)
+honest_predictions(
+  forest,
+  honest_sample,
+  test_sample,
+  y_m_honest,
+  y_m_1_honest
+)
 }
 \arguments{
 \item{forest}{\code{morf.forest} object.}
 
 \item{honest_sample}{Honest sample.}
 
-\item{test_sample}{Training sample.}
+\item{test_sample}{Test sample.}
 
-\item{m}{The class for which predictions are desired.}
+\item{y_m_honest}{Indicator variable, whether the outcome is smaller or equal than the m-th class.}
+
+\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.}
 }
 \value{
 Out-of-sample honest predictions.
@@ -23,5 +31,6 @@ Computes honest out-of-sample predictions for a \code{morf.forest} object relati
 }
 \details{
 \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
-honest sample (using the prediction method of \code{\link{morf}}).
+honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
+to build the trees.
 }

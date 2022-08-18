@@ -4,7 +4,13 @@
 \alias{marginal_effects}
 \title{Marginal Effects for Modified Ordered Random Forests}
 \usage{
-marginal_effects(object, data = NULL, eval = "mean", bandwitdh = 0.1)
+marginal_effects(
+  object,
+  data = NULL,
+  eval = "atmean",
+  bandwitdh = 0.1,
+  inference = FALSE
+)
 }
 \arguments{
 \item{object}{\code{morf} object.}
@@ -14,6 +20,8 @@ marginal_effects(object, data = NULL, eval = "mean", bandwitdh = 0.1)
 \item{eval}{Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.}
 
 \item{bandwitdh}{How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.}
+
+\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program. Not advisable if \code{eval = "mean"}.}
 }
 \value{
 Object of class \code{morf.marginal} with elements:

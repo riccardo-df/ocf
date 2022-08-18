@@ -54,7 +54,8 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 ##' @param forest \code{morf.forest} object.
 ##' @param train_sample Training sample.
 ##' @param honest_sample Honest sample. 
-##' @param m The class for which predictions are desired.
+##' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
+##' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
 ##' 
 ##' @details 
 ##' \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
@@ -62,7 +63,7 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 ##' 
 ##' @return 
 ##' In-sample honest predictions.
-honest_fitted <- function(forest, train_sample, honest_sample, m) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/honest_funs.R
+honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/honest_funs.R
   ## Handling inputs.
   # Getting terminal nodes for the training and honest sample.
   train_leaves  <- predict(forest, train_sample, type = "terminalNodes")$predictions
@@ -72,19 +73,16 @@ honest_fitted <- function(forest, train_sample, honest_sample, m) { # Inspired b
   unique_leaves_train <- apply(train_leaves, 2, unique)
   unique_leaves_honest <- apply(honest_leaves, 2, unique)
   
-  # Honest outcome indicators for the m-th class.
-  honest_y_m <- ifelse(honest_sample[, 1] <= m, 1, 0)
-  honest_y_m_1 <- ifelse(honest_sample[, 1] <= m - 1, 1, 0)
-  
   ## Computing honest predictions.
-  honest_fitted_values <- as.matrix(honest_fitted_cpp(unique_leaves_honest, honest_y_m, honest_y_m_1, honest_leaves, train_leaves))
+  honest_fitted_values <- as.matrix(honest_fitted_cpp(unique_leaves_honest, y_m_honest, y_m_1_honest, 
+                                                      honest_leaves, train_leaves))
   
   # Combining in dataset (first honest rownames, then train rownames).
   rownames(honest_fitted_values) <- c(rownames(honest_sample), rownames(train_sample))
-  forest_fitted_values <- honest_fitted_values[order(as.numeric(row.names(honest_fitted_values))), ]
+  honest_fitted_values <- honest_fitted_values[order(as.numeric(row.names(honest_fitted_values))), ]
   
   ## Output
-  return(as.numeric(forest_fitted_values)) 
+  return(as.numeric(honest_fitted_values)) 
 }
 
 
@@ -95,7 +93,8 @@ honest_fitted <- function(forest, train_sample, honest_sample, m) { # Inspired b
 ##' @param forest \code{morf.forest} object.
 ##' @param test_sample Test sample.
 ##' @param honest_sample Honest sample. 
-##' @param m The class for which predictions are desired.
+##' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
+##' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
 ##'
 ##' @details 
 ##' \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
@@ -104,7 +103,7 @@ honest_fitted <- function(forest, train_sample, honest_sample, m) { # Inspired b
 ##'
 ##' @return 
 ##' Out-of-sample honest predictions.
-honest_predictions <- function(forest, honest_sample, test_sample, m) {
+honest_predictions <- function(forest, honest_sample, test_sample, y_m_honest, y_m_1_honest) {
   ## Handling inputs.
   # Getting terminal nodes for the honest and the test sample.
   honest_leaves <- predict(forest, honest_sample, type = "terminalNodes")$predictions
@@ -112,13 +111,9 @@ honest_predictions <- function(forest, honest_sample, test_sample, m) {
   
   # Unique leaves for each tree.
   unique_leaves_honest <- apply(honest_leaves, 2, unique)
-
-  # Honest outcome indicators for the m-th class.
-  honest_y_m <- ifelse(honest_sample[, 1] <= m, 1, 0)
-  honest_y_m_1 <- ifelse(honest_sample[, 1] <= m - 1, 1, 0)
   
   ## Computing honest predictions.
-  honest_predictions <- honest_predictions_cpp(unique_leaves_honest, honest_y_m, honest_y_m_1, honest_leaves, test_leaves)
+  honest_predictions <- honest_predictions_cpp(unique_leaves_honest, y_m_honest, y_m_1_honest, honest_leaves, test_leaves)
 
   ## Output.
   return(as.numeric(honest_predictions))

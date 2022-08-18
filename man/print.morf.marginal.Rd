@@ -7,14 +7,14 @@
 \method{print}{morf.marginal}(x, latex = FALSE, ...)
 }
 \arguments{
-\item{x}{\code{morf.marginal} x.}
+\item{x}{\code{morf.marginal} object.}
 
 \item{latex}{If \code{TRUE}, prints a latex code for a table displaying the marginal effects.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Prints a \code{morf.marginal} x.
+Prints a \code{morf.marginal} object.
 }
 \seealso{
 \code{\link{morf}} and \code{\link{marginal_effects}}.

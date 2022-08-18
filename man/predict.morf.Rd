@@ -19,7 +19,7 @@
 \arguments{
 \item{object}{\code{morf} object.}
 
-\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the sample used to fit \code{object} are provided.}
+\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.}
 
 \item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.}
 
@@ -37,17 +37,18 @@
 }
 \value{
 Object of class \code{morf.prediction} with elements:
-  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
+  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
   \item{\code{n.trees}}{Number of trees.} 
   \item{\code{n.covariates}}{Number of covariates.}
   \item{\code{n.samples}}{Number of samples.}
 }
 \description{
-Predicts conditional class probabilities with a \code{\link{morf}} object.
+Prediction method for class \code{\link{morf}}.
 }
 \details{
-For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned.\cr
+For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+honest, then these predictions are honest.\cr
 
 For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
 dataset are returned.\cr
@@ -58,7 +59,7 @@ dataset are returned.\cr
   }
 }
 \seealso{
-\code{\link{morf}}, , \code{\link{marginal_effects}}
+\code{\link{morf}}, \code{\link{marginal_effects}}
 }
 \author{
 Riccardo Di Francesco

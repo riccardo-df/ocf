@@ -15,14 +15,14 @@ print.morf <- function(x, ...) {
   cat("Call:\n", deparse(x$call), "\n\n")
   cat("Number of classes:               ", x$n.classes, "\n")
   cat("Number of trees:                 ", x$n.trees, "\n")
-  cat("Training sample size:            ", x$n.samples, "\n")
+  cat("Sample size:                     ", x$n.samples, "\n")
   cat("Number of covariates:            ", x$n.covariates, "\n")
   cat("Mtry:                            ", x$mtry, "\n")
   cat("Minimum node size:               ", x$min.node.size, "\n")
   cat("Honesty:                         ", x$honesty, "\n")
   cat("Fraction honesty:                ", x$honesty.fraction, "\n")
-  cat("MSE:                             ", x$mean.squared.error, "\n")
-  cat("RPS:                             ", x$mean.ranked.score)
+  cat("MSE:                             ", round(x$mean.squared.error, 3), "\n")
+  cat("RPS:                             ", round(x$mean.ranked.score, 3))
 }
 
 
@@ -48,11 +48,11 @@ print.morf.marginal <- function(x, latex = FALSE, ...) {
   cat("Number of classes:               ", x$n.classes, "\n")
   cat("Number of trees:                 ", x$n.trees, "\n")
   cat("Sample size:                     ", x$n.samples, "\n")
-  cat("Honest forest:                   ", x$honesty, "\n")
+  cat("Honest forests:                  ", x$honesty, "\n")
   
   cat("\n\n")
   
   cat("Marginal Effects: \n\n")
   
-  print(x$marginal.effects)
+  print(round(x$marginal.effects, 3))
 }

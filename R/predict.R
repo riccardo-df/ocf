@@ -1,9 +1,9 @@
 ##' Prediction Method for Morf Objects
 ##'
-##' Predicts conditional class probabilities with a \code{\link{morf}} object.
+##' Prediction method for class \code{\link{morf}}.
 ##'
 ##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, predictions on the sample used to fit \code{object} are provided.
+##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.
 ##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
 ##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
 ##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}. 
@@ -13,26 +13,25 @@
 ##' @param ... Further arguments passed to or from other methods.
 ##' 
 ##' @return Object of class \code{morf.prediction} with elements:
-##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
+##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
 ##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
 ##'   \item{\code{n.trees}}{Number of trees.} 
 ##'   \item{\code{n.covariates}}{Number of covariates.}
 ##'   \item{\code{n.samples}}{Number of samples.}
 ##'   
 ##' @details 
-##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned.\cr
+##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+##' honest, then these predictions are honest.\cr
 ##' 
 ##' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
 ##' dataset are returned.\cr
-##' 
-##' If the forests are honest, then \code{predict.morf} yields honest predictions.
 ##' 
 ##' @references
 ##' \itemize{
 ##'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
 ##'   }
 ##'   
-##' @seealso \code{\link{morf}}, , \code{\link{marginal_effects}}
+##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 ##' 
 ##' @importFrom stats predict
 ##' 
@@ -41,53 +40,66 @@
 ##' @export
 predict.morf <- function(object, data = NULL, type = "response",
                          predict.all = FALSE, n.trees = object$n.trees,
-                         n.threads = NULL,
-                         verbose = TRUE, seed = NULL, ...) {
-  ## Handling inputs and check. It is enough to check the first forest.
-  n.classes <- object$n.classes
-  
-  if (is.null(object$forest.1)) stop("No saved forest in morf object. Please set write.forest to TRUE when calling morf.", call. = FALSE)
+                         n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
+  ## Handling inputs and check. 
   if (is.null(data)) data <- object$full_data
   
-  ## Predicting for each class.
+  # Saving useful variables.
+  y.classes <- object$classes
+  n.classes <- object$n.classes
+  
+  # Storing forests in a separate list. Forests are always the first n.classes elements of a morf object.
+  forests <- list()
+  for (m in seq_len(n.classes)) {
+    forests[[m]] <- object[[m]]
+  }
+  
+  ## Calling predict.morf.forest.
+  prediction_output <- lapply(forests, function (x) {predict(x, data, type, predict.all, n.trees, object$inbag.counts, 
+                                                             n.threads, verbose, seed)})
+
+  ## Handling prediction output, according to prediction type.
+  # If we are predicting probabilities, we distinguish between honest and adaptive forests.
+  # If forests are honest, ignore predict.morf.forest predictions and use honest prediction method from rcpp. This replaces 
+  # leaf estimates using honest outcomes.
+  # If forests are adaptive, use predict.morf.forest predictions (based on full sample outcomes).
+  # In both cases, we need the normalization step.
+  # If we are extracting leaf ids, use results from predict.morf.forest.
   if (type == "response") {
-    predictions <- matrix(NA, nrow = dim(data)[1], ncol = n.classes) 
-    
-    # If the forest is honest, use honest prediction method from rcpp. This is required as we replace leaf estimates each time.
     if (object$honesty) { 
-      for (m in seq_len(n.classes)) { # The morf.forest objects are always the first M elements of a morf object.
-        temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...) # Needed for output consistency.
-        predictions[, m] <- honest_predictions(object[[m]], object$honest_data, data, m) # morf objects always store the honest sample, so we can use it for predictions.
+      # Generating data for honest estimation.
+      honest_outcomes <- list()
+      counter <- 1
+      for (m in y.classes) {
+        honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y_honest <= m -1, 1, 0))
+        counter <- counter + 1
       }
-    } else { # Use default prediction method.
-      for (m in seq_len(n.classes)) { 
-        temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
-        predictions[, m] <- temp$predictions
-      }
-    }
-    
-    ## Normalization step.
-    predictions <- matrix(apply(predictions, 1, function(x) (x)/(sum(x))), ncol = n.classes, byrow = T)
-    colnames(predictions) <- sapply(seq_len(n.classes), function(x) paste("class", x, sep = "."))
-    
-    ## Handling output.
-    out <- list("predictions" = predictions,
-                "n.trees" = temp$n.trees,
-                "n.covariates" = temp$n.covariates,
-                "n.samples" = temp$num.samples)
-  } else if (type == "terminalNodes") {
-    node_ids <- list()
-    for (m in seq_len(n.classes)) {
-      temp <- predict(object[[m]], data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed, ...)
-      node_ids[[m]] <- temp$predictions
-      names(node_ids)[m] <- paste("class", m, sep = ".")
       
-      ## Handling output.
-      out <- list("predictions" = node_ids,
-                  "n.trees" = temp$n.trees,
-                  "n.covariates" = temp$covariate.names,
-                  "n.samples" = temp$n.samples)
+      # Honest predictions.
+      predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)},
+                            forests, honest_outcomes)
+    } else {
+      predictions <- matrix(unlist(lapply(prediction_output, function (x) {x$predictions}), use.names = FALSE), ncol = n.classes,
+                            byrow = FALSE)
     }
+    
+    # Normalization step.
+    predictions <- matrix(predictions / rowSums(matrix(predictions, ncol = n.classes)), ncol = n.classes)
+    colnames(predictions) <- paste("class", seq_len(n.classes), sep = ".")
+    
+    # Output.
+    out <- list("predictions" = predictions,
+                "n.trees" = prediction_output[[1]]$n.trees,
+                "n.covariates" = prediction_output[[1]]$n.covariates,
+                "n.samples" = prediction_output[[1]]$num.samples)
+  } else if (type == "terminalNodes") {
+    node_ids <- lapply(prediction_output, function (x) {x$predictions})
+    names(node_ids) <- paste("class", seq_len(n.classes), sep = ".")
+    
+    out <- list("predictions" = node_ids,
+                "n.trees" = prediction_output[[1]]$n.trees,
+                "n.covariates" = prediction_output[[1]]$covariate.names,
+                "n.samples" = prediction_output[[1]]$n.samples)
   }
   
   ## Output.
@@ -98,7 +110,7 @@ predict.morf <- function(object, data = NULL, type = "response",
 
 ##' Prediction Method for Morf Forest Objects
 ##'
-##' Predicts conditional class probabilities with a \code{morf.forest} object.
+##' Prediction method for class \code{morf.forest}.
 ##'
 ##' @param object \code{morf} object.
 ##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
@@ -112,17 +124,18 @@ predict.morf <- function(object, data = NULL, type = "response",
 ##' @param ... Further arguments passed to or from other methods.
 ##' 
 ##' @return Object of class \code{morf.prediction} with elements:
-##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. 
+##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
 ##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-##'   \item{\code{n.trees}}{Number of trees.}
+##'   \item{\code{n.trees}}{Number of trees.} 
 ##'   \item{\code{n.covariates}}{Number of covariates.}
 ##'   \item{\code{n.samples}}{Number of samples.}
 ##'   
 ##' @details 
-##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. \cr
+##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+##' honest, then these predictions are honest.\cr
 ##' 
 ##' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-##' dataset are returned. 
+##' dataset are returned.\cr
 ##'   
 ##' @references
 ##' \itemize{
@@ -152,7 +165,7 @@ predict.morf.forest <- function(object, data, type = "response",
   } else if (type == "terminalNodes") {
     prediction.type <- 2
   } else {
-    stop("Invalid value for 'type'. Use 'response' or 'terminalNodes'.", call. = FALSE)
+    stop("Invalid value for 'type'.", call. = FALSE)
   }
   
   # Covariates.
@@ -194,42 +207,19 @@ predict.morf.forest <- function(object, data, type = "response",
   if (is.null(seed)) seed <- stats::runif(1 , 0, .Machine$integer.max)
 
   # Defaults for variables not needed.
-  treetype <- 3
-  mtry <- 0
-  importance <- 0
-  min.node.size <- 0
-  split.select.weights <- list(c(0, 0))
-  use.split.select.weights <- FALSE
-  always.split.variables <- c("0", "0")
-  use.always.split.variables <- FALSE
-  prediction.mode <- TRUE
-  write.forest <- FALSE
-  replace <- TRUE
+  treetype <- 3; splitrule <- 1; mtry <- 0; max.depth <- 0; min.node.size <- 0; importance <- 0;
+  prediction.mode <- TRUE; oob.error <- FALSE; y <- matrix(c(0, 0))
+  split.select.weights <- list(c(0, 0)); use.split.select.weights <- FALSE
+  always.split.variables <- c("0", "0"); use.always.split.variables <- FALSE
+  write.forest <- FALSE; replace <- TRUE; sample.fraction <- 1
   probability <- FALSE
-  unordered.factor.variables <- c("0", "0")
-  use.unordered.factor.variables <- FALSE
+  unordered.factor.variables <- c("0", "0"); use.unordered.factor.variables <- FALSE;   order.snps <- FALSE
   save.memory <- FALSE
-  splitrule <- 1
-  alpha <- 0
-  minprop <- 0
-  case.weights <- c(0, 0)
-  use.case.weights <- FALSE
-  class.weights <- c(0, 0)
-  keep.inbag <- FALSE
-  sample.fraction <- 1
-  holdout <- FALSE
-  num.random.splits <- 1
-  order.snps <- FALSE
-  oob.error <- FALSE
-  max.depth <- 0
-  inbag <- list(c(0,0))
-  use.inbag <- FALSE
-  y <- matrix(c(0, 0))
-  regularization.factor <- c(0, 0)
-  use.regularization.factor <- FALSE
-  regularization.usedepth <- FALSE
-  snp.data <- as.matrix(0)
-  gwa.mode <- FALSE
+  alpha <- 0; minprop <- 0; num.random.splits <- 1
+  case.weights <- c(0, 0); use.case.weights <- FALSE; class.weights <- c(0, 0)
+  keep.inbag <- FALSE; holdout <- FALSE; inbag <- list(c(0,0)); use.inbag <- FALSE
+  regularization.factor <- c(0, 0); use.regularization.factor <- FALSE; regularization.usedepth <- FALSE
+  snp.data <- as.matrix(0) ;gwa.mode <- FALSE
   
   # Use sparse matrix.
   if (inherits(x, "dgCMatrix")) {

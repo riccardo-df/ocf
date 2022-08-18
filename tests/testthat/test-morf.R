@@ -13,7 +13,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               honesty = FALSE, verbose = FALSE)
+               honesty = FALSE)
   
   avg_split <- tree_info(morf[[m]])$splitval[1] 
   predictions <- tree_info(morf[[m]])$prediction[-1]
@@ -74,7 +74,7 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               honesty = FALSE, verbose = FALSE)
+               honesty = FALSE)
   
   avg_split <- tree_info(morf[[m]])$splitval[1] 
   predictions <- tree_info(morf[[m]])$prediction[-1]
@@ -131,9 +131,9 @@ test_that("Standard predictions and weight-based predictions are the same", {
   
   ## Fitting morf objects.
   set.seed(1986) # Set seed to get same honest split.
-  morf <- morf(x = x, y = y, inference = FALSE, verbose = FALSE)
+  morf <- morf(x = x, y = y, inference = FALSE)
   set.seed(1986)
-  morf2 <- morf(x = x, y = y, inference = TRUE, verbose = FALSE)
+  morf2 <- morf(x = x, y = y, inference = TRUE)
   
   ## Comparing.
   # expect_equal(sum(round(morf$predictions, 3) == round(morf2$predictions, 3)), n * 3)

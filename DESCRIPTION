@@ -12,7 +12,6 @@ Imports:
     Rcpp,
     Matrix,
     stats,
-    crayon,
     utils
 LinkingTo: Rcpp, RcppEigen
 Depends: R (>= 3.1)
