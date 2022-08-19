@@ -25,13 +25,11 @@ forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken
   # Computing leaf size using honest units.
   leaf_size_honest <- lapply(leaf_IDs_honest, function(x) ave(x, x, FUN = length))
   
-  ## Computing weights for the whole sample.
+  ## Computing weights for the whole sample. Notice that the output matrix stores first honest and then train units (row-wise).
   forest_weights <- forest_weights_fitted_cpp(leaf_IDs_train, leaf_IDs_honest, leaf_size_honest)
   
-  ## Assigning correct rownames (first honest sample, then train sample).
-  rownames(forest_weights) <- c(rownames(honest_sample), rownames(train_sample))
-  
   ## Ordering according to original sample (ascending rownames).
+  rownames(forest_weights) <- c(rownames(honest_sample), rownames(train_sample))
   forest_weights <- as.matrix(forest_weights[order(as.numeric(row.names(forest_weights))), ])
   
   ## Output.

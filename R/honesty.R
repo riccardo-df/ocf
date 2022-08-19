@@ -17,27 +17,19 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
   ## Handling inputs.
   n <- nrow(data)
   y <- data[, 1]
-  
   size <- floor(n * honesty.fraction)
+  counter <- 0
   
-  condition <- TRUE
-  i <- 0
-  
-  ## Try new splits until we have a balanced split or we tried too many times.
-  while (condition) {
+  ## Splitting the sample.
+  while (TRUE) {
     train_sample_idx <- sample(1:n, size = size, replace = FALSE)
-  
-    i <- i + 1
-    
-    if(all(unique(y[train_sample_idx]) %in% unique(y[-train_sample_idx])) | i == 100) break
+    counter <- counter + 1
+    if(all(unique(y[train_sample_idx]) %in% unique(y[-train_sample_idx]))) break
+    if(counter == 100) stop("Cannot find balanced splits. Maybe one of the classes contains too few observations. Consider recoding your outcome into less categories or setting honesty = FALSE.", call. = FALSE)
   }
-  
-  if(!all(unique(y[train_sample_idx]) %in% unique(y[-train_sample_idx]))) stop("At least one of the classes of Y contains too few observations, preventing balanced honest splits. Consider recoding your outcome into less categories or setting honesty = FALSE.", call. = FALSE)
-  
-  # Reordering to avoid rownames-related clashes.
-  train_sample_idx <- as.integer(sort(train_sample_idx, decreasing = FALSE))
-  
+
   ## Handling output.
+  train_sample_idx <- as.integer(sort(train_sample_idx, decreasing = FALSE)) # Reordering to avoid rownames-related clashes.
   train_sample <- data[train_sample_idx, ]
   honest_sample <- data[-train_sample_idx, ]
   
@@ -73,11 +65,10 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
   unique_leaves_train <- apply(train_leaves, 2, unique)
   unique_leaves_honest <- apply(honest_leaves, 2, unique)
   
-  ## Computing honest predictions.
-  honest_fitted_values <- as.matrix(honest_fitted_cpp(unique_leaves_honest, y_m_honest, y_m_1_honest, 
-                                                      honest_leaves, train_leaves))
+  ## Computing honest predictions. Notice that the output matrix stores first honest and then train units (row-wise).
+  honest_fitted_values <- as.matrix(honest_fitted_cpp(unique_leaves_honest, y_m_honest, y_m_1_honest, honest_leaves, train_leaves))
   
-  # Combining in dataset (first honest rownames, then train rownames).
+  ## Combining in dataset.
   rownames(honest_fitted_values) <- c(rownames(honest_sample), rownames(train_sample))
   honest_fitted_values <- honest_fitted_values[order(as.numeric(row.names(honest_fitted_values))), ]
   

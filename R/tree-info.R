@@ -73,5 +73,5 @@ tree_info <- function(object, tree = 1) {
   result$prediction[!result$terminal] <- NA
 
   ## Output.
-  result
+  return(result)
 }

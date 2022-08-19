@@ -28,23 +28,20 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
   ## Handling inputs and checks.
   if (!(use.true %in% c(TRUE, FALSE))) stop("'use.true' must be logical.", call. = FALSE)
   if (use.true == TRUE & is.null(dim(y)) | use.true == FALSE & !is.null(dim(y))) stop("Combination of 'use.true' and 'y' is non-sensical.")
-  
-  num.samples <- dim(predictions)[1]
+  n <- dim(predictions)[1]
   n.classes <- dim(predictions)[2]
   
-  ## Computing MSE.
+  ## Generating matrix for comparison. Either a matrix of indicator variables, or the true probability matrix.
   if (use.true == FALSE) {
-    # Creating probability distribution for observed outcomes.
-    indicator_mat <- matrix(0, nrow = num.samples, ncol = n.classes)
-    
-    for (i in seq_len(num.samples)) {
+    indicator_mat <- matrix(0, nrow = n, ncol = n.classes)
+    for (i in seq_len(n)) {
       indicator_mat[i, y[i]] <- 1
     }
   } else if (use.true == TRUE) {
-    # Using the true probability matrix.
     indicator_mat <- y
   }
 
+  ## MSE.
   mse <- mean(rowSums(apply((indicator_mat - predictions), 2, function(x) {x^2})))
   
   ## Output.
@@ -82,37 +79,31 @@ mean_ranked_score <- function(y, predictions, use.true = FALSE){ # Taken from ht
   ## Handling inputs and checks.
   if (!(use.true %in% c(TRUE, FALSE))) stop("'use.true' must be logical.", call. = FALSE)
   if (use.true == TRUE & is.null(dim(y)) | use.true == FALSE & !is.null(dim(y))) stop("Combination of 'use.true' and 'y' is non-sensical.")
-  
-  num.samples <- dim(predictions)[1]
+  n <- dim(predictions)[1]
   n.classes <- dim(predictions)[2]
 
-  ## Computing RPS.
+  ## Generating matrix for comparison. Either a matrix of indicator variables, or the true probability matrix.
   if (use.true == FALSE) {
-    # Creating probability distribution for observed outcomes.
-    indicator_mat <- matrix(0, nrow = num.samples, ncol = n.classes)
-    
-    for (i in seq_len(num.samples)) {
+    indicator_mat <- matrix(0, nrow = n, ncol = n.classes)
+    for (i in seq_len(n)) {
       indicator_mat[i, y[i]] <- 1
     }
   } else if (use.true == TRUE) {
-    # Using the true probability matrix.
     indicator_mat <- y
   }
   
+  ## RPS.
   # Pre-allocating memory.
-  rps <- numeric(num.samples)
-  cum <- numeric(num.samples)
+  rps <- numeric(n)
+  cum <- numeric(n)
   
-  # Looping over the classes to compute the inner sum of squares. 
-  for (i in 1:n.classes){
-    # At the i-th iteration, we sum the class probabilities up to the i-th class. 
-    cum <- cum + (rowSums(matrix(predictions[, 1:i], ncol = i)) - rowSums(matrix(indicator_mat[, 1:i], ncol = i)))^2
+  # Computing the inner sum of squares. At the i-th iteration, we sum up to the m-th class. 
+  for (m in seq_len(n.classes)) {
+    cum <- cum + (rowSums(matrix(predictions[, 1:m], ncol = m)) - rowSums(matrix(indicator_mat[, 1:m], ncol = m)))^2
   }
   
-  # Computing RPS for each observation.
+  # Computing RPS for each observation and averaging.
   rps <- (1 / (n.classes - 1)) * cum
-  
-  # Averaging.
   mrps <- mean(rps)
 
   ## Output.

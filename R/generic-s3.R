@@ -43,8 +43,6 @@ predict.morf <- function(object, data = NULL, type = "response",
                          n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
   ## Handling inputs and check. 
   if (is.null(data)) data <- object$full_data
-  
-  # Saving useful variables.
   y.classes <- object$classes
   n.classes <- object$n.classes
   
@@ -57,35 +55,24 @@ predict.morf <- function(object, data = NULL, type = "response",
   ## Calling predict.morf.forest.
   prediction_output <- lapply(forests, function (x) {predict(x, data, type, predict.all, n.trees, object$inbag.counts, 
                                                              n.threads, verbose, seed)})
-
+  
   ## Handling prediction output, according to prediction type.
-  # If we are predicting probabilities, we distinguish between honest and adaptive forests.
-  # If forests are honest, ignore predict.morf.forest predictions and use honest prediction method from rcpp. This replaces 
-  # leaf estimates using honest outcomes.
-  # If forests are adaptive, use predict.morf.forest predictions (based on full sample outcomes).
-  # In both cases, we need the normalization step.
-  # If we are extracting leaf ids, use results from predict.morf.forest.
   if (type == "response") {
     if (object$honesty) { 
-      # Generating data for honest estimation.
       honest_outcomes <- list()
       counter <- 1
       for (m in y.classes) {
         honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y_honest <= m -1, 1, 0))
         counter <- counter + 1
       }
-      
-      # Honest predictions.
-      predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)},
-                            forests, honest_outcomes)
+      predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
     } else {
-      predictions <- matrix(unlist(lapply(prediction_output, function (x) {x$predictions}), use.names = FALSE), ncol = n.classes,
-                            byrow = FALSE)
+      predictions <- matrix(unlist(lapply(prediction_output, function (x) {x$predictions}), use.names = FALSE), ncol = n.classes, byrow = FALSE)
     }
     
     # Normalization step.
     predictions <- matrix(predictions / rowSums(matrix(predictions, ncol = n.classes)), ncol = n.classes)
-    colnames(predictions) <- paste("class", seq_len(n.classes), sep = ".")
+    colnames(predictions) <- paste("P(Y=", y.classes, ")", sep = "")
     
     # Output.
     out <- list("predictions" = predictions,
@@ -94,8 +81,7 @@ predict.morf <- function(object, data = NULL, type = "response",
                 "n.samples" = prediction_output[[1]]$num.samples)
   } else if (type == "terminalNodes") {
     node_ids <- lapply(prediction_output, function (x) {x$predictions})
-    names(node_ids) <- paste("class", seq_len(n.classes), sep = ".")
-    
+    names(node_ids) <- paste("P(Y=", y.classes, ")", sep = "")
     out <- list("predictions" = node_ids,
                 "n.trees" = prediction_output[[1]]$n.trees,
                 "n.covariates" = prediction_output[[1]]$covariate.names,
@@ -152,14 +138,12 @@ predict.morf.forest <- function(object, data, type = "response",
                                 inbag.counts = NULL,
                                 n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
   ## Handling inputs and checks.
-  if (!inherits(object, "morf.forest")) stop("Invalid class of input object.", call. = FALSE) 
-  
+  # Generic checks.
   forest <- object
-  
+  if (!inherits(forest, "morf.forest")) stop("Invalid class of input object.", call. = FALSE) 
   if (is.null(forest$num.trees) || is.null(forest$child.nodeIDs) || is.null(forest$split.varIDs) ||
-        is.null(forest$split.values) || is.null(forest$covariate.names) || is.null(forest$treetype)) stop("Invalid forest object.", call. = FALSE)
+      is.null(forest$split.values) || is.null(forest$covariate.names) || is.null(forest$treetype)) stop("Invalid forest object.", call. = FALSE)
   
-  # Prediction type.
   if (type == "response") {
     prediction.type <- 1
   } else if (type == "terminalNodes") {
@@ -168,15 +152,24 @@ predict.morf.forest <- function(object, data, type = "response",
     stop("Invalid value for 'type'.", call. = FALSE)
   }
   
-  # Covariates.
+  if (is.null(n.threads)) {
+    n.threads = 0
+  } else if (!is.numeric(n.threads) || n.threads < 0) {
+    stop("Invalid value for n.threads", call. = FALSE)
+  }
+  
+  if (is.null(seed)) seed <- stats::runif(1 , 0, .Machine$integer.max)
+  
+  ## Data.
+  # Handling and check.
   x <- data
   if (sum(!(forest$covariate.names %in% colnames(x))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
-
-  # Subsetting to same columns as in training sample if necessary.
+  
+  # Subset to same columns as in training sample.
   if (length(colnames(x)) != length(forest$covariate.names) || 
       any(colnames(x) != forest$covariate.names)) x <- x[, forest$covariate.names, drop = FALSE]
-
-  # Recoding characters into factors.
+  
+  # Recode characters into factors.
   if (!is.matrix(x) && !inherits(x, "Matrix")) {
     char.columns <- sapply(x, is.character)
     if (length(char.columns) > 0) {
@@ -184,29 +177,27 @@ predict.morf.forest <- function(object, data, type = "response",
     }
   }
   
-  # Handling data set.
+  # Data type.
   if (is.list(x) && !is.data.frame(x)) x <- as.data.frame(x)
-
-  # Converting to data matrix.
   if (!is.matrix(x) & !inherits(x, "Matrix")) x <- data.matrix(x)
+  
+  if (inherits(x, "dgCMatrix")) {
+    sparse.x <- x
+    x <- matrix(c(0, 0))
+    use.sparse.data <- TRUE
+  } else {
+    sparse.x <- Matrix::Matrix(matrix(c(0, 0)))
+    use.sparse.data <- FALSE
+    x <- data.matrix(x)
+  }
   
   # Missing values.
   if (any(is.na(x))) {
     offending_columns <- colnames(x)[colSums(is.na(x)) > 0]
     stop("Missing values in columns: ", paste0(offending_columns, collapse = ", "), ".", call. = FALSE)
   }
-
-  # Number of threads.
-  if (is.null(n.threads)) {
-    n.threads = 0
-  } else if (!is.numeric(n.threads) || n.threads < 0) {
-    stop("Invalid value for n.threads", call. = FALSE)
-  }
-
-  # Seed.
-  if (is.null(seed)) seed <- stats::runif(1 , 0, .Machine$integer.max)
-
-  # Defaults for variables not needed.
+  
+  ## Defaults for variables not needed.
   treetype <- 3; splitrule <- 1; mtry <- 0; max.depth <- 0; min.node.size <- 0; importance <- 0;
   prediction.mode <- TRUE; oob.error <- FALSE; y <- matrix(c(0, 0))
   split.select.weights <- list(c(0, 0)); use.split.select.weights <- FALSE
@@ -219,44 +210,32 @@ predict.morf.forest <- function(object, data, type = "response",
   case.weights <- c(0, 0); use.case.weights <- FALSE; class.weights <- c(0, 0)
   keep.inbag <- FALSE; holdout <- FALSE; inbag <- list(c(0,0)); use.inbag <- FALSE
   regularization.factor <- c(0, 0); use.regularization.factor <- FALSE; regularization.usedepth <- FALSE
-  snp.data <- as.matrix(0) ;gwa.mode <- FALSE
-  
-  # Use sparse matrix.
-  if (inherits(x, "dgCMatrix")) {
-    sparse.x <- x
-    x <- matrix(c(0, 0))
-    use.sparse.data <- TRUE
-  } else {
-    sparse.x <- Matrix::Matrix(matrix(c(0, 0)))
-    use.sparse.data <- FALSE
-    x <- data.matrix(x)
-  }
+  snp.data <- as.matrix(0); gwa.mode <- FALSE
   
   ## Calling Morf in prediction mode.
   result <- morfCpp(treetype, x, y, forest$covariate.names, mtry,
-                      n.trees, verbose, seed, n.threads, write.forest, importance,
-                      min.node.size, split.select.weights, use.split.select.weights,
-                      always.split.variables, use.always.split.variables,
-                      prediction.mode, forest, snp.data, replace, probability,
-                      unordered.factor.variables, use.unordered.factor.variables, save.memory, splitrule,
-                      case.weights, use.case.weights, class.weights, 
-                      predict.all, keep.inbag, sample.fraction, alpha, minprop, holdout, 
-                      prediction.type, num.random.splits, sparse.x, use.sparse.data,
-                      order.snps, oob.error, max.depth, inbag, use.inbag, 
-                      regularization.factor, use.regularization.factor, regularization.usedepth)
-
+                    n.trees, verbose, seed, n.threads, write.forest, importance,
+                    min.node.size, split.select.weights, use.split.select.weights,
+                    always.split.variables, use.always.split.variables,
+                    prediction.mode, forest, snp.data, replace, probability,
+                    unordered.factor.variables, use.unordered.factor.variables, save.memory, splitrule,
+                    case.weights, use.case.weights, class.weights, 
+                    predict.all, keep.inbag, sample.fraction, alpha, minprop, holdout, 
+                    prediction.type, num.random.splits, sparse.x, use.sparse.data,
+                    order.snps, oob.error, max.depth, inbag, use.inbag, 
+                    regularization.factor, use.regularization.factor, regularization.usedepth)
   if (length(result) == 0) stop("User interrupt or internal error.", call. = FALSE)
-
+  
   ## Handling output.
   result$num.samples <- nrow(x)
   result$treetype <- forest$treetype
-
+  
   if (predict.all) {
-      if (is.list(result$predictions)) {
-        result$predictions <- do.call(rbind, result$predictions)
-      } else {
-        result$predictions <- array(result$predictions, dim = c(1, length(result$predictions)))
-      }
+    if (is.list(result$predictions)) {
+      result$predictions <- do.call(rbind, result$predictions)
+    } else {
+      result$predictions <- array(result$predictions, dim = c(1, length(result$predictions)))
+    }
   } else {
     if (is.list(result$predictions)) {
       result$predictions <- do.call(rbind, result$predictions)
@@ -268,6 +247,141 @@ predict.morf.forest <- function(object, data, type = "response",
       result$predictions <- matrix(result$predictions, nrow = 1)
     }
   }
-
+  
   return(result)
+}
+
+
+##' Plot Method for Morf Objects
+##' 
+##' Plots a \code{morf} object.
+##' 
+##' @param x \code{morf} object.
+##' @param multiple.panels Whether to plot each class in a separate panel.
+##' @param ... Further arguments passed to or from other methods.
+##'
+##' @import ggplot2
+##' @importFrom utils stack
+##' 
+##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+##' 
+##' @author Riccardo Di Francesco
+##' 
+##' @export
+plot.morf <- function(x, multiple.panels = FALSE, ...) {
+  ## Handling inputs.
+  probabilities <- stack(as.data.frame(x$predictions))
+  
+  if (multiple.panels) {
+    ggplot(data = probabilities, aes(x = values, fill = ind)) +
+      geom_density(alpha = 0.4) +
+      facet_wrap(~ind) + 
+      xlab("Predicted probability") + ylab("Density") +
+      theme_bw() +
+      theme(plot.title = element_text(hjust = 0.5))
+  } else {
+    ggplot(data = probabilities, aes(x = values, fill = ind)) +
+      geom_density(alpha = 0.4) +
+      xlab("Predicted probability") + ylab("Density") +
+      theme_bw() +
+      theme(plot.title = element_text(hjust = 0.5))
+  }
+}
+
+
+##' Summary Method for Morf Objects
+##' 
+##' Summarizes a \code{morf} object.
+##' 
+##' @param x \code{morf} object.
+##' @param ... Further arguments passed to or from other methods.
+##' 
+##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+##' 
+##' @author Riccardo Di Francesco
+##' 
+##' @export
+summary.morf <- function(x, multiple.panels = FALSE, ...) {
+  cat("Call: \n")
+  cat(deparse(x$call), "\n\n")
+  
+  cat("Classes: \n")
+  cat(x$classes, "\n\n")
+  
+  cat("Variable importance: \n")
+  print(round(x$overall.importance, 3)); cat("\n")
+  
+  cat("Forests info: \n")
+  cat("Sample size:       ", x$n.samples, "\n")
+  cat("N.trees:           ", x$n.trees, "\n")
+  cat("mtry:              ", x$mtry, "\n")
+  cat("min.node.size      ", x$min.node.size, "\n")
+  if (x$replace) cat("Subsampling scheme:     Bootstrap \n" ) else cat("Subsampling scheme: No replacement \n" )
+  cat("Honesty:           ", x$honesty, "\n")
+  if(x$honesty) cat("Honest fraction:   ", x$honesty.fraction)
+  cat("\n\n")
+  
+  cat("In-sample accuracy: \n")
+  cat("MSE: ", round(x$mean.squared.error, 3), "\n")
+  cat("RPS: ", round(x$mean.ranked.score, 3))
+}
+ 
+ 
+##' Print Method for Morf Objects
+##'
+##' Prints a \code{morf} object.
+##'
+##' @param x \code{morf} object.
+##' @param ... Further arguments passed to or from other methods.
+##' 
+##' @seealso \code{\link{morf}}
+##' 
+##' @author Riccardo Di Francesco
+##' 
+##' @export
+print.morf <- function(x, ...) {
+  cat("Call: \n")
+  cat(deparse(x$call), "\n\n")
+  cat("Number of classes:               ", x$n.classes, "\n")
+  cat("Number of trees:                 ", x$n.trees, "\n")
+  cat("Sample size:                     ", x$n.samples, "\n")
+  cat("Number of covariates:            ", x$n.covariates, "\n")
+  cat("Mtry:                            ", x$mtry, "\n")
+  cat("Minimum node size:               ", x$min.node.size, "\n")
+  cat("Honesty:                         ", x$honesty, "\n")
+  if (x$honesty) cat("Fraction honesty:                ", x$honesty.fraction, "\n")
+  cat("MSE:                             ", round(x$mean.squared.error, 3), "\n")
+  cat("RPS:                             ", round(x$mean.ranked.score, 3))
+}
+
+
+##' Print Method for Morf Marginal Effects
+##'
+##' Prints a \code{morf.marginal} object.
+##'
+##' @param x \code{morf.marginal} object.
+##' @param latex If \code{TRUE}, prints a latex code for a table displaying the marginal effects.
+##' @param ... Further arguments passed to or from other methods.
+##' 
+##' @seealso \code{\link{morf}} and \code{\link{marginal_effects}}.
+##' 
+##' @author Riccardo Di Francesco
+##' 
+##' @export
+print.morf.marginal <- function(x, latex = FALSE, ...) {
+  if (!(latex %in% c(TRUE, FALSE))) stop("Invalid value of 'latex'.", call. = FALSE)
+  
+  cat("Morf marginal effects results \n\n")
+  cat("Evaluation:                      ", x$evaluation, "\n")
+  cat("Bandwidth:                       ", x$bandwitdh, "\n")
+  cat("Number of classes:               ", x$n.classes, "\n")
+  cat("Number of trees:                 ", x$n.trees, "\n")
+  cat("Sample size:                     ", x$n.samples, "\n")
+  cat("Honest forests:                  ", x$honesty, "\n")
+  
+  cat("\n\n")
+  
+  cat("Marginal Effects: \n\n")
+  
+  print(round(x$marginal.effects, 3))
 }

@@ -8,7 +8,7 @@
 ##' @param honesty Whether to grow honest forests.
 ##' @param honesty.fraction Fraction of honest sample. Ignored if \code{honesty = FALSE}.
 ##' @param inference Whether to conduct weight-based inference. The weights' extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.
-##' @param mtry Number of covariates to possibly split at in each node. Default is the (rounded down) square root of the number of covariates. Alternatively, one can pass a single-argument function returning an integer, where the argument is the number of covariates.
+##' @param mtry Number of covariates to possibly split at in each node. Default is a random number based on a Poisson distribution.
 ##' @param min.node.size Minimal node size.
 ##' @param max.depth Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).
 ##' @param replace If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement. 
@@ -116,8 +116,8 @@
 ##' 
 ##' @export
 morf <- function(x = NULL, y = NULL,
-                 n.trees = 1000, mtry = NULL, min.node.size = 5, max.depth = 0, 
-                 replace = FALSE, sample.fraction = ifelse(replace, 1, 0.632), case.weights = NULL,
+                 n.trees = 1000, mtry = min(max(rpois(1, 2), 1), length(colnames(X))), min.node.size = 5, max.depth = 0, 
+                 replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), case.weights = NULL,
                  honesty = TRUE, honesty.fraction = 0.5, inference = FALSE,
                  split.select.weights = NULL, always.split.variables = NULL,
                  keep.inbag = FALSE, inbag = NULL, holdout = FALSE,
@@ -136,12 +136,12 @@ morf <- function(x = NULL, y = NULL,
   check_maxdepth(max.depth)
   check_samplefraction(sample.fraction)
   
-  # Storing useful variables.
+  # Store useful variables.
   n <- length(y)
   y.classes <- sort(unique(y))
   n.classes <- length(y.classes)
   
-  # Recoding characters as factors.
+  # Recode characters as factors.
   covariate.levels <- NULL
   if (!is.matrix(x) && !inherits(x, "Matrix") && ncol(x) > 0) {
     character.idx <- sapply(x, is.character)
@@ -208,7 +208,7 @@ morf <- function(x = NULL, y = NULL,
   }
   
   ## Handling training data.
-  # Honest splitting. 
+  # Honest split. 
   if (honesty) {
     honest_split <- class_honest_split(data.frame(y, x), honesty.fraction)
     
@@ -222,7 +222,7 @@ morf <- function(x = NULL, y = NULL,
     y_honest <- honest_sample[, 1]
     x_honest <- as.data.frame(honest_sample[, -1])
     colnames(x_honest) <- independent.variable.names
-  } else { # If !honest, then training sample is the same as the full sample.
+  } else { 
     train_sample <- data.frame(y, x)
     honest_sample <- list()
     
@@ -262,13 +262,10 @@ morf <- function(x = NULL, y = NULL,
   ## Generating outcomes for each class. The m-th element stores the indicator variables relative to the m-th class.
   train_outcomes <- list()
   honest_outcomes <- list()
-  
   counter <- 1
   for (m in y.classes) {
-    train_outcomes[[counter]] <- data.frame("y_m_train" = ifelse(y_train <= m, 1, 0), 
-                                      "y_m_1_train" = ifelse(y_train <= m -1, 1, 0))
-    honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(y_honest <= m, 1, 0), 
-                                       "y_m_1_honest" = ifelse(y_honest <= m -1, 1, 0))
+    train_outcomes[[counter]] <- data.frame("y_m_train" = ifelse(y_train <= m, 1, 0), "y_m_1_train" = ifelse(y_train <= m -1, 1, 0))
+    honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(y_honest <= m -1, 1, 0))
     counter <- counter + 1
   }
   
@@ -282,7 +279,6 @@ morf <- function(x = NULL, y = NULL,
             predict.all, keep.inbag, sample.fraction, alpha, minprop, holdout, prediction.type, num.random.splits, sparse.x, 
             use.sparse.data, order.snps, oob.error, max.depth, inbag, use.inbag, regularization.factor,
             use.regularization.factor, regularization.usedepth)})
-  
   if (any(sapply(forest_output, function(x) {length(x) == 0}))) stop("User interrupt or internal error.", call. = FALSE)
   
   ## Handling forests' output.
@@ -291,75 +287,55 @@ morf <- function(x = NULL, y = NULL,
     names(x$variable.importance) <- all.independent.variable.names
     x})
   
-  # Writing forest object.
+  # Write forest objects.
   if (is.factor(y_train)) {
     forest_output <- lapply(forest_output, function(x) {
       x$forest$levels <- levels(y_train)
       x})
   }
-  
   forest_output <- lapply(forest_output, function(x) {
     x$forest$covariate.names <- independent.variable.names
     x$forest$treetype <- "modified.ordered"
     x})
-  
   if (!is.null(covariate.levels)) {
     forest_output <- lapply(forest_output, function(x) {
       x$forest$covariate.levels <- covariate.levels
       x})
   }
-  
   forests <- lapply(forest_output, function(x) {x$forest})
   forests <- lapply(forests, function(x) {
     class(x) <- "morf.forest"
     x})
   names(forests) <- paste("forest", y.classes, sep = ".")
   
-  # Saving and removing unnecessary element.
+  # Save and remove unnecessary element.
   n.trees <- lapply(forest_output, function(x) {x$num.trees})[[1]]
   n.covariates <- lapply(forest_output, function(x) {x$num.covariates})[[1]]
   mtry <- lapply(forest_output, function(x) {x$mtry})[[1]]
   min.node.size <- lapply(forest_output, function(x) {x$min.node.size})[[1]]
   overall.importance <- rowMeans(as.matrix(sapply(forest_output, function(x) {x$variable.importance})))
   
-  ## Predictions.
-  # If inference, extract weights and use these to predict. Otherwise, use standard, faster prediction method.
-  # If !inference and forests are honest, replace leaf estimates with honest outcomes and predict on the full sample.
-  # If !inference and forests are adaptive, output is predictions on out-of-bag samples.
+  ## Predictions. If inference, extract weights and use these to predict. Otherwise, use standard, faster prediction method.
   if (inference) { 
-    ## Predictions.
     weights <- lapply(forests, function(x) {forest_weights_fitted(x, honest_sample, train_sample)})
     class.probabilities <- mapply(function(x, y) {x %*% (y$y_m_honest - y$y_m_1_honest)}, weights, honest_outcomes)
     
-    ## Variance. 
-    # Generating data for honest estimation.
-    honest_outcomes <- list()
-    counter <- 1
-    for (m in y.classes) {
-      honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(honest_sample$y <= m, 1, 0), "y_m_1_honest" = ifelse(honest_sample$y <= m -1, 1, 0))
-      counter <- counter + 1
-    }
-    
-    # Building the formula, piece by piece.
     sample_correction <- n / (n - 1)
-    products <- mapply(function(x, y) {t(apply(x, 1, function(z) {z * (y$y_m_honest - y$y_m_1_honest)}))}, 
-                       weights, honest_outcomes, SIMPLIFY = FALSE)
+    products <- mapply(function(x, y) {t(apply(x, 1, function(z) {z * (y$y_m_honest - y$y_m_1_honest)}))}, weights, honest_outcomes, SIMPLIFY = FALSE)
     sums_squares <- lapply(products, function(x) {rowSums((x - rowMeans(x))^2)})
     variances <- matrix(unlist(lapply(sums_squares, function(x) {sample_correction * x}), use.names = FALSE), ncol = n.classes)
     colnames(variances) <- paste("Y=", y.classes, sep = "")
   } else if (honesty) {
-    class.probabilities <- mapply(function(x, y) {honest_fitted(x, train_sample, honest_sample, y$y_m_honest, y$y_m_1_honest)},
-                                  forests, honest_outcomes)
+    class.probabilities <- mapply(function(x, y) {honest_fitted(x, train_sample, honest_sample, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
     variances <- list()
   } else {
-    class.probabilities <- matrix(unlist(lapply(forests, function(x) {predict(x, data = train_sample)$predictions}), 
-                                         use.names = FALSE), ncol = n.classes)
+    class.probabilities <- matrix(unlist(lapply(forests, function(x) {predict(x, data = train_sample)$predictions}), use.names = FALSE), ncol = n.classes)
     variances <- list()
   } 
   
   # Normalization step.
   class.probabilities <- matrix(apply(class.probabilities, 1, function(x) (x)/(sum(x))), ncol = n.classes, byrow = TRUE)
-  colnames(class.probabilities) <- paste("Y=", y.classes, sep = "")
+  colnames(class.probabilities) <- paste("P(Y=", y.classes, ")", sep = "")
   
   # # Formatting. Taken from https://stackoverflow.com/questions/12985091/print-data-frame-with-columns-center-aligned
   # width <- max(sapply(colnames(class.probabilities), nchar))
