@@ -7,11 +7,11 @@
 mean_squared_error(y, predictions, use.true = FALSE)
 }
 \arguments{
-\item{y}{Either the observed outcome vector or a matrix of true probabilities (\code{n.samples} x \code{M}).}
+\item{y}{Either the observed outcome vector or a matrix of true probabilities.}
 
-\item{predictions}{Matrix of predictions (\code{n.samples} x \code{M}).}
+\item{predictions}{Matrix of predictions.}
 
-\item{use.true}{If \code{FALSE}, then the program assumes that \code{y} stores the observed outcome vector, otherwise it treats \code{y} as a matrix of true probabilities.}
+\item{use.true}{If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.}
 }
 \value{
 The mean squared error of the method.

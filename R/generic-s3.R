@@ -293,7 +293,7 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
 ##' 
 ##' Summarizes a \code{morf} object.
 ##' 
-##' @param x \code{morf} object.
+##' @param object \code{morf} object.
 ##' @param ... Further arguments passed to or from other methods.
 ##' 
 ##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
@@ -301,29 +301,29 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
 ##' @author Riccardo Di Francesco
 ##' 
 ##' @export
-summary.morf <- function(x, multiple.panels = FALSE, ...) {
+summary.morf <- function(object, ...) {
   cat("Call: \n")
   cat(deparse(x$call), "\n\n")
   
   cat("Classes: \n")
-  cat(x$classes, "\n\n")
+  cat(object$classes, "\n\n")
   
   cat("Variable importance: \n")
-  print(round(x$overall.importance, 3)); cat("\n")
+  print(round(object$overall.importance, 3)); cat("\n")
   
   cat("Forests info: \n")
-  cat("Sample size:       ", x$n.samples, "\n")
-  cat("N.trees:           ", x$n.trees, "\n")
-  cat("mtry:              ", x$mtry, "\n")
-  cat("min.node.size      ", x$min.node.size, "\n")
-  if (x$replace) cat("Subsampling scheme:     Bootstrap \n" ) else cat("Subsampling scheme: No replacement \n" )
-  cat("Honesty:           ", x$honesty, "\n")
-  if(x$honesty) cat("Honest fraction:   ", x$honesty.fraction)
+  cat("Sample size:       ", object$n.samples, "\n")
+  cat("N.trees:           ", object$n.trees, "\n")
+  cat("mtry:              ", object$mtry, "\n")
+  cat("min.node.size      ", object$min.node.size, "\n")
+  if (object$replace) cat("Subsampling scheme:     Bootstrap \n" ) else cat("Subsampling scheme: No replacement \n" )
+  cat("Honesty:           ", object$honesty, "\n")
+  if(object$honesty) cat("Honest fraction:   ", object$honesty.fraction)
   cat("\n\n")
   
   cat("In-sample accuracy: \n")
-  cat("MSE: ", round(x$mean.squared.error, 3), "\n")
-  cat("RPS: ", round(x$mean.ranked.score, 3))
+  cat("MSE: ", round(object$mean.squared.error, 3), "\n")
+  cat("RPS: ", round(object$mean.ranked.score, 3))
 }
  
  

@@ -8,11 +8,11 @@ morf(
   x = NULL,
   y = NULL,
   n.trees = 1000,
-  mtry = NULL,
+  mtry = min(max(rpois(1, 2), 1), length(colnames(x))),
   min.node.size = 5,
   max.depth = 0,
   replace = FALSE,
-  sample.fraction = ifelse(replace, 1, 0.632),
+  sample.fraction = ifelse(replace, 1, 0.5),
   case.weights = NULL,
   honesty = TRUE,
   honesty.fraction = 0.5,
@@ -35,7 +35,7 @@ morf(
 
 \item{n.trees}{Number of trees.}
 
-\item{mtry}{Number of covariates to possibly split at in each node. Default is the (rounded down) square root of the number of covariates. Alternatively, one can pass a single-argument function returning an integer, where the argument is the number of covariates.}
+\item{mtry}{Number of covariates to possibly split at in each node. Default is a random number based on a Poisson distribution.}
 
 \item{min.node.size}{Minimal node size.}
 
@@ -78,9 +78,11 @@ Object of class \code{morf} with elements:
   \item{\code{...}}{}
   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
   \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions.}
+  \item{\code{standard.errors}}{Standard error of the predictions. Requires \code{inference = TRUE}.}
   \item{\code{mean.squared.error}}{Mean squared error of the model, based on \code{predictions}.}
   \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on \code{predictions}.}
   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
+  \item{\code{classes}}{Possible outcome values.}
   \item{\code{n.classes}}{Number of classes.}
   \item{\code{n.samples}}{Number of observations.}
   \item{\code{n.covariates}}{Number of covariates.}
@@ -99,10 +101,10 @@ Non-parametric estimation of the ordered choice model using random forests.
 }
 \details{
 \subsection{Splitting Criterion}{
-\code{morf} fits \code{M} random forests, where \code{M} is the number of classes of \code{y}. 
-Each forest computes the conditional probabilities of the \code{m}-th class:
+\code{morf} fits \code{M} separated random forests, where \code{M} is the number of classes of \code{y}. 
+Each forest computes the \code{m}-th class conditional choice probabilities:
 
-\deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x), \,\,\,  m = 1, ..., M}
+\deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x)}
 
 To estimate this quantity, \code{morf} exploits the following:
 
@@ -114,13 +116,13 @@ estimating the two conditional expectations separately and taking the difference
 
 \deqn{\hat{p}_m (x) = \hat{\mu}_m (x) - \hat{\mu}_{m-1} (x)}
 
-However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative
-approach is to minimize the mean squared error of the particular estimation problem:
+However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative 
+approach is to tackle the minimization of the mean squared error (MSE) of the particular estimation problem:
 
-\deqn{MSE[\check{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
+\deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
 
-where the last term is the mean correlation error of the estimation. \code{morf} ties the estimators of the two
-conditional expectations together trying to make the correlation term positive. For this purpose, trees are build 
+where the last term is the mean correlation error of the estimation. \code{morf} grows forests that tie the estimation 
+of the two conditional expectations together to make the correlation term positive. For this purpose, trees are built 
 by greedily minimizing the following expression:
 
 \deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}

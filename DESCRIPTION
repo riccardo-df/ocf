@@ -11,6 +11,7 @@ License: GPL-3
 Imports: 
     Rcpp,
     Matrix,
+    ggplot2,
     stats,
     utils
 LinkingTo: Rcpp, RcppEigen

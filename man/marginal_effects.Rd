@@ -8,7 +8,7 @@ marginal_effects(
   object,
   data = NULL,
   eval = "atmean",
-  bandwitdh = 0.1,
+  bandwitdh = 0.01,
   inference = FALSE
 )
 }
@@ -45,7 +45,7 @@ Otherwise, if k-th covariate is discrete:
 \deqn{ME_{i, k}^m ( x ) = P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
                      P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
 
-The program assumes that covariates with more than 10 unique values are continuous. Otherwise, covariates are assumed
+The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
 to be categorical or binary.
 }
 \seealso{

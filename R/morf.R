@@ -26,10 +26,10 @@
 ##' 
 ##' @details 
 ##' \subsection{Splitting Criterion}{
-##' \code{morf} fits \code{M} random forests, where \code{M} is the number of classes of \code{y}. 
-##' Each forest computes the conditional probabilities of the \code{m}-th class:
+##' \code{morf} fits \code{M} separated random forests, where \code{M} is the number of classes of \code{y}. 
+##' Each forest computes the \code{m}-th class conditional choice probabilities:
 ##' 
-##' \deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x), \,\,\,  m = 1, ..., M}
+##' \deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x)}
 ##' 
 ##' To estimate this quantity, \code{morf} exploits the following:
 ##' 
@@ -41,13 +41,13 @@
 ##' 
 ##' \deqn{\hat{p}_m (x) = \hat{\mu}_m (x) - \hat{\mu}_{m-1} (x)}
 ##' 
-##' However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative
-##' approach is to minimize the mean squared error of the particular estimation problem:
+##' However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative 
+##' approach is to tackle the minimization of the mean squared error (MSE) of the particular estimation problem:
 ##' 
-##' \deqn{MSE[\check{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
+##' \deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
 ##' 
-##' where the last term is the mean correlation error of the estimation. \code{morf} ties the estimators of the two
-##' conditional expectations together trying to make the correlation term positive. For this purpose, trees are build 
+##' where the last term is the mean correlation error of the estimation. \code{morf} grows forests that tie the estimation 
+##' of the two conditional expectations together to make the correlation term positive. For this purpose, trees are built 
 ##' by greedily minimizing the following expression:
 ##' 
 ##' \deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}
@@ -84,9 +84,11 @@
 ##'   \item{\code{...}}{}
 ##'   \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
 ##'   \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions.}
+##'   \item{\code{standard.errors}}{Standard error of the predictions. Requires \code{inference = TRUE}.}
 ##'   \item{\code{mean.squared.error}}{Mean squared error of the model, based on \code{predictions}.}
 ##'   \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on \code{predictions}.}
 ##'   \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
+##'   \item{\code{classes}}{Possible outcome values.}
 ##'   \item{\code{n.classes}}{Number of classes.}
 ##'   \item{\code{n.samples}}{Number of observations.}
 ##'   \item{\code{n.covariates}}{Number of covariates.}
@@ -100,7 +102,7 @@
 ##'   \item{\code{honest_data}}{Honest sample.}
 ##'   \item{\code{call}}{System call.}
 ##' 
-##' @import utils
+##' @import utils stats
 ##' @importFrom Rcpp evalCpp
 ##' @useDynLib morf
 ##' 
@@ -116,7 +118,7 @@
 ##' 
 ##' @export
 morf <- function(x = NULL, y = NULL,
-                 n.trees = 1000, mtry = min(max(rpois(1, 2), 1), length(colnames(X))), min.node.size = 5, max.depth = 0, 
+                 n.trees = 1000, mtry = min(max(rpois(1, 2), 1), length(colnames(x))), min.node.size = 5, max.depth = 0, 
                  replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), case.weights = NULL,
                  honesty = TRUE, honesty.fraction = 0.5, inference = FALSE,
                  split.select.weights = NULL, always.split.variables = NULL,
@@ -137,7 +139,6 @@ morf <- function(x = NULL, y = NULL,
   check_samplefraction(sample.fraction)
   
   # Store useful variables.
-  n <- length(y)
   y.classes <- sort(unique(y))
   n.classes <- length(y.classes)
   
@@ -320,7 +321,8 @@ morf <- function(x = NULL, y = NULL,
     weights <- lapply(forests, function(x) {forest_weights_fitted(x, honest_sample, train_sample)})
     class.probabilities <- mapply(function(x, y) {x %*% (y$y_m_honest - y$y_m_1_honest)}, weights, honest_outcomes)
     
-    sample_correction <- n / (n - 1)
+    n_honest <- dim(honest_sample)[1]
+    sample_correction <- n_honest / (n_honest - 1)
     products <- mapply(function(x, y) {t(apply(x, 1, function(z) {z * (y$y_m_honest - y$y_m_1_honest)}))}, weights, honest_outcomes, SIMPLIFY = FALSE)
     sums_squares <- lapply(products, function(x) {rowSums((x - rowMeans(x))^2)})
     variances <- matrix(unlist(lapply(sums_squares, function(x) {sample_correction * x}), use.names = FALSE), ncol = n.classes)
@@ -337,21 +339,16 @@ morf <- function(x = NULL, y = NULL,
   class.probabilities <- matrix(apply(class.probabilities, 1, function(x) (x)/(sum(x))), ncol = n.classes, byrow = TRUE)
   colnames(class.probabilities) <- paste("P(Y=", y.classes, ")", sep = "")
   
-  # # Formatting. Taken from https://stackoverflow.com/questions/12985091/print-data-frame-with-columns-center-aligned
-  # width <- max(sapply(colnames(class.probabilities), nchar))
-  # colnames(class.probabilities) <- format(colnames(class.probabilities), width = width, justify = "centre") 
-  # class.probabilities <- format(class.probabilities, width = width, justify = "centre")
-  
   ## Constructing morf object.
   output <- forests
   output$predictions <- class.probabilities
-  output$standard.error <- if (inference) sqrt(variances) else list()
+  output$standard.errors <- if (inference) sqrt(variances) else list()
   output$mean.squared.error <- mean_squared_error(y, class.probabilities)
   output$mean.ranked.score <- mean_ranked_score(y, class.probabilities)
   output$overall.importance <- overall.importance
   output$classes <- y.classes
   output$n.classes <- n.classes
-  output$n.samples <- n
+  output$n.samples <- length(y)
   output$n.covariates <- n.covariates
   output$n.trees <- n.trees
   output$mtry <- mtry

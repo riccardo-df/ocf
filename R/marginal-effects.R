@@ -37,11 +37,11 @@
 ##' @author Riccardo Di Francesco
 ##'
 ##' @export
-marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
+marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## Handling inputs and checks.
   if (!inherits(object, "morf")) stop("Invalid class of input object.", call. = FALSE) 
   if (inference & !object$honesty) stop("Invalid inference if forests are not honest. Please feed in a morf object estimated with honesty = TRUE.", call. = FALSE)
-  n <- object$n.samples
+  n_honest <- dim(object$honest_data)[1]
   y.classes <- object$classes
   n.classes <- object$n.classes
   
@@ -110,7 +110,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     colnames(X_down_data[[j]])[1] <- names(X_down)[j]
   }
   
-  ## Correcting discrete covariates. The shifted covariate is always in the first column.
+  ## Correcting for discrete covariates. The shifted covariate is always in the first column.
   for (j in X_categorical) {
     X_up_data[[j]][1] <- ceiling(X_up_data[[j]][1])
     X_down_data[[j]][1] <- ifelse(ceiling(X_down_data[[j]][1]) == ceiling(X_up_data[[j]][1]), floor(X_down_data[[j]][1]), ceiling(X_down_data[[j]][1]))[[1]]
@@ -170,19 +170,19 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   ## average for each class with colMeans (this does not affect results if atmean/atmedian).
   marginal_effects <- mapply(function(x, y) {x / y}, numerators, denominators, SIMPLIFY = FALSE)
   marginal_effects <- matrix(unlist(lapply(marginal_effects, function(x) {colMeans(x)}), use.names = FALSE), ncol = n.classes, byrow = TRUE)
-  colnames(marginal_effects) <- paste("P(Y=", y.classes, ")", sep = "")
+  colnames(marginal_effects) <- paste("P'(Y=", y.classes, ")", sep = "")
   rownames(marginal_effects) <- colnames(X)
   
   ## Variance of marginal effects.
   if (inference) {
     # Pre-allocating memory.
     variances <- matrix(NA, ncol = n.classes, nrow = length(denominators))
-    colnames(variances) <- paste("P(Y=", y.classes, ")", sep = "")
+    colnames(variances) <- paste("P'(Y=", y.classes, ")", sep = "")
     rownames(variances) <- colnames(X)
     
     # Constants.
     denominators_squared <- denominators^2
-    sample_correction <- n / (n - 1)
+    sample_correction <- n_honest / (n_honest - 1)
     
     # Building the variance. Notice that colMeans picks the average weight of each honest unit if mean and does 
     # nothing if atmean/atmedian.
@@ -190,8 +190,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
       weights_difference <- mapply(function(x, y) {colMeans(x[[j]] - y[[j]])}, weights_up, weights_down, SIMPLIFY = FALSE)
       products <- mapply(function(x, y) {x * (y$y_m_honest - y$y_m_1_honest)}, weights_difference, honest_outcomes, SIMPLIFY = FALSE)
       sum_squares <- lapply(products, function(x) {sum((x - mean(x))^2)})
-      variances[j, ] <- unlist(lapply(sum_squares, function(x) {sample_correction / denominators_squared[j] * x}), 
-                                      use.names = FALSE)
+      variances[j, ] <- unlist(lapply(sum_squares, function(x) {sample_correction / denominators_squared[j] * x}), use.names = FALSE)
     }
     
     standard_errors <- sqrt(variances)
