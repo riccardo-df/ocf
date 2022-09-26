@@ -8,7 +8,7 @@
 ##' @param honesty Whether to grow honest forests.
 ##' @param honesty.fraction Fraction of honest sample. Ignored if \code{honesty = FALSE}.
 ##' @param inference Whether to conduct weight-based inference. The weights' extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.
-##' @param mtry Number of covariates to possibly split at in each node. Default is a random number based on a Poisson distribution.
+##' @param mtry Number of covariates to possibly split at in each node. Default is the square root of the number of covariates.
 ##' @param min.node.size Minimal node size.
 ##' @param max.depth Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).
 ##' @param replace If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement. 
@@ -118,7 +118,7 @@
 ##' 
 ##' @export
 morf <- function(x = NULL, y = NULL,
-                 n.trees = 1000, mtry = min(max(rpois(1, 2), 1), length(colnames(x))), min.node.size = 5, max.depth = 0, 
+                 n.trees = 2000, mtry = ceiling(sqrt(ncol(x))), min.node.size = 5, max.depth = 0, 
                  replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), case.weights = NULL,
                  honesty = TRUE, honesty.fraction = 0.5, inference = FALSE,
                  split.select.weights = NULL, always.split.variables = NULL,
