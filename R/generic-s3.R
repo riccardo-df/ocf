@@ -1,43 +1,43 @@
-##' Prediction Method for Morf Objects
-##'
-##' Prediction method for class \code{\link{morf}}.
-##'
-##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.
-##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
-##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
-##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}. 
-##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-##' @param n.threads Number of threads. Default is number of CPUs available.
-##' @param verbose Verbose output on or off.
-##' @param ... Further arguments passed to or from other methods.
-##' 
-##' @return Object of class \code{morf.prediction} with elements:
-##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
-##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-##'   \item{\code{n.trees}}{Number of trees.} 
-##'   \item{\code{n.covariates}}{Number of covariates.}
-##'   \item{\code{n.samples}}{Number of samples.}
-##'   
-##' @details 
-##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
-##' honest, then these predictions are honest.\cr
-##' 
-##' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-##' dataset are returned.\cr
-##' 
-##' @references
-##' \itemize{
-##'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-##'   }
-##'   
-##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
-##' 
-##' @importFrom stats predict
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Prediction Method for Morf Objects
+#'
+#' Prediction method for class \code{\link{morf}}.
+#'
+#' @param object \code{morf} object.
+#' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.
+#' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
+#' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
+#' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}. 
+#' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
+#' @param n.threads Number of threads. Default is number of CPUs available.
+#' @param verbose Verbose output on or off.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return Object of class \code{morf.prediction} with elements:
+#'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
+#'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
+#'   \item{\code{n.trees}}{Number of trees.} 
+#'   \item{\code{n.covariates}}{Number of covariates.}
+#'   \item{\code{n.samples}}{Number of samples.}
+#'   
+#' @details 
+#' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+#' honest, then these predictions are honest.\cr
+#' 
+#' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
+#' dataset are returned.\cr
+#' 
+#' @references
+#' \itemize{
+#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
+#'   }
+#'   
+#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' 
+#' @importFrom stats predict
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 predict.morf <- function(object, data = NULL, type = "response",
                          predict.all = FALSE, n.trees = object$n.trees,
                          n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
@@ -94,45 +94,45 @@ predict.morf <- function(object, data = NULL, type = "response",
 }
 
 
-##' Prediction Method for Morf Forest Objects
-##'
-##' Prediction method for class \code{morf.forest}.
-##'
-##' @param object \code{morf} object.
-##' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
-##' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
-##' @param n.trees Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.
-##' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.
-##' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-##' @param n.threads Number of threads. Default is number of CPUs available.
-##' @param verbose Verbose output.
-##' @param inbag.counts Number of times the observations are in-bag in the trees.
-##' @param ... Further arguments passed to or from other methods.
-##' 
-##' @return Object of class \code{morf.prediction} with elements:
-##'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
-##'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-##'   \item{\code{n.trees}}{Number of trees.} 
-##'   \item{\code{n.covariates}}{Number of covariates.}
-##'   \item{\code{n.samples}}{Number of samples.}
-##'   
-##' @details 
-##' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
-##' honest, then these predictions are honest.\cr
-##' 
-##' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-##' dataset are returned.\cr
-##'   
-##' @references
-##' \itemize{
-##'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-##'   }
-##'   
-##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Prediction Method for Morf Forest Objects
+#'
+#' Prediction method for class \code{morf.forest}.
+#'
+#' @param object \code{morf} object.
+#' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
+#' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
+#' @param n.trees Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.
+#' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.
+#' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
+#' @param n.threads Number of threads. Default is number of CPUs available.
+#' @param verbose Verbose output.
+#' @param inbag.counts Number of times the observations are in-bag in the trees.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return Object of class \code{morf.prediction} with elements:
+#'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
+#'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
+#'   \item{\code{n.trees}}{Number of trees.} 
+#'   \item{\code{n.covariates}}{Number of covariates.}
+#'   \item{\code{n.samples}}{Number of samples.}
+#'   
+#' @details 
+#' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+#' honest, then these predictions are honest.\cr
+#' 
+#' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
+#' dataset are returned.\cr
+#'   
+#' @references
+#' \itemize{
+#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
+#'   }
+#'   
+#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 predict.morf.forest <- function(object, data, type = "response",
                                 predict.all = FALSE, n.trees = object$num.trees,
                                 inbag.counts = NULL,
@@ -252,22 +252,22 @@ predict.morf.forest <- function(object, data, type = "response",
 }
 
 
-##' Plot Method for Morf Objects
-##' 
-##' Plots a \code{morf} object.
-##' 
-##' @param x \code{morf} object.
-##' @param multiple.panels Whether to plot each class in a separate panel.
-##' @param ... Further arguments passed to or from other methods.
-##'
-##' @import ggplot2
-##' @importFrom utils stack
-##' 
-##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Plot Method for Morf Objects
+#' 
+#' Plots a \code{morf} object.
+#' 
+#' @param x \code{morf} object.
+#' @param multiple.panels Whether to plot each class in a separate panel.
+#' @param ... Further arguments passed to or from other methods.
+#'
+#' @import ggplot2
+#' @importFrom utils stack
+#' 
+#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 plot.morf <- function(x, multiple.panels = FALSE, ...) {
   ## Handling inputs.
   probabilities <- stack(as.data.frame(x$predictions))
@@ -289,18 +289,18 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
 }
 
 
-##' Summary Method for Morf Objects
-##' 
-##' Summarizes a \code{morf} object.
-##' 
-##' @param object \code{morf} object.
-##' @param ... Further arguments passed to or from other methods.
-##' 
-##' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Summary Method for Morf Objects
+#' 
+#' Summarizes a \code{morf} object.
+#' 
+#' @param object \code{morf} object.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 summary.morf <- function(object, ...) {
   cat("Call: \n")
   cat(deparse(x$call), "\n\n")
@@ -327,18 +327,18 @@ summary.morf <- function(object, ...) {
 }
  
  
-##' Print Method for Morf Objects
-##'
-##' Prints a \code{morf} object.
-##'
-##' @param x \code{morf} object.
-##' @param ... Further arguments passed to or from other methods.
-##' 
-##' @seealso \code{\link{morf}}
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Print Method for Morf Objects
+#'
+#' Prints a \code{morf} object.
+#'
+#' @param x \code{morf} object.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @seealso \code{\link{morf}}
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 print.morf <- function(x, ...) {
   cat("Call: \n")
   cat(deparse(x$call), "\n\n")
@@ -355,19 +355,19 @@ print.morf <- function(x, ...) {
 }
 
 
-##' Print Method for Morf Marginal Effects
-##'
-##' Prints a \code{morf.marginal} object.
-##'
-##' @param x \code{morf.marginal} object.
-##' @param latex If \code{TRUE}, prints a latex code for a table displaying the marginal effects.
-##' @param ... Further arguments passed to or from other methods.
-##' 
-##' @seealso \code{\link{morf}} and \code{\link{marginal_effects}}.
-##' 
-##' @author Riccardo Di Francesco
-##' 
-##' @export
+#' Print Method for Morf Marginal Effects
+#'
+#' Prints a \code{morf.marginal} object.
+#'
+#' @param x \code{morf.marginal} object.
+#' @param latex If \code{TRUE}, prints a latex code for a table displaying the marginal effects.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @seealso \code{\link{morf}} and \code{\link{marginal_effects}}.
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
 print.morf.marginal <- function(x, latex = FALSE, ...) {
   if (!(latex %in% c(TRUE, FALSE))) stop("Invalid value of 'latex'.", call. = FALSE)
   
