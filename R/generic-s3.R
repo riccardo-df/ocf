@@ -6,7 +6,7 @@
 #' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.
 #' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
 #' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
-#' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}. 
+#' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}. 
 #' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
 #' @param n.threads Number of threads. Default is number of CPUs available.
 #' @param verbose Verbose output on or off.
@@ -18,12 +18,13 @@
 #'   \item{\code{n.trees}}{Number of trees.} 
 #'   \item{\code{n.covariates}}{Number of covariates.}
 #'   \item{\code{n.samples}}{Number of samples.}
+#'   \item{\code{honesty}}{Whether predictions are honest.}
 #'   
 #' @details 
-#' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+#' For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
 #' honest, then these predictions are honest.\cr
 #' 
-#' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
+#' For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
 #' dataset are returned.\cr
 #' 
 #' @references
@@ -78,14 +79,16 @@ predict.morf <- function(object, data = NULL, type = "response",
     out <- list("predictions" = predictions,
                 "n.trees" = prediction_output[[1]]$n.trees,
                 "n.covariates" = prediction_output[[1]]$n.covariates,
-                "n.samples" = prediction_output[[1]]$num.samples)
+                "n.samples" = prediction_output[[1]]$num.samples,
+                "honesty" = object$honesty)
   } else if (type == "terminalNodes") {
     node_ids <- lapply(prediction_output, function (x) {x$predictions})
     names(node_ids) <- paste("P(Y=", y.classes, ")", sep = "")
     out <- list("predictions" = node_ids,
                 "n.trees" = prediction_output[[1]]$n.trees,
                 "n.covariates" = prediction_output[[1]]$covariate.names,
-                "n.samples" = prediction_output[[1]]$n.samples)
+                "n.samples" = prediction_output[[1]]$n.samples,
+                "honesty" = object$honesty)
   }
   
   ## Output.
@@ -98,11 +101,11 @@ predict.morf <- function(object, data = NULL, type = "response",
 #'
 #' Prediction method for class \code{morf.forest}.
 #'
-#' @param object \code{morf} object.
+#' @param object \code{morf.forest} object.
 #' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
 #' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
 #' @param n.trees Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.
-#' @param type Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.
+#' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}.
 #' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
 #' @param n.threads Number of threads. Default is number of CPUs available.
 #' @param verbose Verbose output.
@@ -110,18 +113,18 @@ predict.morf <- function(object, data = NULL, type = "response",
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return Object of class \code{morf.prediction} with elements:
-#'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
+#'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities.
 #'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
 #'   \item{\code{n.trees}}{Number of trees.} 
 #'   \item{\code{n.covariates}}{Number of covariates.}
 #'   \item{\code{n.samples}}{Number of samples.}
 #'   
 #' @details 
-#' For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+#' For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
 #' honest, then these predictions are honest.\cr
 #' 
-#' For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
-#' dataset are returned.\cr
+#' For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
+#' dataset are returned.
 #'   
 #' @references
 #' \itemize{
@@ -272,6 +275,9 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
   ## Handling inputs.
   probabilities <- stack(as.data.frame(x$predictions))
   
+  values <- NULL
+  ind <- NULL
+  
   if (multiple.panels) {
     ggplot(data = probabilities, aes(x = values, fill = ind)) +
       geom_density(alpha = 0.4) +
@@ -303,7 +309,7 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
 #' @export
 summary.morf <- function(object, ...) {
   cat("Call: \n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(object$call), "\n\n")
   
   cat("Classes: \n")
   cat(object$classes, "\n\n")
@@ -360,10 +366,10 @@ print.morf <- function(x, ...) {
 #' Prints a \code{morf.marginal} object.
 #'
 #' @param x \code{morf.marginal} object.
-#' @param latex If \code{TRUE}, prints a latex code for a table displaying the marginal effects.
+#' @param latex If \code{TRUE}, prints LATEX code for a table displaying the marginal effects.
 #' @param ... Further arguments passed to or from other methods.
 #' 
-#' @seealso \code{\link{morf}} and \code{\link{marginal_effects}}.
+#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}.
 #' 
 #' @author Riccardo Di Francesco
 #' 

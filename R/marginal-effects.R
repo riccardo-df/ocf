@@ -1,42 +1,53 @@
-##' Marginal Effects for Modified Ordered Random Forests
-##'
-##' Non-parametric estimation of marginal effects using a \code{morf} object.
-##'
-##' @param object \code{morf} object.
-##' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
-##' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
-##' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the sample used to fit \code{object}.
-##' @param inference Whether to conduct weight-based inference. It considerably slows down the program. Not advisable if \code{eval = "mean"}.
-##' 
-##' @details
-##' If the k-th covariate is continuous, its marginal effect relative to the m-th class is defined as: 
-##' 
-##' \deqn{ME_{i, k}^m ( x ) = \frac{\partial P( Y_i = m \, | \, X_{i,k} = x_k, X_{i,-k} = x_{-k})}{\partial x_k}}
-##' 
-##' Otherwise, if k-th covariate is discrete:
-##' 
-##' \deqn{ME_{i, k}^m ( x ) = P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
-##'                      P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
-##' 
-##' The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
-##' to be categorical or binary.
-##' 
-##' @return 
-##' Object of class \code{morf.marginal} with elements:
-##'   \item{\code{evaluation.type}}{Where the marginal effects are evaluated.}
-##'   \item{\code{bandwitdh}}{The bandwitdh parameter.}
-##'   \item{\code{n.classes}}{Number of classes.}
-##'   \item{\code{n.samples}}{Number of samples.}
-##'   \item{\code{n.trees}}{Number of trees in each forest.}
-##'   \item{\code{marginal.effects}}{Matrix of marginal effects.}
-##'
-##' @importFrom stats median sd pnorm
-##'
-##' @seealso \code{\link{morf}}.
-##' 
-##' @author Riccardo Di Francesco
-##'
-##' @export
+#' Marginal Effects for Modified Ordered Random Forests
+#'
+#' Non-parametric estimation of marginal effects using a \code{morf} object.
+#'
+#' @param object \code{morf} object.
+#' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
+#' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
+#' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.
+#' @param inference Whether to conduct weight-based inference. It considerably slows down the program. Not advisable if \code{eval = "mean"}.
+#' 
+#' @return 
+#' Object of class \code{morf.marginal} with elements:
+#'   \item{\code{evaluation.type}}{Where the marginal effects are evaluated.}
+#'   \item{\code{bandwitdh}}{The bandwitdh parameter.}
+#'   \item{\code{n.classes}}{Number of classes.}
+#'   \item{\code{n.samples}}{Number of samples.}
+#'   \item{\code{n.trees}}{Number of trees in each forest.}
+#'   \item{\code{marginal.effects}}{Matrix of marginal effects.}
+#' 
+#' @details
+#' If the k-th covariate is continuous, its marginal effect relative to the m-th class is defined as: 
+#' 
+#' \deqn{ME_{i, k}^m ( x ) = \frac{\partial P( Y_i = m \, | \, X_{i,k} = x_k, X_{i,-k} = x_{-k})}{\partial x_k}}
+#' 
+#' Otherwise, if k-th covariate is discrete:
+#' 
+#' \deqn{P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
+#'                      P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
+#'                      
+#' If \code{eval = "mean"}, then the mean marginal effects are estimated:
+#' 
+#' \deqn{MME := \frac{1}{n} \sum_{i = 1}^n p_{m, j}^\prime \left( X_i \right)}
+#' 
+#' If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covariates are estimated:
+#' 
+#' \deqn{MEM := p_{m, j}^\prime ( \widebar{X}_i )}  
+#' 
+#' \code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
+#' evaluation point rather than the mean.\cr
+#' 
+#' The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
+#' to be categorical or binary.
+#'
+#' @importFrom stats median sd pnorm
+#'
+#' @seealso \code{\link{morf}}.
+#' 
+#' @author Riccardo Di Francesco
+#'
+#' @export
 marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## Handling inputs and checks.
   if (!inherits(object, "morf")) stop("Invalid class of input object.", call. = FALSE) 

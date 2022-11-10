@@ -2,13 +2,13 @@
 % Please edit documentation in R/morf.R
 \name{morf}
 \alias{morf}
-\title{Modified Ordered Random Forest for Estimating the Ordered Choice Model}
+\title{Modified Ordered Random Forest}
 \usage{
 morf(
   x = NULL,
   y = NULL,
-  n.trees = 1000,
-  mtry = min(max(rpois(1, 2), 1), length(colnames(x))),
+  n.trees = 2000,
+  mtry = ceiling(sqrt(ncol(x))),
   min.node.size = 5,
   max.depth = 0,
   replace = FALSE,
@@ -35,7 +35,7 @@ morf(
 
 \item{n.trees}{Number of trees.}
 
-\item{mtry}{Number of covariates to possibly split at in each node. Default is a random number based on a Poisson distribution.}
+\item{mtry}{Number of covariates to possibly split at in each node. Default is the square root of the number of covariates.}
 
 \item{min.node.size}{Minimal node size.}
 

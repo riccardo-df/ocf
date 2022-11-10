@@ -5,6 +5,8 @@
 #' @param predictions Matrix of predictions.
 #' @param y Either the observed outcome vector or a matrix of true probabilities.
 #' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
+#' 
+#' @return The mean squared error of the method.
 #'
 #' @details 
 #' If \code{use.true = FALSE}, the mean squared error is computed as follows:
@@ -21,7 +23,9 @@
 #' 
 #' The second formula is useful for simulation studies.
 #'
-#' @return The mean squared error of the method.
+#' @author Riccardo Di Francesco
+#' 
+#' @seealso \code{\link{morf}}, \code{\link{mean_ranked_score}}
 #' 
 #' @export
 mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from https://github.com/okasag/orf/blob/master/orf/R/evals.R
@@ -56,6 +60,8 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 #' @param predictions Matrix of predictions.
 #' @param y Either the observed outcome vector or a matrix of true probabilities. 
 #' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
+#' 
+#' @return The mean ranked probability score of the method.
 #'
 #' @details 
 #' If \code{use.true = FALSE}, the mean ranked probability score is computed as follows:
@@ -71,8 +77,10 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 #' \deqn{p_m^* (x) = P(Y_i \leq m | X_i = x)}
 #' 
 #' The second formula is useful for simulation studies.
-#'
-#' @return The mean ranked probability score of the method.
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @seealso \code{\link{morf}}, \code{\link{mean_ranked_score}}
 #'
 #' @export
 mean_ranked_score <- function(y, predictions, use.true = FALSE){ # Taken from https://github.com/okasag/orf/blob/master/orf/R/evals.R

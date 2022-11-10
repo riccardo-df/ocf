@@ -1,4 +1,4 @@
-#' Modified Ordered Random Forest for Estimating the Ordered Choice Model
+#' Modified Ordered Random Forest
 #' 
 #' Non-parametric estimation of the ordered choice model using random forests.
 #'

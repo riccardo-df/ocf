@@ -34,3 +34,9 @@ where:
 
 The second formula is useful for simulation studies.
 }
+\seealso{
+\code{\link{morf}}, \code{\link{mean_ranked_score}}
+}
+\author{
+Riccardo Di Francesco
+}

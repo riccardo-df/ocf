@@ -1,18 +1,18 @@
-##' Forest In-Sample Honest Weights (Internal Use)
-##'
-##' Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
-##'
-##' @param forest \code{morf.forest} object.
-##' @param train_sample Training sample.
-##' @param honest_sample Honest sample. 
-##' 
-##' @details 
-##' \code{forest} must have been grown using only the training sample. 
-##'
-##' @return 
-##' Matrix of in-sample honest weights.
-##' 
-##' @importFrom stats ave
+#' Forest In-Sample Honest Weights (Internal Use)
+#'
+#' Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+#'
+#' @param forest \code{morf.forest} object.
+#' @param train_sample Training sample.
+#' @param honest_sample Honest sample. 
+#' 
+#' @return 
+#' Matrix of in-sample honest weights.
+#' 
+#' @details 
+#' \code{forest} must have been grown using only the training sample. 
+#' 
+#' @importFrom stats ave
 forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken from https://github.com/okasag/orf/blob/master/orf/R/weight_funs.R
   ## Handling inputs.
   # Getting terminal nodes for the honest sample.
@@ -37,21 +37,21 @@ forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken
 }
 
 
-##' Forest Out-of-Sample Weights (Internal Use)
-##'
-##' Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
-##'
-##' @param forest \code{morf.forest} object.
-##' @param test_sample Test sample.
-##' @param honest_sample Honest sample. 
-##'
-##' @details 
-##' \code{forest} must have been grown using only the training sample. 
-##'
-##' @return 
-##' Matrix of out-of-sample honest weights.
-##' 
-##' @importFrom stats ave
+#' Forest Out-of-Sample Weights (Internal Use)
+#'
+#' Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+#'
+#' @param forest \code{morf.forest} object.
+#' @param test_sample Test sample.
+#' @param honest_sample Honest sample. 
+#'
+#' @return 
+#' Matrix of out-of-sample honest weights.
+#'
+#' @details 
+#' \code{forest} must have been grown using only the training sample. 
+#' 
+#' @importFrom stats ave
 predict_forest_weights <- function(forest, honest_sample, test_sample) { # Taken from https://github.com/okasag/orf/blob/master/orf/R/weight_funs.R
   # Handling inputs.
   # Getting terminal nodes for the honest sample.

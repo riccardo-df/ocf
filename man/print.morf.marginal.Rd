@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{\code{morf.marginal} object.}
 
-\item{latex}{If \code{TRUE}, prints a latex code for a table displaying the marginal effects.}
+\item{latex}{If \code{TRUE}, prints LATEX code for a table displaying the marginal effects.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
@@ -17,7 +17,7 @@
 Prints a \code{morf.marginal} object.
 }
 \seealso{
-\code{\link{morf}} and \code{\link{marginal_effects}}.
+\code{\link{morf}}, \code{\link{marginal_effects}}.
 }
 \author{
 Riccardo Di Francesco

@@ -15,7 +15,7 @@ marginal_effects(
 \arguments{
 \item{object}{\code{morf} object.}
 
-\item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, marginal effects are estimated on the sample used to fit \code{object}.}
+\item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.}
 
 \item{eval}{Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.}
 
@@ -42,8 +42,19 @@ If the k-th covariate is continuous, its marginal effect relative to the m-th cl
 
 Otherwise, if k-th covariate is discrete:
 
-\deqn{ME_{i, k}^m ( x ) = P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
+\deqn{P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
                      P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
+                     
+If \code{eval = "mean"}, then the mean marginal effects are estimated:
+
+\deqn{MME := \frac{1}{n} \sum_{i = 1}^n p_{m, j}^\prime \left( X_i \right)}
+
+If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covariates are estimated:
+
+\deqn{MEM := p_{m, j}^\prime ( \widebar{X}_i )}  
+
+\code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
+evaluation point rather than the mean.\cr
 
 The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
 to be categorical or binary.

@@ -21,7 +21,7 @@
 
 \item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.}
 
-\item{type}{Type of prediction. One of \code{"response"} or \code{"terminalNodes"}.}
+\item{type}{Type of prediction. Either \code{"response"} or \code{"terminalNodes"}.}
 
 \item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}).}
 
@@ -42,15 +42,16 @@ Object of class \code{morf.prediction} with elements:
   \item{\code{n.trees}}{Number of trees.} 
   \item{\code{n.covariates}}{Number of covariates.}
   \item{\code{n.samples}}{Number of samples.}
+  \item{\code{honesty}}{Whether predictions are honest.}
 }
 \description{
 Prediction method for class \code{\link{morf}}.
 }
 \details{
-For \code{type = 'response'} (the default), the predicted conditional class probabilities are returned. If forests are 
+For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
 honest, then these predictions are honest.\cr
 
-For \code{type = 'terminalNodes'}, the IDs of the terminal node in each tree for each observation in the given 
+For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
 dataset are returned.\cr
 }
 \references{

@@ -1,18 +1,18 @@
-##' Honest Sample Split (Internal Use)
-##'
-##' Randomly spits the sample into a training sample and an honest sample.
-##'
-##' @param data \code{data.frame} or \code{matrix} to be split. The outcome must be located in the first column.
-##' @param honesty.fraction Fraction of honest sample.
-##' 
-##' @details 
-##' \code{class_honest_split} looks for balanced splits, i.e., splits such as all the outcome's classes are represented
-##' in both the training and the honest sample. After 100 trials, the program throws an error.
-##'
-##' @return 
-##' List with elements:
-##'   \item{\code{train_sample}}{Training sample.}
-##'   \item{\code{honest_sample}}{Honest sample.}
+#' Honest Sample Split (Internal Use)
+#'
+#' Randomly spits the sample into a training sample and an honest sample.
+#'
+#' @param data \code{data.frame} or \code{matrix} to be split. The outcome must be located in the first column.
+#' @param honesty.fraction Fraction of honest sample.
+#' 
+#' @return 
+#' List with elements:
+#'   \item{\code{train_sample}}{Training sample.}
+#'   \item{\code{honest_sample}}{Honest sample.}
+#' 
+#' @details 
+#' \code{class_honest_split} looks for balanced splits, i.e., splits such as all the outcome's classes are represented
+#' in both the training and the honest sample. After 100 trials, the program throws an error.
 class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/honest_funs.R
   ## Handling inputs.
   n <- nrow(data)
@@ -39,22 +39,22 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 }
 
 
-##' Honest In-Sample Predictions (Internal Use)
-##'
-##' Computes honest in-sample predictions for a \code{morf.forest} object relative to the m-th class.
-##'
-##' @param forest \code{morf.forest} object.
-##' @param train_sample Training sample.
-##' @param honest_sample Honest sample. 
-##' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
-##' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
-##' 
-##' @details 
-##' \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
-##' using the outcome from the honest sample (using the prediction method of \code{\link{morf}}).
-##' 
-##' @return 
-##' In-sample honest predictions.
+#' Honest In-Sample Predictions (Internal Use)
+#'
+#' Computes honest in-sample predictions for a \code{morf.forest} object relative to the m-th class.
+#'
+#' @param forest \code{morf.forest} object.
+#' @param train_sample Training sample.
+#' @param honest_sample Honest sample. 
+#' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
+#' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
+#'
+#' @return 
+#' In-sample honest predictions.
+#'
+#' @details 
+#' \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
+#' using the outcome from the honest sample (using the prediction method of \code{\link{morf}}).
 honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/honest_funs.R
   ## Handling inputs.
   # Getting terminal nodes for the training and honest sample.
@@ -77,23 +77,23 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
 }
 
 
-##' Honest Out-of-Sample Predictions
-##'
-##' Computes honest out-of-sample predictions for a \code{morf.forest} object relative to the m-th class.
-##'
-##' @param forest \code{morf.forest} object.
-##' @param test_sample Test sample.
-##' @param honest_sample Honest sample. 
-##' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
-##' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
-##'
-##' @details 
-##' \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
-##' honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
-##' to build the trees.
-##'
-##' @return 
-##' Out-of-sample honest predictions.
+#' Honest Out-of-Sample Predictions
+#'
+#' Computes honest out-of-sample predictions for a \code{morf.forest} object relative to the m-th class.
+#'
+#' @param forest \code{morf.forest} object.
+#' @param test_sample Test sample.
+#' @param honest_sample Honest sample. 
+#' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
+#' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
+#'
+#' @return 
+#' Out-of-sample honest predictions.
+#'
+#' @details 
+#' \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
+#' honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
+#' to build the trees.
 honest_predictions <- function(forest, honest_sample, test_sample, y_m_honest, y_m_1_honest) {
   ## Handling inputs.
   # Getting terminal nodes for the honest and the test sample.
