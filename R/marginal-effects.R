@@ -110,6 +110,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   ## Generating data for estimation. Each data set shifts the j-th covariate and leaves the others untouched.
   X_up_data <- list() 
   X_down_data <- list()
+  
   for (j in seq_len(ncol(X))) {
     shifted_var_up <- X_up[, j, drop = FALSE] 
     shifted_var_down <- X_down[, j, drop = FALSE] 
@@ -133,11 +134,12 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   }
   
   ## Difference in conditional class probabilities. 
-  if (inference) { 
-    # Data for honest estimation.
+  if (inference) {
+    # Data for honest estimation. 
     honest_sample <- object$honest_data
     honest_outcomes <- list()
     counter <- 1
+    
     for (m in y.classes) {
       honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y_honest <= m -1, 1, 0))
       counter <- counter + 1
@@ -145,6 +147,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
 
     # Storing forests in a separate list. Forests are always the first n.classes elements of a morf object.
     forests <- list()
+    
     for (m in seq_len(n.classes)) {
       forests[[m]] <- object[[m]]
     }
@@ -155,6 +158,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     
     # Using weights for prediction. The j-th iteration uses data set with the j-th covariate shifted. Notice the normalization step.
     numerators <- list()
+    
     for (j in seq_len(length(X_up_data))) {
       predictions_up <- mapply(function(x, y) {x[[j]] %*% (y$y_m_honest - y$y_m_1_honest)}, weights_up, honest_outcomes)
       predictions_down <- mapply(function(x, y) {x[[j]] %*% (y$y_m_honest - y$y_m_1_honest)}, weights_down, honest_outcomes)
@@ -192,7 +196,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     rownames(variances) <- colnames(X)
     
     # Constants.
-    denominators_squared <- denominators^2
+    denominators_squared <- 1 / denominators^2
     sample_correction <- n_honest / (n_honest - 1)
     
     # Building the variance. Notice that colMeans picks the average weight of each honest unit if mean and does 
@@ -201,7 +205,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
       weights_difference <- mapply(function(x, y) {colMeans(x[[j]] - y[[j]])}, weights_up, weights_down, SIMPLIFY = FALSE)
       products <- mapply(function(x, y) {x * (y$y_m_honest - y$y_m_1_honest)}, weights_difference, honest_outcomes, SIMPLIFY = FALSE)
       sum_squares <- lapply(products, function(x) {sum((x - mean(x))^2)})
-      variances[j, ] <- unlist(lapply(sum_squares, function(x) {sample_correction / denominators_squared[j] * x}), use.names = FALSE)
+      variances[j, ] <- unlist(lapply(sum_squares, function(x) {sample_correction * denominators_squared[j] * x}), use.names = FALSE)
     }
     
     standard_errors <- sqrt(variances)
