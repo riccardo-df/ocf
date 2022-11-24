@@ -97,14 +97,14 @@ Object of class \code{morf} with elements:
   \item{\code{call}}{System call.}
 }
 \description{
-Non-parametric estimation of the ordered choice model using random forests.
+Nonparametric estimation of the ordered choice model using random forests.
 }
 \details{
 \subsection{Splitting Criterion}{
 \code{morf} fits \code{M} separated random forests, where \code{M} is the number of classes of \code{y}. 
 Each forest computes the \code{m}-th class conditional choice probabilities:
 
-\deqn{p_m (x) = P ( Y_i = m \, | \, X_i = x)}
+\deqn{p_m (x) := P ( Y_i = m \, | \, X_i = x)}
 
 To estimate this quantity, \code{morf} exploits the following:
 

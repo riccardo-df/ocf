@@ -72,7 +72,7 @@ to be categorical or binary.
 }
 }
 \seealso{
-\code{\link{morf}}.
+\code{\link{morf}}
 }
 \author{
 Riccardo Di Francesco
