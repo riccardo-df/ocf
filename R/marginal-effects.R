@@ -1,6 +1,6 @@
 #' Marginal Effects for Modified Ordered Random Forests
 #'
-#' Non-parametric estimation of marginal effects using a \code{morf} object.
+#' Nonparametric estimation of marginal effects using a \code{morf} object.
 #'
 #' @param object \code{morf} object.
 #' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
@@ -25,9 +25,9 @@
 #' The marginal effect of the j-th covariate on \eqn{p_m \left( \cdot \right)} is defined according to the continuous or 
 #' discrete nature of the covariate: 
 #'  
-#' \deqn{p_{m, j}^\prime \left( x \right) := \frac{\partial \PX \left( Y_i = m \, | \, X_i = x \right)}{\partial x_{j}}}
+#' \deqn{p_{m, j}^\prime \left( x \right) := \frac{\partial P \left( Y_i = m \, | \, X_i = x \right)}{\partial x_{j}}}
 #' 
-#' \deqn{p_{m, j}^\prime \left( x \right) := \PX \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - \PX \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
+#' \deqn{p_{m, j}^\prime \left( x \right) := P \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - P \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
 #'     
 #' where \eqn{x_j} is the j-th element of the vector \eqn{x} and \eqn{\lceil x_j \rceil} and \eqn{\lfloor x_j \rfloor}
 #' correspond to \eqn{x} with its j-th element rounded up and down to the closest integer.\cr  
@@ -38,7 +38,7 @@
 #' 
 #' If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covariates are estimated:
 #' 
-#' \deqn{MEM := p_{m, j}^\prime ( \overbar{X}_i )}  
+#' \deqn{MEM := p_{m, j}^\prime ( \bar{X}_i )}  
 #' 
 #' \code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
 #' evaluation point rather than the mean.\cr
@@ -48,9 +48,16 @@
 #'
 #' @importFrom stats median sd pnorm
 #'
-#' @seealso \code{\link{morf}}.
+#' @seealso \code{\link{morf}}
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item S Athey, J Tibshirani, S Wager (2019). Generalized random forests. The Annals of Statistics. \doi{10.1214/18-AOS1709}.
+#'   \item Lechner, M., & Okasa, G. (2019). Random forest estimation of the ordered choice model. arXiv preprint arXiv:1907.02436. \doi{10.48550/arXiv.1907.02436}.
+#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A fast implementation of random forests for high dimensional data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
+#' }
 #'
 #' @export
 marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.001, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
