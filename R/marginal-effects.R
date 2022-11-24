@@ -16,16 +16,21 @@
 #'   \item{\code{n.samples}}{Number of samples.}
 #'   \item{\code{n.trees}}{Number of trees in each forest.}
 #'   \item{\code{marginal.effects}}{Matrix of marginal effects.}
+#'   \item{\code{standard.errors}}{Matrix of standard errors, one for each marginal effect.}
+#'   \item{\code{p.values}}{Matrix of p-values testing the null hypotheses that the marginal effect is zero.}
+#'   \item{\code{ci.upper}}{Matrix of upper intervals.}
+#'   \item{\code{ci.lower}}{Matrix of lower intervals.}
 #' 
 #' @details
-#' If the k-th covariate is continuous, its marginal effect relative to the m-th class is defined as: 
+#' The marginal effect of the j-th covariate on \eqn{p_m \left( \cdot \right)} is defined according to the continuous or 
+#' discrete nature of the covariate: 
+#'  
+#' \deqn{p_{m, j}^\prime \left( x \right) := \frac{\partial \PX \left( Y_i = m \, | \, X_i = x \right)}{\partial x_{j}}}
 #' 
-#' \deqn{ME_{i, k}^m ( x ) = \frac{\partial P( Y_i = m \, | \, X_{i,k} = x_k, X_{i,-k} = x_{-k})}{\partial x_k}}
-#' 
-#' Otherwise, if k-th covariate is discrete:
-#' 
-#' \deqn{P( Y_i = m \, | \, X_{i,k} = \lceil x_k \rceil, X_{i,-k} = x_{-k}) - 
-#'                      P( Y_i = m \, | \, X_{i,k} = \lfloor x_k \rfloor, X_{i,-k} = x_{-k})}
+#' \deqn{p_{m, j}^\prime \left( x \right) := \PX \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - \PX \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
+#'     
+#' where \eqn{x_j} is the j-th element of the vector \eqn{x} and \eqn{\lceil x_j \rceil} and \eqn{\lfloor x_j \rfloor}
+#' correspond to \eqn{x} with its j-th element rounded up and down to the closest integer.\cr  
 #'                      
 #' If \code{eval = "mean"}, then the mean marginal effects are estimated:
 #' 
@@ -33,7 +38,7 @@
 #' 
 #' If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covariates are estimated:
 #' 
-#' \deqn{MEM := p_{m, j}^\prime ( \widebar{X}_i )}  
+#' \deqn{MEM := p_{m, j}^\prime ( \overbar{X}_i )}  
 #' 
 #' \code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
 #' evaluation point rather than the mean.\cr
@@ -48,7 +53,7 @@
 #' @author Riccardo Di Francesco
 #'
 #' @export
-marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
+marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.001, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## Handling inputs and checks.
   if (!inherits(object, "morf")) stop("Invalid class of input object.", call. = FALSE) 
   if (inference & !object$honesty) stop("Invalid inference if forests are not honest. Please feed in a morf object estimated with honesty = TRUE.", call. = FALSE)
