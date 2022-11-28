@@ -30,7 +30,7 @@ public:
       std::vector<double>* case_weights, std::vector<size_t>* manual_inbag, bool keep_inbag,
       std::vector<double>* sample_fraction, double alpha, double minprop, bool holdout, unsigned int num_random_splits,
       unsigned int max_depth, std::vector<double>* regularization_factor, bool regularization_usedepth,
-      std::vector<bool>* split_varIDs_used);
+      std::vector<bool>* split_varIDs_used, std::vector<double> alpha_balance);
 
   virtual void allocateMemory() = 0;
 
@@ -188,6 +188,9 @@ protected:
   std::vector<double>* regularization_factor;
   bool regularization_usedepth;
   std::vector<bool>* split_varIDs_used;
+  
+  // Alpha-regularity
+  std::vector<double> alpha_balance;
   
   // Variable importance for all variables.
   std::vector<double>* variable_importance;

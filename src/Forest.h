@@ -248,6 +248,9 @@ protected:
   bool regularization_usedepth;
   std::vector<bool> split_varIDs_used;
   
+  // Alpha-regularity.
+  std::vector<double> alpha_balance;
+  
   // Variable importance for all variables in forest.
   std::vector<double> variable_importance;
 

@@ -31,7 +31,7 @@ void Tree::init(const Data* data, unsigned int mtry, size_t num_samples, unsigne
                 std::vector<size_t>* manual_inbag, bool keep_inbag, std::vector<double>* sample_fraction, double alpha, 
                 double minprop, bool holdout, unsigned int num_random_splits, unsigned int max_depth, 
                 std::vector<double>* regularization_factor, bool regularization_usedepth, 
-                std::vector<bool>* split_varIDs_used) {
+                std::vector<bool>* split_varIDs_used, std::vector<double> alpha_balance) {
   this->data = data;
   this->mtry = mtry;
   this->num_samples = num_samples;
@@ -63,7 +63,8 @@ void Tree::init(const Data* data, unsigned int mtry, size_t num_samples, unsigne
   this->regularization_factor = regularization_factor;
   this->regularization_usedepth = regularization_usedepth;
   this->split_varIDs_used = split_varIDs_used;
-
+  this->alpha_balance = alpha_balance;
+  
   // Regularization.
   if (regularization_factor->size() > 0) {
     regularization = true;

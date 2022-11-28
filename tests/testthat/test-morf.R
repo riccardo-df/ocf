@@ -11,23 +11,25 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   y_m <- ifelse(y <= m, 1, 0)
   y_m_1 <- ifelse(y <= m-1, 1, 0)
   
+  alpha <- runif(1, 0, 0.5)
+  
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               honesty = FALSE)
+               honesty = FALSE, alpha = alpha)
   
   avg_split <- tree_info(morf[[m]])$splitval[1] 
   predictions <- tree_info(morf[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
-  modified_split <- function(x, y_m, y_m_1) {
+  modified_split <- function(x, y_m, y_m_1, alpha) {
     splits <- sort(unique(x))
     mse <- rep(NA, length(splits))
     
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
       ## Skip this split value if alpha-regularity would be violated.
-      if (sum(x < splits[i]) < length(x) * 0.2 | sum(x > splits[i]) > length(x) - (length(x) * 0.2)) next
+      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) > length(x) - (length(x) * alpha)) next
       
       split <- splits[i]
       
@@ -53,7 +55,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   }
   
   ## Comparing.
-  treeR <- modified_split(x[, 1], y_m, y_m_1)
+  treeR <- modified_split(x[, 1], y_m, y_m_1, alpha)
   
   check_split <- treeR$best_split %in% split_values
   
@@ -75,23 +77,25 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   y_m <- ifelse(y <= m, 1, 0)
   y_m_1 <- ifelse(y <= m-1, 1, 0)
   
+  alpha <- runif(1, 0, 0.5)
+  
   ## Fitting a "stump".
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
-               honesty = FALSE)
+               honesty = FALSE, alpha = alpha)
   
   avg_split <- tree_info(morf[[m]])$splitval[1] 
   predictions <- tree_info(morf[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
-  modified_split <- function(x, y_m, y_m_1) {
+  modified_split <- function(x, y_m, y_m_1, alpha) {
     splits <- sort(unique(x))
     mse <- rep(NA, length(splits))
     
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
       ## Skip this split value if alpha-regularity would be violated.
-      if (sum(x < splits[i]) < length(x) * 0.2 | sum(x > splits[i]) > length(x) - (length(x) * 0.2)) next
+      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) > length(x) - (length(x) * alpha)) next
       
       split <- splits[i]
       
@@ -117,7 +121,7 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   }
   
   ## Comparing.
-  treeR <- modified_split(x[, 1], y_m, y_m_1)
+  treeR <- modified_split(x[, 1], y_m, y_m_1, alpha)
   
   check_split <- treeR$best_split %in% split_values
   

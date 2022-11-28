@@ -233,8 +233,6 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     ++counter[idx]; 
   }
   
-  //std::cout << alpha_balance << std::endl;
-  
   size_t n_left = 0;
   
   double sum_left_m = 0;
@@ -262,8 +260,9 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     }
     
     // Ignore this split value if alpha-regularity would be violated.
-    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
-    bool condition_right = n_right < 0.2 * num_samples_node;
+    double frac = alpha_balance[0];
+    bool condition_left = n_left < frac * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < frac * num_samples_node;
     
     if (condition_left || condition_right) {
       continue;
@@ -327,7 +326,7 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
 
     ++counter[index];
   }
-
+  
   // Computing decrease of impurity for each splitting value.
   size_t n_left = 0;
   
@@ -355,8 +354,9 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
     }
     
     // Ignore this split value if alpha-regularity would be violated.
-    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
-    bool condition_right = n_right < 0.2 * num_samples_node;
+    double frac = alpha_balance[0];
+    bool condition_left = n_left < frac * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < frac * num_samples_node;
     
     if (condition_left || condition_right) {
       continue;
@@ -462,8 +462,9 @@ void TreeOrdered::findBestSplitValueUnordered(size_t nodeID, size_t varID, doubl
     size_t n_left = num_samples_node - n_right;
     
     // Ignore this split value if alpha-regularity would be violated.
-    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
-    bool condition_right = n_right < 0.2 * num_samples_node;
+    double frac = alpha_balance[0];
+    bool condition_left = n_left < frac * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < frac * num_samples_node;
     
     if (condition_left || condition_right) {
       continue;

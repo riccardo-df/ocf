@@ -84,7 +84,7 @@ Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::Nu
       num_rows = input_x.nrow();
       num_cols = input_x.ncol();
     }
-
+    
     // Initializing data. 
     if (use_sparse_data) {
       data = make_unique<DataSparse>(sparse_x, input_y, variable_names, num_rows, num_cols);

@@ -221,6 +221,7 @@ void Forest::init(std::unique_ptr<Data> input_data, unsigned int mtry, std::stri
   this->max_depth = max_depth;
   this->regularization_factor = regularization_factor;
   this->regularization_usedepth = regularization_usedepth;
+  this->alpha_balance = alpha_balance; 
 
   // Setting number of samples and variables.
   num_samples = data->getNumRows();
@@ -230,7 +231,7 @@ void Forest::init(std::unique_ptr<Data> input_data, unsigned int mtry, std::stri
   if (!prediction_mode) {
     data->setIsOrderedVariable(unordered_variable_names);
   }
-
+  
   initInternal();
 
   // Initializing split select weights.
@@ -467,7 +468,7 @@ void Forest::grow() {
     trees[i]->init(data.get(), mtry, num_samples, tree_seed, &deterministic_varIDs, tree_split_select_weights,
         importance_mode, min_node_size, sample_with_replacement, memory_saving_splitting, splitrule, &case_weights,
         tree_manual_inbag, keep_inbag, &sample_fraction, alpha, minprop, holdout, num_random_splits, max_depth,
-        &regularization_factor, regularization_usedepth, &split_varIDs_used);
+        &regularization_factor, regularization_usedepth, &split_varIDs_used, alpha_balance);
   }
 
   // Initializing variable importance.

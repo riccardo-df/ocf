@@ -11,6 +11,7 @@ morf(
   mtry = ceiling(sqrt(ncol(x))),
   min.node.size = 5,
   max.depth = 0,
+  alpha = 0.2,
   replace = FALSE,
   sample.fraction = ifelse(replace, 1, 0.5),
   case.weights = NULL,
@@ -40,6 +41,8 @@ morf(
 \item{min.node.size}{Minimal node size.}
 
 \item{max.depth}{Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
+
+\item{alpha}{Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.}
 
 \item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement.}
 
