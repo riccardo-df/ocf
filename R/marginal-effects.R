@@ -6,7 +6,7 @@
 #' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
 #' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
 #' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.
-#' @param inference Whether to conduct weight-based inference. It considerably slows down the program. Not advisable if \code{eval = "mean"}.
+#' @param inference Whether to conduct weight-based inference. It considerably slows down the program.
 #' 
 #' @return 
 #' Object of class \code{morf.marginal} with elements:
@@ -60,7 +60,7 @@
 #' }
 #'
 #' @export
-marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.001, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
+marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## Handling inputs and checks.
   if (!inherits(object, "morf")) stop("Invalid class of input object.", call. = FALSE) 
   if (inference & !object$honesty) stop("Invalid inference if forests are not honest. Please feed in a morf object estimated with honesty = TRUE.", call. = FALSE)
