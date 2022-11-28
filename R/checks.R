@@ -143,3 +143,12 @@ check_samplefraction <- function(sample.fraction) {
   if (!is.numeric(sample.fraction)) stop("Invalid value for 'sample.fraction'. Please give a value in (0,1].", call. = FALSE)
   if (sample.fraction <= 0 || sample.fraction > 1) stop("Invalid value for 'sample.fraction' Please give a value in (0,1].", call. = FALSE)
 }
+
+
+##' Check Argument alpha (Internal Use)
+##' 
+##' @param alpha Fraction of observations that must lie on each side of each split. 
+check_alpha <- function(alpha) {
+  if (!is.numeric(alpha)) stop("Invalid value for 'alpha'. Please give a value in [0, 0.5].", call. = FALSE)
+  if (alpha < 0 | alpha > 0.5) stop("Invalid value for 'alpha'. Please give a value in [0, 0.5].", call. = FALSE)
+}

@@ -37,7 +37,8 @@ public:
       const std::vector<std::string>& unordered_variable_names, bool memory_saving_splitting, SplitRule splitrule,
       std::string case_weights_file, bool predict_all, double sample_fraction, double alpha, double minprop,
       bool holdout, PredictionType prediction_type, unsigned int num_random_splits, unsigned int max_depth,
-      const std::vector<double>& regularization_factor, bool regularization_usedepth);
+      const std::vector<double>& regularization_factor, bool regularization_usedepth,
+      std::vector<double>& alpha_balance);
   
   void initR(std::unique_ptr<Data> input_data, unsigned int mtry, unsigned int num_trees, std::ostream* verbose_out, unsigned int seed,
       unsigned int num_threads, ImportanceMode importance_mode, unsigned int min_node_size,
@@ -47,14 +48,16 @@ public:
       std::vector<double>& case_weights, std::vector<std::vector<size_t>>& manual_inbag, bool predict_all,
       bool keep_inbag, std::vector<double>& sample_fraction, double alpha, double minprop, bool holdout,
       PredictionType prediction_type, unsigned int num_random_splits, bool order_snps, unsigned int max_depth,
-      const std::vector<double>& regularization_factor, bool regularization_usedepth);
+      const std::vector<double>& regularization_factor, bool regularization_usedepth,
+      std::vector<double>& alpha_balance);
   
   void init(std::unique_ptr<Data> input_data, unsigned int mtry, std::string output_prefix,
       unsigned int num_trees, unsigned int seed, unsigned int num_threads, ImportanceMode importance_mode, unsigned int min_node_size,
       bool prediction_mode, bool sample_with_replacement, const std::vector<std::string>& unordered_variable_names,
       bool memory_saving_splitting, SplitRule splitrule, bool predict_all, std::vector<double>& sample_fraction,
       double alpha, double minprop, bool holdout, PredictionType prediction_type, unsigned int num_random_splits,
-      bool order_snps, unsigned int max_depth, const std::vector<double>& regularization_factor, bool regularization_usedepth);
+      bool order_snps, unsigned int max_depth, const std::vector<double>& regularization_factor, bool regularization_usedepth,
+      std::vector<double>& alpha_balance);
   virtual void initInternal() = 0;
 
   // Growing or predicting.

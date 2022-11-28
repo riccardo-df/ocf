@@ -2,7 +2,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   ## Generating data.
   set.seed(rnorm(1, sd = 1000)) # Random seed.
   
-  n <- sample(1:1000, size = 1)
+  n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
   
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
@@ -26,6 +26,9 @@ test_that("morf splits and predicts as expected with continuos covariates", {
     
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
+      ## Skip this split value if alpha-regularity would be violated.
+      if (sum(x < splits[i]) < length(x) * 0.2 | sum(x > splits[i]) > length(x) - (length(x) * 0.2)) next
+      
       split <- splits[i]
       
       mse_m <- sum(sum(y_m[ x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
@@ -63,7 +66,7 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   ## Generating data.
   set.seed(rnorm(1, sd = 1000)) # Random seed.
   
-  n <- sample(1:1000, size = 1)
+  n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
   
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
@@ -87,6 +90,9 @@ test_that("morf splits and predicts as expected with categorical covariates", {
     
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
+      ## Skip this split value if alpha-regularity would be violated.
+      if (sum(x < splits[i]) < length(x) * 0.2 | sum(x > splits[i]) > length(x) - (length(x) * 0.2)) next
+      
       split <- splits[i]
       
       mse_m <- sum(sum(y_m[ x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
@@ -124,7 +130,7 @@ test_that("Standard predictions and weight-based predictions are the same", {
   ## Generating data.
   set.seed(rnorm(1, sd = 1000)) # Random seed.
   
-  n <- sample(1:500, size = 1)
+  n <- 1000
 
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
   x <- data.frame("x1" = rnorm(n))

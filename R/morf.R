@@ -5,6 +5,7 @@
 #' @param x Covariate matrix (no intercept).
 #' @param y Outcome vector.
 #' @param n.trees Number of trees.
+#' @param alpha Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.
 #' @param honesty Whether to grow honest forests.
 #' @param honesty.fraction Fraction of honest sample. Ignored if \code{honesty = FALSE}.
 #' @param inference Whether to conduct weight-based inference. The weights' extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.
@@ -119,7 +120,7 @@
 #' 
 #' @export
 morf <- function(x = NULL, y = NULL,
-                 n.trees = 2000, mtry = ceiling(sqrt(ncol(x))), min.node.size = 5, max.depth = 0, 
+                 n.trees = 2000, mtry = ceiling(sqrt(ncol(x))), min.node.size = 5, max.depth = 0, alpha = 0.2,
                  replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), case.weights = NULL,
                  honesty = TRUE, honesty.fraction = 0.5, inference = FALSE,
                  split.select.weights = NULL, always.split.variables = NULL,
@@ -131,6 +132,8 @@ morf <- function(x = NULL, y = NULL,
   check_x_y(x, y)
   check_honesty_inference(honesty, honesty.fraction, inference)
   check_ntrees(n.trees)
+  check_alpha(alpha)
+  alpha_balance <- alpha
   mtry <- check_mtry(mtry, colnames(x))
   seed <- check_seed(seed)
   check_keepinbag(keep.inbag)
@@ -280,7 +283,7 @@ morf <- function(x = NULL, y = NULL,
             use.unordered.factor.variables, save.memory, splitrule.num, case.weights, use.case.weights, class.weights, 
             predict.all, keep.inbag, sample.fraction, alpha, minprop, holdout, prediction.type, num.random.splits, sparse.x, 
             use.sparse.data, order.snps, oob.error, max.depth, inbag, use.inbag, regularization.factor,
-            use.regularization.factor, regularization.usedepth)})
+            use.regularization.factor, regularization.usedepth, alpha_balance)})
   if (any(sapply(forest_output, function(x) {length(x) == 0}))) stop("User interrupt or internal error.", call. = FALSE)
   
   ## Handling forests' output.

@@ -202,7 +202,7 @@ predict.morf.forest <- function(object, data, type = "response",
   
   ## Defaults for variables not needed.
   treetype <- 3; splitrule <- 1; mtry <- 0; max.depth <- 0; min.node.size <- 0; importance <- 0;
-  prediction.mode <- TRUE; oob.error <- FALSE; y <- matrix(c(0, 0))
+  prediction.mode <- TRUE; oob.error <- FALSE; y <- matrix(c(0, 0)); alpha_balance <- 0.2
   split.select.weights <- list(c(0, 0)); use.split.select.weights <- FALSE
   always.split.variables <- c("0", "0"); use.always.split.variables <- FALSE
   write.forest <- FALSE; replace <- TRUE; sample.fraction <- 1
@@ -226,7 +226,8 @@ predict.morf.forest <- function(object, data, type = "response",
                     predict.all, keep.inbag, sample.fraction, alpha, minprop, holdout, 
                     prediction.type, num.random.splits, sparse.x, use.sparse.data,
                     order.snps, oob.error, max.depth, inbag, use.inbag, 
-                    regularization.factor, use.regularization.factor, regularization.usedepth)
+                    regularization.factor, use.regularization.factor, regularization.usedepth,
+                    alpha_balance)
   if (length(result) == 0) stop("User interrupt or internal error.", call. = FALSE)
   
   ## Handling output.

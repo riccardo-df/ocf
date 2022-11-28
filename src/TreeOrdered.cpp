@@ -233,6 +233,8 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     ++counter[idx]; 
   }
   
+  //std::cout << alpha_balance << std::endl;
+  
   size_t n_left = 0;
   
   double sum_left_m = 0;
@@ -254,8 +256,17 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
 
     // Stop if right child is empty.
     size_t n_right = num_samples_node - n_left;
+    
     if (n_right == 0) {
       break;
+    }
+    
+    // Ignore this split value if alpha-regularity would be violated.
+    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < 0.2 * num_samples_node;
+    
+    if (condition_left || condition_right) {
+      continue;
     }
 
     double sum_right_m = sum_node_m - sum_left_m;
@@ -335,11 +346,20 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
     sum_left_m += sums_m[i]; // If we split at i, sums of indicators for m-th class on the left.
     sum_left_m_1 += sums_m_1[i];
     prod_left += prods[i]; // If we split at i, sums of products on the left.
-
+    
     // Stop if right child is empty.
     size_t n_right = num_samples_node - n_left;
+  
     if (n_right == 0) {
       break;
+    }
+    
+    // Ignore this split value if alpha-regularity would be violated.
+    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < 0.2 * num_samples_node;
+    
+    if (condition_left || condition_right) {
+      continue;
     }
 
     double sum_right_m = sum_node_m - sum_left_m;
@@ -440,6 +460,14 @@ void TreeOrdered::findBestSplitValueUnordered(size_t nodeID, size_t varID, doubl
     }
     
     size_t n_left = num_samples_node - n_right;
+    
+    // Ignore this split value if alpha-regularity would be violated.
+    bool condition_left = n_left < 0.2 * num_samples_node; // Conditions for alpha-regularity.
+    bool condition_right = n_right < 0.2 * num_samples_node;
+    
+    if (condition_left || condition_right) {
+      continue;
+    }
 
     double sum_left_m = sum_node_m - sum_right_m;
     double sum_left_m_1 = sum_node_m_1 - sum_right_m_1;

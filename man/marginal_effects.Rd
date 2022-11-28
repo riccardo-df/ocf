@@ -8,7 +8,7 @@ marginal_effects(
   object,
   data = NULL,
   eval = "atmean",
-  bandwitdh = 0.001,
+  bandwitdh = 0.01,
   inference = FALSE
 )
 }
@@ -21,7 +21,7 @@ marginal_effects(
 
 \item{bandwitdh}{How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.}
 
-\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program. Not advisable if \code{eval = "mean"}.}
+\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program.}
 }
 \value{
 Object of class \code{morf.marginal} with elements:
