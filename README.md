@@ -35,3 +35,29 @@ print(forests)
 atmean_effects <- marginal_effects(forests, eval = "atmean", inference = TRUE)
 print(atmean_effects, latex = TRUE)
 ```
+
+## References
+
+- Athey, S., Tibshirani, J., & Wager, S. (2019).
+<b>Generalized Random Forests.</b> <i>Annals of Statistics</i>, 47(2).
+[<a href="https://projecteuclid.org/euclid.aos/1547197251">paper</a>]
+
+- Lechner, M., & Mareckova, J. (2022). 
+<b>Modified Causal Forest.</b>
+<i>arXiv preprint arXiv:2209.03744</i>.
+[<a href="https://arxiv.org/abs/2209.03744">paper</a>]
+
+- Lechner, M., & Okasa, G. (2019). 
+<b>Random Forest Estimation of the Ordered Choice Model.</b>
+<i>arXiv preprint arXiv:1907.02436</i>.
+[<a href="https://arxiv.org/abs/1907.02436">paper</a>]
+
+- Wager, S., & Athey, S. (2018).
+<b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b>
+<i>Journal of the American Statistical Association</i>, 113(523).
+[<a href="https://www.tandfonline.com/eprint/v7p66PsDhHCYiPafTJwC/full">paper</a>]
+
+- Wright, M. N. & Ziegler, A. (2017).
+<b>ranger: A fast implementation of random forests for high dimensional data in C++ and R.</b>
+<i>Journal of Statistical Software</i>, 77(1).
+[<a href="https://www.jstatsoft.org/article/view/v077i01">paper</a>]
