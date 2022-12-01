@@ -3,7 +3,7 @@
 `morf` modifies the splitting criterion and prediction method of a standard random forest to estimate conditional choice probabilities. It also implements a nonparametric estimators of the marginal effects. Standard errors are computed via a weight-based approach that, under particular conditions such as honesty and subsampling, allows the user to conduct approximate inference.
  
  ## Installation  
-The current development version the package can be installed using the `devtools` package:
+The current development version of the package can be installed using the `devtools` package:
 
 ```
 devtools::install_github("riccardo-df/morf")
