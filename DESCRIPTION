@@ -2,7 +2,6 @@ Package: morf
 Type: Package
 Title: Modified Ordered Random Forest for Estimating the Ordered Choice Model
 Version: 1.0.0
-Date: 2022-07-29
 Author@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com",
   role = c("aut", "cre"))
 Author: Riccardo Di Francesco [aut, cre]
