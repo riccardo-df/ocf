@@ -1,6 +1,6 @@
 # Modified Ordered Random Forest for Estimating the Ordered Choice Model
  
-`morf` modifies the splitting criterion and prediction method of a standard random forest to estimate conditional choice probabilities. It also implements a nonparametric estimators of the marginal effects. Standard errors are computed via a weight-based approach that, under some conditions such as honesty and subsampling, allows the user to conduct approximate inference.
+`morf` modifies the splitting criterion and prediction method of a standard random forest to estimate conditional choice probabilities. It also implements a nonparametric estimators of the marginal effects. Standard errors are computed via a weight-based approach that, under particular conditions such as honesty and subsampling, allows the user to conduct approximate inference.
  
  ## Installation  
 The current development version the package can be installed using the `devtools` package:
