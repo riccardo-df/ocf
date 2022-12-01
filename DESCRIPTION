@@ -1,19 +1,25 @@
 Package: morf
 Type: Package
 Title: Modified Ordered Random Forest for Estimating the Ordered Choice Model
-Version: 0.0.1
+Version: 1.0.0
 Date: 2022-07-29
+Author@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com",
+  role = c("aut", "cre"))
 Author: Riccardo Di Francesco [aut, cre]
 Maintainer: Riccardo Di Francesco <difrancesco.riccardo96@gmail.com>
-Description: A machine learning approach to estimate the ordered choice model. 
-          It exploits the ordered structure of the outcome variable and accounts for the correlation in the estimation errors of each class.          
+Description: 'morf' modifies the splitting criterion and prediction method of a standard random forest to 
+    estimate conditional choice probabilities. It also implements a nonparametric estimators of the
+    marginal effects. Standard errors are computed via a weight-based approach that, under some
+    conditions such as honesty and subsampling, allows the user to conduct approximate inference.
+URL: https://github.com/riccardo-df/morf
 License: GPL-3
 Imports: 
     Rcpp,
     Matrix,
     ggplot2,
     stats,
-    utils
+    utils,
+    stringr
 LinkingTo: Rcpp, RcppEigen
 Depends: R (>= 3.1)
 Encoding: UTF-8

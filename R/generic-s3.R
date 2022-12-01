@@ -370,6 +370,11 @@ print.morf <- function(x, ...) {
 #' @param latex If \code{TRUE}, prints LATEX code for a table displaying the marginal effects.
 #' @param ... Further arguments passed to or from other methods.
 #' 
+#' @details 
+#' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
+#' standard errors have been estimated, they are printed in parenthesis below each point estimate.
+#' 
+#' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}.
 #' 
 #' @author Riccardo Di Francesco
@@ -378,17 +383,57 @@ print.morf <- function(x, ...) {
 print.morf.marginal <- function(x, latex = FALSE, ...) {
   if (!(latex %in% c(TRUE, FALSE))) stop("Invalid value of 'latex'.", call. = FALSE)
   
-  cat("Morf marginal effects results \n\n")
-  cat("Evaluation:                      ", x$evaluation, "\n")
-  cat("Bandwidth:                       ", x$bandwitdh, "\n")
-  cat("Number of classes:               ", x$n.classes, "\n")
-  cat("Number of trees:                 ", x$n.trees, "\n")
-  cat("Sample size:                     ", x$n.samples, "\n")
-  cat("Honest forests:                  ", x$honesty, "\n")
+  if (latex) {
+    table_names <- rename_latex(rownames(x$marginal.effects))
+    
+    cat("\\begingroup
+    \\setlength{\\tabcolsep}{8pt}
+    \\renewcommand{\\arraystretch}{1.1}
+    \\begin{table}[H]
+        \\centering
+        \\begin{adjustbox}{width = 0.75\\textwidth}
+        \\begin{tabular}{@{\\extracolsep{5pt}}l", rep(" c", x$n.classes), "}
+        \\\\[-1.8ex]\\hline
+        \\hline \\\\[-1.8ex]
+        &", paste0(" Class ", seq_len(x$n.classes)[-x$n.classes], " &"), paste0(" Class ", x$n.classes), " \\\\
+        \\addlinespace[2pt]
+        \\hline \\\\[-1.8ex] \n\n", sep = "")
+    
+    if (inherits(x$standard.errors, "list")) {
+      for (i in seq_len(nrow(x$marginal.effects))) {
+        cat("        \\texttt{", table_names[i], "} & ", paste0(round(x$marginal.effects[i, 1:(ncol(x$marginal.effects)-1)], 3), " & "), round(x$marginal.effects[i, ncol(x$marginal.effects)], 3), " \\\\ \n", sep = "")
+      }
+    } else {
+      for (i in seq_len(nrow(x$marginal.effects))) {
+        cat("        \\texttt{", table_names[i], "} & ", paste0(round(x$marginal.effects[i, 1:(ncol(x$marginal.effects)-1)], 3), " & "), round(x$marginal.effects[i, ncol(x$marginal.effects)], 3), " \\\\ \n", sep = "")
+        cat("                     & ", paste0("(", round(x$standard.errors[i, 1:(ncol(x$standard.errors)-1)], 3), ")", " & "), paste0("(", round(x$standard.errors[i, ncol(x$standard.errors)], 3), ")"), " \\\\ \n", sep = "")
+      }
+    }
+    
+    cat("\n        \\addlinespace[3pt]
+        \\\\[-1.8ex]\\hline
+        \\hline \\\\[-1.8ex]
+        \\end{tabular}
+        \\end{adjustbox}
+        \\caption{https://soundcloud.com/theplasticchairband}
+        \\label{table:descriptive.stats}
+    \\end{table}
+\\endgroup")
+  } else {
+    cat("Morf marginal effects results \n\n")
+    cat("Evaluation:                      ", x$evaluation, "\n")
+    cat("Bandwidth:                       ", x$bandwitdh, "\n")
+    cat("Number of classes:               ", x$n.classes, "\n")
+    cat("Number of trees:                 ", x$n.trees, "\n")
+    cat("Sample size:                     ", x$n.samples, "\n")
+    cat("Honest forests:                  ", x$honesty, "\n")
+    
+    cat("\n\n")
+    
+    cat("Marginal Effects: \n\n")
+    
+    print(round(x$marginal.effects, 3))
+  }
   
-  cat("\n\n")
   
-  cat("Marginal Effects: \n\n")
-  
-  print(round(x$marginal.effects, 3))
 }

@@ -1,6 +1,6 @@
 test_that("morf splits and predicts as expected with continuos covariates", {
   ## Generating data.
-  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  set.seed(100)
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
@@ -11,9 +11,9 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   y_m <- ifelse(y <= m, 1, 0)
   y_m_1 <- ifelse(y <= m-1, 1, 0)
   
-  alpha <- runif(1, 0, 0.5)
+  alpha <- 0.1
   
-  ## Fitting a "stump".
+  ## Fitting a "stump."
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
@@ -66,7 +66,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
 
 test_that("morf splits and predicts as expected with categorical covariates", {
   ## Generating data.
-  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  set.seed(100)
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
@@ -77,9 +77,9 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   y_m <- ifelse(y <= m, 1, 0)
   y_m_1 <- ifelse(y <= m-1, 1, 0)
   
-  alpha <- runif(1, 0, 0.5)
+  alpha <- 0.1
   
-  ## Fitting a "stump".
+  ## Fitting a "stump."
   morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
@@ -146,6 +146,5 @@ test_that("Standard predictions and weight-based predictions are the same", {
   morf2 <- morf(x = x, y = y, inference = TRUE)
   
   ## Comparing.
-  # expect_equal(sum(round(morf$predictions, 3) == round(morf2$predictions, 3)), n * 3)
   expect_setequal(round(morf$predictions, 3), round(morf2$predictions, 3))
 })

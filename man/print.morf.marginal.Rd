@@ -16,6 +16,10 @@
 \description{
 Prints a \code{morf.marginal} object.
 }
+\details{
+Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
+standard errors have been estimated, they are printed in parenthesis below each point estimate.
+}
 \seealso{
 \code{\link{morf}}, \code{\link{marginal_effects}}.
 }
