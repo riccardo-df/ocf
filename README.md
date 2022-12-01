@@ -24,7 +24,7 @@ X <- as.matrix(odata[, -1])
 y <- as.numeric(odata[, 1])
 ```
 
-The following cjunk of code estimates conditional choice probabilities and marginal effects. Note the argument `honesty` set to `TRUE`. This is necessary to conduct valid inference. If inference is not of interest, one can improve the prediction performance by setting `honesty = FALSE`. For the marginal effect estimation, I set `eval = "atmean"` for the marginal effect at the mean. Alternatively, we could target mean marginal effect and marginal effect at the median.  The output of the `morf` function can be used with the usual generic methods, such as `summary` and `predict`.
+The following chunk of code estimates conditional choice probabilities and marginal effects. Note the argument `honesty` set to `TRUE`. This is necessary to conduct valid inference. If inference is not of interest, one can improve the prediction performance by setting `honesty = FALSE`. For the marginal effect estimation, I set `eval = "atmean"` for the marginal effect at the mean. Alternatively, we could target mean marginal effect and marginal effect at the median.  The output of the `morf` function can be used with the usual generic methods, such as `summary` and `predict`.
 
 ```
 ## Build forests.
