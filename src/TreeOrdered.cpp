@@ -278,8 +278,10 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     double meanRight_m_1 = sum_right_m_1 / n_right;
     
     // MSE for both classes.
-    double mse_m = meanLeft_m - (meanLeft_m * meanLeft_m) + meanRight_m - (meanRight_m * meanRight_m);
-    double mse_m_1 = meanLeft_m_1 - (meanLeft_m_1 * meanLeft_m_1) + meanRight_m_1 - (meanRight_m_1 * meanRight_m_1);
+    // double mse_m = meanLeft_m - (meanLeft_m * meanLeft_m) + meanRight_m - (meanRight_m * meanRight_m);
+    // double mse_m_1 = meanLeft_m_1 - (meanLeft_m_1 * meanLeft_m_1) + meanRight_m_1 - (meanRight_m_1 * meanRight_m_1);
+    double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
+    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
     
     // MCE.
     double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1); 
@@ -374,7 +376,7 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
     // MSE for both classes.
     double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
     double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
-
+    
     // MCE.
     double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
