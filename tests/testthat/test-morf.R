@@ -1,6 +1,6 @@
 test_that("morf splits and predicts as expected with continuos covariates", {
   ## Generating data.
-  set.seed(100)
+  set.seed(rnorm(1, sd = 1000)) # Random seed.
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
@@ -29,11 +29,11 @@ test_that("morf splits and predicts as expected with continuos covariates", {
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
       ## Skip this split value if alpha-regularity would be violated.
-      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) > length(x) - (length(x) * alpha)) next
+      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) < length(x) * alpha) next
       
       split <- splits[i]
       
-      mse_m <- sum(sum(y_m[ x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
+      mse_m <- sum(sum(y_m[x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
       mse_m_1 <- sum(sum(y_m_1[ x < split])^2 / sum(x < split), sum(y_m_1[x >= split])^2 / sum(x >= split), na.rm = TRUE)
       
       mce <- sum(mean(y_m[x < split] * y_m_1[x < split]), -mean(y_m[x < split]) * mean(y_m_1[x < split]),
@@ -66,7 +66,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
 
 test_that("morf splits and predicts as expected with categorical covariates", {
   ## Generating data.
-  set.seed(100)
+  set.seed(rnorm(1, sd = 1000)) # Random seed.
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
@@ -95,12 +95,12 @@ test_that("morf splits and predicts as expected with categorical covariates", {
     ## Scanning all split points x.
     for (i in seq_along(splits)) {
       ## Skip this split value if alpha-regularity would be violated.
-      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) > length(x) - (length(x) * alpha)) next
+      if (sum(x < splits[i]) < length(x) * alpha | sum(x > splits[i]) < length(x) * alpha) next
       
       split <- splits[i]
       
-      mse_m <- sum(sum(y_m[ x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
-      mse_m_1 <- sum(sum(y_m_1[ x < split])^2 / sum(x < split), sum(y_m_1[x >= split])^2 / sum(x >= split), na.rm = TRUE)
+      mse_m <- sum(sum(y_m[x < split])^2 / sum(x < split), sum(y_m[x >= split])^2 / sum(x >= split), na.rm = TRUE)
+      mse_m_1 <- sum(sum(y_m_1[x < split])^2 / sum(x < split), sum(y_m_1[x >= split])^2 / sum(x >= split), na.rm = TRUE)
       
       mce <- sum(mean(y_m[x < split] * y_m_1[x < split]), -mean(y_m[x < split]) * mean(y_m_1[x < split]),
                  mean(y_m[x >= split] * y_m_1[x >= split]), -mean(y_m[x >= split]) * mean(y_m_1[x >= split]), na.rm = TRUE)
