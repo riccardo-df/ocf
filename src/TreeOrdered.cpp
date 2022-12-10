@@ -278,26 +278,14 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     double meanRight_m_1 = sum_right_m_1 / n_right;
     
     // MSE for both classes.
-    // double mse_m = meanLeft_m - (meanLeft_m * meanLeft_m) + meanRight_m - (meanRight_m * meanRight_m);
-    // double mse_m_1 = meanLeft_m_1 - (meanLeft_m_1 * meanLeft_m_1) + meanRight_m_1 - (meanRight_m_1 * meanRight_m_1);
-    // double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
-    // double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
+    double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
+    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
     
     // MCE.
-    // double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1); 
+    double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
     // Total decrease in loss function.
-    // double decrease = mse_m + mse_m_1 - 2 * mce;
-    
-    // Total decrease in loss function using new intuition.
-    double n_left_squared = n_left * n_left;
-    double n_right_squared = n_right * n_right;
-    
-    double mse_m = sum_left_m * sum_left_m / n_left_squared + sum_right_m * sum_right_m / n_right_squared;
-    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / n_left_squared + sum_right_m_1 * sum_right_m_1 / n_right_squared;
-    double mean_term = meanLeft_m * meanLeft_m_1 + meanRight_m * meanRight_m_1;
-    
-    double decrease = mse_m + mse_m_1 - 2 * mean_term;
+    double decrease = mse_m + mse_m_1 - 2 * mce;
 
     // Regularization.
     regularize(decrease, varID);
@@ -383,25 +371,15 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
     double meanRight_m = sum_right_m / n_right;
     double meanRight_m_1 = sum_right_m_1 / n_right;
     
-    // // MSE for both classes.
-    // double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
-    // double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
-    // 
-    // // MCE.
-    // double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
-    // 
-    // // Total decrease in loss function.
-    // double decrease = mse_m + mse_m_1 - (2 * mce);
+    // MSE for both classes.
+    double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
+    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
     
-    // Total decrease in loss function using new intuition.
-    double n_left_squared = n_left * n_left;
-    double n_right_squared = n_right * n_right;
+    // MCE.
+    double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
-    double mse_m = sum_left_m * sum_left_m / n_left_squared + sum_right_m * sum_right_m / n_right_squared;
-    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / n_left_squared + sum_right_m_1 * sum_right_m_1 / n_right_squared;
-    double mean_term = meanLeft_m * meanLeft_m_1 + meanRight_m * meanRight_m_1;
-    
-    double decrease = mse_m + mse_m_1 - 2 * mean_term;
+    // Total decrease in loss function.
+    double decrease = mse_m + mse_m_1 - 2 * mce;
 
     // Regularization.
     regularize(decrease, varID);
@@ -501,26 +479,16 @@ void TreeOrdered::findBestSplitValueUnordered(size_t nodeID, size_t varID, doubl
     double meanRight_m = sum_right_m / n_right;
     double meanRight_m_1 = sum_right_m_1 / n_right;
     
-    // // MSE for both classes.
-    // double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
-    // double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
-    // 
-    // // MCE.
-    // double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1); 
-    // 
-    // // Total decrease in loss function.
-    // double decrease = mse_m + mse_m_1 - 2 * mce;
+    // MSE for both classes.
+    double mse_m = sum_left_m * sum_left_m / (double) n_left + sum_right_m * sum_right_m / (double) n_right;
+    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / (double) n_left + sum_right_m_1 * sum_right_m_1 / (double) n_right;
     
-    // Total decrease in loss function using new intuition.
-    double n_left_squared = n_left * n_left;
-    double n_right_squared = n_right * n_right;
+    // MCE.
+    double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
-    double mse_m = sum_left_m * sum_left_m / n_left_squared + sum_right_m * sum_right_m / n_right_squared;
-    double mse_m_1 = sum_left_m_1 * sum_left_m_1 / n_left_squared + sum_right_m_1 * sum_right_m_1 / n_right_squared;
-    double mean_term = meanLeft_m * meanLeft_m_1 + meanRight_m * meanRight_m_1;
-    
-    double decrease = mse_m + mse_m_1 - 2 * mean_term;
-    
+    // Total decrease in loss function.
+    double decrease = mse_m + mse_m_1 - 2 * mce;
+
     // Regularization.
     regularize(decrease, varID);
 
