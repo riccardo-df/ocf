@@ -1,6 +1,6 @@
 test_that("morf splits and predicts as expected with continuos covariates", {
   ## Generating data.
-  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  set.seed(1986)
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
@@ -66,7 +66,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
 
 test_that("morf splits and predicts as expected with categorical covariates", {
   ## Generating data.
-  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  set.seed(1986)
   
   n <- 1000
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
