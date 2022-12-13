@@ -285,7 +285,8 @@ void TreeOrdered::findBestSplitValueSmallQ(size_t nodeID, size_t varID, double s
     double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
     // Total decrease in loss function.
-    double decrease = mse_m + mse_m_1 - 2 * mce;
+    // double decrease = mse_m + mse_m_1 - 2 * mce;
+    double decrease = mse_m + mse_m_1 + 2 * mce;
 
     // Regularization.
     regularize(decrease, varID);
@@ -379,8 +380,9 @@ void TreeOrdered::findBestSplitValueLargeQ(size_t nodeID, size_t varID, double s
     double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
     // Total decrease in loss function.
-    double decrease = mse_m + mse_m_1 - 2 * mce;
-
+    // double decrease = mse_m + mse_m_1 - 2 * mce;
+    double decrease = mse_m + mse_m_1 + 2 * mce;
+    
     // Regularization.
     regularize(decrease, varID);
 
@@ -487,8 +489,9 @@ void TreeOrdered::findBestSplitValueUnordered(size_t nodeID, size_t varID, doubl
     double mce = (prod_left / n_left) - (meanLeft_m * meanLeft_m_1) + (prod_right / n_right) - (meanRight_m * meanRight_m_1);
     
     // Total decrease in loss function.
-    double decrease = mse_m + mse_m_1 - 2 * mce;
-
+    // double decrease = mse_m + mse_m_1 - 2 * mce;
+    double decrease = mse_m + mse_m_1 + 2 * mce;
+    
     // Regularization.
     regularize(decrease, varID);
 
