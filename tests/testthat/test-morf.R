@@ -39,7 +39,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
       mce <- sum(mean(y_m[x < split] * y_m_1[x < split]), -mean(y_m[x < split]) * mean(y_m_1[x < split]),
                  mean(y_m[x >= split] * y_m_1[x >= split]), -mean(y_m[x >= split]) * mean(y_m_1[x >= split]), na.rm = TRUE)
       
-      mse[i] <- mse_m + mse_m_1 - 2 * mce
+      mse[i] <- mse_m + mse_m_1 + 2 * mce
     }
     
     ## Best split.
@@ -105,7 +105,7 @@ test_that("morf splits and predicts as expected with categorical covariates", {
       mce <- sum(mean(y_m[x < split] * y_m_1[x < split]), -mean(y_m[x < split]) * mean(y_m_1[x < split]),
                  mean(y_m[x >= split] * y_m_1[x >= split]), -mean(y_m[x >= split]) * mean(y_m_1[x >= split]), na.rm = TRUE)
       
-      mse[i] <- mse_m + mse_m_1 - 2 * mce
+      mse[i] <- mse_m + mse_m_1 + 2 * mce
     }
     
     ## Best split.
