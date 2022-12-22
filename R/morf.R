@@ -142,6 +142,9 @@ morf <- function(x = NULL, y = NULL,
   check_maxdepth(max.depth)
   check_samplefraction(sample.fraction)
   
+  ## Handle factor outcome.
+  if (is.factor(y)) y <- as.numeric(y)
+  
   # Store useful variables.
   y.classes <- sort(unique(y))
   n.classes <- length(y.classes)
@@ -332,7 +335,7 @@ morf <- function(x = NULL, y = NULL,
     variances <- matrix(unlist(lapply(sums_squares, function(x) {sample_correction * x}), use.names = FALSE), ncol = n.classes)
     colnames(variances) <- paste("Y=", y.classes, sep = "")
   } else if (honesty) {
-    class.probabilities <- mapply(function(x, y) {honest_fitted(x, train_sample, honest_sample, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
+    class.probabilities <- mapply(function(x, y) {honest_fitted(x, x_train, x_honest, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
     variances <- list()
   } else {
     class.probabilities <- matrix(unlist(lapply(forests, function(x) {predict(x, data = x_train)$predictions}), use.names = FALSE), ncol = n.classes)
