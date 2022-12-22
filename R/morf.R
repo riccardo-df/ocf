@@ -222,6 +222,8 @@ morf <- function(x = NULL, y = NULL,
     
     train_sample <- honest_split$train_sample
     honest_sample <- honest_split$honest_sample
+    colnames(train_sample) <- c("y", independent.variable.names)
+    colnames(honest_sample) <- c("y", independent.variable.names)
     
     y_train <- train_sample[, 1]
     x_train <- as.data.frame(train_sample[, -1])
@@ -233,6 +235,7 @@ morf <- function(x = NULL, y = NULL,
   } else { 
     train_sample <- data.frame(y, x)
     honest_sample <- list()
+    colnames(train_sample) <- c("y", independent.variable.names)
     
     y_train <- train_sample[, 1]
     x_train <- as.data.frame(train_sample[, -1])

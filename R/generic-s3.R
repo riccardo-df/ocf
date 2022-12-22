@@ -54,8 +54,7 @@ predict.morf <- function(object, data = NULL, type = "response",
   }
   
   ## Calling predict.morf.forest.
-  prediction_output <- lapply(forests, function (x) {predict(x, data, type, predict.all, n.trees, object$inbag.counts, 
-                                                             n.threads, verbose, seed)})
+  prediction_output <- lapply(forests, function (x) {predict(x, data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed)})
   
   ## Handling prediction output, according to prediction type.
   if (type == "response") {
@@ -66,6 +65,7 @@ predict.morf <- function(object, data = NULL, type = "response",
         honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y_honest <= m -1, 1, 0))
         counter <- counter + 1
       }
+      
       predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
     } else {
       predictions <- matrix(unlist(lapply(prediction_output, function (x) {x$predictions}), use.names = FALSE), ncol = n.classes, byrow = FALSE)
