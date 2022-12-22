@@ -367,7 +367,9 @@ morf <- function(x = NULL, y = NULL,
   output$honesty <- honesty
   output$honesty.fraction <- if (honesty) honesty.fraction else 0
   output$full_data <- data.frame(y, x)
+  colnames(output$full_data) <- colnames(train_sample)
   output$honest_data <- if (honesty) data.frame(y_honest, x_honest) else list()
+  if (honesty) colnames(output$honest_data) <- colnames(train_sample)
   output$call <- sys.call()
   
   class(output) <- "morf"
