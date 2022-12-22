@@ -30,7 +30,8 @@
 #' \deqn{p_{m, j}^\prime \left( x \right) := P \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - P \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
 #'     
 #' where \eqn{x_j} is the j-th element of the vector \eqn{x} and \eqn{\lceil x_j \rceil} and \eqn{\lfloor x_j \rfloor}
-#' correspond to \eqn{x} with its j-th element rounded up and down to the closest integer.\cr  
+#' correspond to \eqn{x} with its j-th element rounded up and down to the closest integer. The program assumes that 
+#' covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to discrete.\cr  
 #'                      
 #' If \code{eval = "mean"}, then the mean marginal effects are estimated:
 #' 
@@ -42,9 +43,6 @@
 #' 
 #' \code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
 #' evaluation point rather than the mean.\cr
-#' 
-#' The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
-#' to be categorical or binary.
 #'
 #' @importFrom stats median sd pnorm
 #'

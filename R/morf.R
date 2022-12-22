@@ -335,7 +335,7 @@ morf <- function(x = NULL, y = NULL,
     class.probabilities <- mapply(function(x, y) {honest_fitted(x, train_sample, honest_sample, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
     variances <- list()
   } else {
-    class.probabilities <- matrix(unlist(lapply(forests, function(x) {predict(x, data = train_sample)$predictions}), use.names = FALSE), ncol = n.classes)
+    class.probabilities <- matrix(unlist(lapply(forests, function(x) {predict(x, data = x_train)$predictions}), use.names = FALSE), ncol = n.classes)
     variances <- list()
   } 
   
