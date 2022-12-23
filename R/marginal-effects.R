@@ -128,8 +128,10 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     
     X_up_data[[j]] <- data.frame(shifted_var_up, original_covariates)
     colnames(X_up_data[[j]])[1] <- names(X_up)[j]
+    colnames(X_up_data[[j]])[-1] <- names(X_up)[-j]
     X_down_data[[j]] <- data.frame(shifted_var_down, original_covariates)
     colnames(X_down_data[[j]])[1] <- names(X_down)[j]
+    colnames(X_down_data[[j]])[-1] <- names(X_down)[-j]
   }
   
   ## Correcting for discrete covariates. The shifted covariate is always in the first column.
@@ -151,13 +153,12 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     counter <- 1
     
     for (m in y.classes) {
-      honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y_honest <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y_honest <= m -1, 1, 0))
+      honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y <= m -1, 1, 0))
       counter <- counter + 1
     }
 
     # Storing forests in a separate list. Forests are always the first n.classes elements of a morf object.
     forests <- list()
-    
     for (m in seq_len(n.classes)) {
       forests[[m]] <- object[[m]]
     }

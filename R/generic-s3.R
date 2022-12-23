@@ -434,6 +434,4 @@ print.morf.marginal <- function(x, latex = FALSE, ...) {
     
     print(round(x$marginal.effects, 3))
   }
-  
-  
 }
