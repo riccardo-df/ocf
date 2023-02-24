@@ -9,6 +9,7 @@
 #' @return The MSE, the RPS, or the classification error of the method.
 #' 
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -35,7 +36,7 @@
 #' 
 #' mean_squared_error(y_test, predictions$probabilities)
 #' mean_ranked_score(y_test, predictions$probabilities)
-#' classification_error(y_test, predictions$classification)
+#' classification_error(y_test, predictions$classification)}
 #' 
 #' @md
 #' @details 
