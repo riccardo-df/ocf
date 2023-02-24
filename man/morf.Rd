@@ -83,7 +83,7 @@ table(y_test, predictions$classification)
 
 ## Compute standard errors. This requires honest forests.
 honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
-honest_forests$predictions$standard.errors}
+head(honest_forests$predictions$standard.errors)}
 
 }
 \seealso{

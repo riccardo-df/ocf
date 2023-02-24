@@ -13,12 +13,35 @@
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+Prints an \code{morf.marginal} object.
+}
 \description{
 Prints an \code{morf.marginal} object.
 }
 \details{
 Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 standard errors have been estimated, they are printed in parenthesis below each point estimate.
+}
+\examples{
+#' \donttest{
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+
+## Fit morf. Use large number of trees.
+forests <- morf(y, X, n.trees = 4000)
+
+## Marginal effects at the mean.
+me <- marginal_effects(forests, eval = "atmean")
+print(me)
+print(me, latex = TRUE)}
+
 }
 \seealso{
 \code{\link{morf}}, \code{\link{marginal_effects}}.

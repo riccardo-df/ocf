@@ -11,6 +11,9 @@
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+Prints an \code{\link{morf}} object.
+}
 \description{
 Prints an \code{\link{morf}} object.
 }

@@ -11,6 +11,9 @@
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+Summarizes an \code{\link{morf}} object.
+}
 \description{
 Summarizes an \code{\link{morf}} object.
 }
