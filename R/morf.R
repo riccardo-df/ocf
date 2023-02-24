@@ -51,7 +51,7 @@
 #' 
 #' ## Compute standard errors. This requires honest forests.
 #' honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
-#' honest_forests$predictions$standard.errors}
+#' head(honest_forests$predictions$standard.errors)}
 #' 
 #' @import utils stats orf
 #' @importFrom Rcpp evalCpp
@@ -224,7 +224,7 @@ morf <- function(y = NULL, X = NULL,
     products <- mapply(function(x, y) {t(apply(x, 1, function(z) {z * (y$y_m_honest - y$y_m_1_honest)}))}, weights, honest_outcomes, SIMPLIFY = FALSE)
     sums_squares <- lapply(products, function(x) {rowSums((x - rowMeans(x))^2)})
     variances <- matrix(unlist(lapply(sums_squares, function(x) {sample_correction * x}), use.names = FALSE), ncol = n.classes)
-    colnames(variances) <- paste("Y=", y.classes, sep = "")
+    colnames(variances) <- paste("P(Y=", y.classes, ")", sep = "")
   } else if (honesty) {
     rownames(x_train) <- rownames(honest_split$train_sample)
     rownames(x_honest) <- rownames(honest_split$honest_sample)

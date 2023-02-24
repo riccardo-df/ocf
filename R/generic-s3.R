@@ -220,6 +220,9 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' @param object An \code{\link{morf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
+#' @return 
+#' Summarizes an \code{\link{morf}} object.
+#' 
 #' @examples 
 #' \donttest{
 #' ## Load data from orf package.
@@ -271,6 +274,9 @@ summary.morf <- function(object, ...) {
 #' @param x An \code{\link{morf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
+#' @return 
+#' Prints an \code{\link{morf}} object.
+#' 
 #' @examples 
 #' \donttest{
 #' ## Load data from orf package.
@@ -305,6 +311,28 @@ print.morf <- function(x, ...) {
 #' @param object An \code{morf.marginal} object.
 #' @param latex If \code{TRUE}, prints LATEX code.
 #' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return 
+#' Summarizes an \code{morf.marginal} object.
+#' 
+#' @examples 
+#' #' \donttest{
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Fit morf. Use large number of trees.
+#' forests <- morf(y, X, n.trees = 4000)
+#' 
+#' ## Marginal effects at the mean.
+#' me <- marginal_effects(forests, eval = "atmean")
+#' summary(me)
+#' summary(me, latex = TRUE)}
 #' 
 #' @details 
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
@@ -382,6 +410,28 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' @param x An \code{morf.marginal} object.
 #' @param latex If \code{TRUE}, prints LATEX code.
 #' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return 
+#' Prints an \code{morf.marginal} object.
+#' 
+#' @examples 
+#' #' \donttest{
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Fit morf. Use large number of trees.
+#' forests <- morf(y, X, n.trees = 4000)
+#' 
+#' ## Marginal effects at the mean.
+#' me <- marginal_effects(forests, eval = "atmean")
+#' print(me)
+#' print(me, latex = TRUE)}
 #' 
 #' @details 
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
