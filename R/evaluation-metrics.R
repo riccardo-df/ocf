@@ -1,31 +1,73 @@
-#' Mean Squared Error
+#' Accuracy measures for ordered probability predictions
 #'
-#' Computes the mean squared error for evaluating the accuracy of ordered probability predictions.
+#' Accuracy measures for evaluating ordered probability predictions.
 #'
-#' @param predictions Matrix of predictions.
 #' @param y Either the observed outcome vector or a matrix of true probabilities.
+#' @param predictions Matrix of predictions.
 #' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
 #' 
-#' @return The mean squared error of the method.
-#'
+#' @return The MSE, the RPS, or the classification error of the method.
+#' 
+#' @examples 
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Training-test split.
+#' train_idx <- sample(seq_len(length(y)), length(y)/2)
+#' 
+#' y_tr <- y[train_idx]
+#' X_tr <- X[train_idx, ]
+#' 
+#' y_test <- y[-train_idx]
+#' X_test <- X[-train_idx, ]
+#' 
+#' ## Fit morf on training sample.
+#' forests <- morf(y_tr, X_tr)
+#' 
+#' ## Accuracy measures on test sample.
+#' predictions <- predict(forests, X_test)
+#' 
+#' mean_squared_error(y_test, predictions$probabilities)
+#' mean_ranked_score(y_test, predictions$probabilities)
+#' classification_error(y_test, predictions$classification)
+#' 
+#' @md
 #' @details 
-#' If \code{use.true = FALSE}, the mean squared error is computed as follows:
+#' ## MSE and RPS
+#' If \code{use.true == FALSE}, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:
 #' 
-#' \deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
+#' \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
 #' 
-#' otherwise:
+#' \deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (1 (Y_i \leq m) - \hat{p}_m^* (x))^2}
 #' 
-#' \deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2}
+#' If \code{use.true == TRUE}, the MSE and the RPS are computed as follows (useful for simulation studies):
+#' 
+#' \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2}
+#' 
+#' \deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
 #' 
 #' where:
 #' 
-#' \deqn{p_m (x) = P(Y_i = m \, | \, X_i = x)}
+#' \deqn{p_m (x) = P(Y_i = m | X_i = x)}
 #' 
-#' The second formula is useful for simulation studies.
-#'
+#' \deqn{p_m^* (x) = P(Y_i \leq m | X_i = x)}
+#' 
+#' ## Classification error
+#' Classification error is computed as follows:
+#' 
+#' \deqn{CE = \frac{1}{n} \sum_{i = 1}^n 1 (Y_i \neq \hat{Y}_i)}
+#' 
+#' where Y_i are the observed class labels. 
+#' 
 #' @author Riccardo Di Francesco
 #' 
-#' @seealso \code{\link{morf}}, \code{\link{mean_ranked_score}}
+#' @seealso \code{\link{mean_ranked_score}}
 #' 
 #' @export
 mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from https://github.com/okasag/orf/blob/master/orf/R/evals.R
@@ -55,35 +97,14 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 
 #' Mean Ranked Probability Score
 #'
-#' Computes the mean ranked probability score for evaluating the accuracy of ordered probability predictions.
-#'
-#' @param predictions Matrix of predictions.
 #' @param y Either the observed outcome vector or a matrix of true probabilities. 
+#' @param predictions Matrix of predictions.
 #' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
-#' 
-#' @return The mean ranked probability score of the method.
 #'
-#' @details 
-#' If \code{use.true = FALSE}, the mean ranked probability score is computed as follows:
-#' 
-#' \deqn{\frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (1 (Y_i \leq m) - \hat{p}_m^* (x))^2}
-#' 
-#' otherwise:
-#' 
-#' \deqn{\frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
-#' 
-#' where:
-#' 
-#' \deqn{p_m^* (x) = P(Y_i \leq m | X_i = x)}
-#' 
-#' The second formula is useful for simulation studies.
-#' 
-#' @author Riccardo Di Francesco
-#' 
-#' @seealso \code{\link{morf}}, \code{\link{mean_ranked_score}}
+#' @rdname mean_squared_error
 #'
 #' @export
-mean_ranked_score <- function(y, predictions, use.true = FALSE){ # Taken from https://github.com/okasag/orf/blob/master/orf/R/evals.R
+mean_ranked_score <- function(y, predictions, use.true = FALSE) { # Taken from https://github.com/okasag/orf/blob/master/orf/R/evals.R
   ## Handling inputs and checks.
   if (!(use.true %in% c(TRUE, FALSE))) stop("'use.true' must be logical.", call. = FALSE)
   if (use.true == TRUE & is.null(dim(y)) | use.true == FALSE & !is.null(dim(y))) stop("Combination of 'use.true' and 'y' is non-sensical.")
@@ -117,3 +138,21 @@ mean_ranked_score <- function(y, predictions, use.true = FALSE){ # Taken from ht
   ## Output.
   return(mrps)
 }
+
+
+#' Classification Error
+#'
+#' @param y Observed outcome vector. 
+#' @param predictions Vector of predicted labels.
+#'
+#' @rdname mean_squared_error
+#'
+#' @export
+classification_error <- function(y, predictions) { 
+  ## Classification error.
+  ce <- mean(y != predictions)
+  
+  ## Output.
+  return(ce)
+}
+

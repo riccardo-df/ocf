@@ -1,36 +1,52 @@
-#' Prediction Method for Morf Objects
+#' Prediction Method for morf Objects
 #'
 #' Prediction method for class \code{\link{morf}}.
 #'
-#' @param object \code{morf} object.
-#' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.
-#' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
-#' @param n.trees Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.
+#' @param object An \code{\link{morf}} object.
+#' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_data} is used.
 #' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}. 
-#' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-#' @param n.threads Number of threads. Default is number of CPUs available.
-#' @param verbose Verbose output on or off.
 #' @param ... Further arguments passed to or from other methods.
 #' 
-#' @return Object of class \code{morf.prediction} with elements:
-#'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
-#'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-#'   \item{\code{n.trees}}{Number of trees.} 
-#'   \item{\code{n.covariates}}{Number of covariates.}
-#'   \item{\code{n.samples}}{Number of samples.}
-#'   \item{\code{honesty}}{Whether predictions are honest.}
-#'   
+#' @return 
+#' Desired predictions.
+#' 
+#' @examples 
+#' \donttest{
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Training-test split.
+#' train_idx <- sample(seq_len(length(y)), length(y)/2)
+#' 
+#' y_tr <- y[train_idx]
+#' X_tr <- X[train_idx, ]
+#' 
+#' y_test <- y[-train_idx]
+#' X_test <- X[-train_idx, ]
+#' 
+#' ## Fit morf on training sample.
+#' forests <- morf(y_tr, X_tr)
+#' 
+#' ## Predict on test sample.
+#' predictions <- predict(forests, X_test)
+#' head(predictions$probabilities)
+#' predictions$classification
+#' 
+#' ## Get terminal nodes.
+#' predictions <- predict(forests, X_test, type = "terminalNodes")
+#' predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
+#'
 #' @details 
-#' For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
-#' honest, then these predictions are honest.\cr
+#' If \code{type == "response"}, the routine returns the predicted conditional class probabilities and the predicted class 
+#' labels. If forests are honest, the predicted probabilities are honest.\cr
 #' 
-#' For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
-#' dataset are returned.\cr
-#' 
-#' @references
-#' \itemize{
-#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-#'   }
+#' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
 #'   
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 #' 
@@ -39,26 +55,24 @@
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-predict.morf <- function(object, data = NULL, type = "response",
-                         predict.all = FALSE, n.trees = object$n.trees,
-                         n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
-  ## Handling inputs and check. 
+predict.morf <- function(object, data = NULL, type = "response", ...) {
+  ## 0.) Default for variables not needed.
+  predict.all <- FALSE; n.trees <- object$tuning.info$n.trees; n.threads <- NULL; verbose <- TRUE; seed <- NULL
+  
+  ## 1.) Handling inputs and check. 
   if (is.null(data)) data <- object$full_data
-  y.classes <- object$classes
-  n.classes <- object$n.classes
+  y.classes <- sort(unique(object$full_data[, 1]))
+  n.classes <- length(y.classes)
+  forests.info <- object$forests.info
   
-  # Storing forests in a separate list. Forests are always the first n.classes elements of a morf object.
-  forests <- list()
-  for (m in seq_len(n.classes)) {
-    forests[[m]] <- object[[m]]
-  }
+  ## 2.) Calling predict.morf.forest.
+  prediction_output <- lapply(forests.info, function (x) {predict(x, data, type)})
   
-  ## Calling predict.morf.forest.
-  prediction_output <- lapply(forests, function (x) {predict(x, data, type, predict.all, n.trees, object$inbag.counts, n.threads, verbose, seed)})
-  
-  ## Handling prediction output, according to prediction type.
+  ## 3.) Handling prediction output, according to prediction type.
+  # 3a.) Handle response type.
   if (type == "response") {
-    if (object$honesty) { 
+    # 3aa.) If honest forests, generate data sets and call honest function. Else, call standard function.
+    if (object$tuning.info$honesty) { 
       honest_outcomes <- list()
       counter <- 1
       for (m in y.classes) {
@@ -66,7 +80,7 @@ predict.morf <- function(object, data = NULL, type = "response",
         counter <- counter + 1
       }
       
-      predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)}, forests, honest_outcomes)
+      predictions <- mapply(function (x, y) {honest_predictions(x, object$honest_data, data, y$y_m_honest, y$y_m_1_honest)}, forests.info, honest_outcomes)
     } else {
       predictions <- matrix(unlist(lapply(prediction_output, function (x) {x$predictions}), use.names = FALSE), ncol = n.classes, byrow = FALSE)
     }
@@ -75,73 +89,54 @@ predict.morf <- function(object, data = NULL, type = "response",
     predictions <- matrix(predictions / rowSums(matrix(predictions, ncol = n.classes)), ncol = n.classes)
     colnames(predictions) <- paste("P(Y=", y.classes, ")", sep = "")
     
+    # Classification
+    classification <- apply(predictions, 1, which.max)
+    
     # Output.
-    out <- list("predictions" = predictions,
-                "n.trees" = prediction_output[[1]]$n.trees,
-                "n.covariates" = prediction_output[[1]]$n.covariates,
-                "n.samples" = prediction_output[[1]]$num.samples,
-                "honesty" = object$honesty)
+    out <- list("probabilities" = predictions,
+                "classification" = classification,
+                "honesty" = object$tuning.info$honesty)
   } else if (type == "terminalNodes") {
     node_ids <- lapply(prediction_output, function (x) {x$predictions})
-    names(node_ids) <- paste("P(Y=", y.classes, ")", sep = "")
-    out <- list("predictions" = node_ids,
-                "n.trees" = prediction_output[[1]]$n.trees,
-                "n.covariates" = prediction_output[[1]]$covariate.names,
-                "n.samples" = prediction_output[[1]]$n.samples,
-                "honesty" = object$honesty)
+    names(node_ids) <- paste("forest.", y.classes, sep = "")
+    out <- node_ids
   }
   
   ## Output.
-  class(out) <- "morf.prediction"
   return(out)
 }
 
 
-#' Prediction Method for Morf Forest Objects
+#' Prediction Method for morf.forest Objects (Internal Use)
 #'
 #' Prediction method for class \code{morf.forest}.
 #'
-#' @param object \code{morf.forest} object.
+#' @param object An \code{morf.forest} object.
 #' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
-#' @param predict.all Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}). 
-#' @param n.trees Number of trees used for prediction. The first \code{n.trees} in the forest are used. Default uses all trees in the forest.
 #' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}.
-#' @param seed Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed. 
-#' @param n.threads Number of threads. Default is number of CPUs available.
-#' @param verbose Verbose output.
-#' @param inbag.counts Number of times the observations are in-bag in the trees.
 #' @param ... Further arguments passed to or from other methods.
 #' 
-#' @return Object of class \code{morf.prediction} with elements:
+#' @return 
+#' Object of class \code{morf.prediction} with elements:
 #'   \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities.
 #'                             If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-#'   \item{\code{n.trees}}{Number of trees.} 
-#'   \item{\code{n.covariates}}{Number of covariates.}
-#'   \item{\code{n.samples}}{Number of samples.}
 #'   
 #' @details 
-#' For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
-#' honest, then these predictions are honest.\cr
+#' If \code{type === "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
+#' honest, these predictions are honest.\cr
 #' 
-#' For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
-#' dataset are returned.
-#'   
-#' @references
-#' \itemize{
-#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-#'   }
+#' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.
 #'   
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-predict.morf.forest <- function(object, data, type = "response",
-                                predict.all = FALSE, n.trees = object$num.trees,
-                                inbag.counts = NULL,
-                                n.threads = NULL, verbose = TRUE, seed = NULL, ...) {
-  ## Handling inputs and checks.
-  # Generic checks.
+predict.morf.forest <- function(object, data, type = "response", ...) {
+  ## 0.) Default for variables not needed.
+  predict.all <- FALSE; n.trees <- object$num.trees; n.threads <- NULL; verbose <- TRUE; seed <- NULL; inbag.counts <- NULL
+  
+  ## 1.) Handling inputs and checks.
   forest <- object
   if (!inherits(forest, "morf.forest")) stop("Invalid class of input object.", call. = FALSE) 
   if (is.null(forest$num.trees) || is.null(forest$child.nodeIDs) || is.null(forest$split.varIDs) ||
@@ -163,16 +158,16 @@ predict.morf.forest <- function(object, data, type = "response",
   
   if (is.null(seed)) seed <- stats::runif(1 , 0, .Machine$integer.max)
   
-  ## Data.
-  # Handling and check.
+  ## 2.) Data.
+  # 2a.) Handling and check.
   x <- data
   if (sum(!(forest$covariate.names %in% colnames(x))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
   
-  # Subset to same columns as in training sample.
+  # 2b.) Subset to same columns as in training sample.
   if (length(colnames(x)) != length(forest$covariate.names) || 
       any(colnames(x) != forest$covariate.names)) x <- x[, forest$covariate.names, drop = FALSE]
   
-  # Recode characters into factors.
+  # 2c.) Recode characters into factors.
   if (!is.matrix(x) && !inherits(x, "Matrix")) {
     char.columns <- sapply(x, is.character)
     if (length(char.columns) > 0) {
@@ -180,7 +175,7 @@ predict.morf.forest <- function(object, data, type = "response",
     }
   }
   
-  # Data type.
+  # 2d.) Data type.
   if (is.list(x) && !is.data.frame(x)) x <- as.data.frame(x)
   if (!is.matrix(x) & !inherits(x, "Matrix")) x <- data.matrix(x)
   
@@ -194,13 +189,13 @@ predict.morf.forest <- function(object, data, type = "response",
     x <- data.matrix(x)
   }
   
-  # Missing values.
+  # 2e.) Missing values.
   if (any(is.na(x))) {
     offending_columns <- colnames(x)[colSums(is.na(x)) > 0]
     stop("Missing values in columns: ", paste0(offending_columns, collapse = ", "), ".", call. = FALSE)
   }
   
-  ## Defaults for variables not needed.
+  ## 3.) Defaults for variables not needed.
   treetype <- 3; splitrule <- 1; mtry <- 0; max.depth <- 0; min.node.size <- 0; importance <- 0;
   prediction.mode <- TRUE; oob.error <- FALSE; y <- matrix(c(0, 0)); alpha_balance <- 0.2
   split.select.weights <- list(c(0, 0)); use.split.select.weights <- FALSE
@@ -215,7 +210,7 @@ predict.morf.forest <- function(object, data, type = "response",
   regularization.factor <- c(0, 0); use.regularization.factor <- FALSE; regularization.usedepth <- FALSE
   snp.data <- as.matrix(0); gwa.mode <- FALSE
   
-  ## Calling Morf in prediction mode.
+  ## 4.) Calling morf in prediction mode.
   result <- morfCpp(treetype, x, y, forest$covariate.names, mtry,
                     n.trees, verbose, seed, n.threads, write.forest, importance,
                     min.node.size, split.select.weights, use.split.select.weights,
@@ -230,7 +225,7 @@ predict.morf.forest <- function(object, data, type = "response",
                     alpha_balance)
   if (length(result) == 0) stop("User interrupt or internal error.", call. = FALSE)
   
-  ## Handling output.
+  ## 5.) Handling output.
   result$num.samples <- nrow(x)
   result$treetype <- forest$treetype
   
@@ -256,51 +251,11 @@ predict.morf.forest <- function(object, data, type = "response",
 }
 
 
-#' Plot Method for Morf Objects
+#' Summary Method for morf Objects
 #' 
-#' Plots a \code{morf} object.
+#' Summarizes an \code{\link{morf}} object.
 #' 
-#' @param x \code{morf} object.
-#' @param multiple.panels Whether to plot each class in a separate panel.
-#' @param ... Further arguments passed to or from other methods.
-#'
-#' @import ggplot2
-#' @importFrom utils stack
-#' 
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
-#' 
-#' @author Riccardo Di Francesco
-#' 
-#' @export
-plot.morf <- function(x, multiple.panels = FALSE, ...) {
-  ## Handling inputs.
-  probabilities <- stack(as.data.frame(x$predictions))
-  
-  values <- NULL
-  ind <- NULL
-  
-  if (multiple.panels) {
-    ggplot(data = probabilities, aes(x = values, fill = ind)) +
-      geom_density(alpha = 0.4) +
-      facet_wrap(~ind) + 
-      xlab("Predicted probability") + ylab("Density") +
-      theme_bw() +
-      theme(plot.title = element_text(hjust = 0.5))
-  } else {
-    ggplot(data = probabilities, aes(x = values, fill = ind)) +
-      geom_density(alpha = 0.4) +
-      xlab("Predicted probability") + ylab("Density") +
-      theme_bw() +
-      theme(plot.title = element_text(hjust = 0.5))
-  }
-}
-
-
-#' Summary Method for Morf Objects
-#' 
-#' Summarizes a \code{morf} object.
-#' 
-#' @param object \code{morf} object.
+#' @param object An \code{\link{morf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
@@ -310,35 +265,31 @@ plot.morf <- function(x, multiple.panels = FALSE, ...) {
 #' @export
 summary.morf <- function(object, ...) {
   cat("Call: \n")
-  cat(deparse(object$call), "\n\n")
+  cat(deparse(object$tuning.info$call), "\n\n")
   
-  cat("Classes: \n")
-  cat(object$classes, "\n\n")
+  cat("Data info: \n")
+  cat("Full sample size:  ", dim(object$full_data)[1], "\n")
+  cat("N. covariates:     ", dim(object$full_data)[2], "\n")
+  cat("Classes:           ", sort(unique(object$full_data[, 1])), "\n\n")
   
-  cat("Variable importance: \n")
-  print(round(object$overall.importance, 3)); cat("\n")
+  cat("Relative variable importance: \n")
+  print(round(object$importance, 3)); cat("\n")
   
-  cat("Forests info: \n")
-  cat("Sample size:       ", object$n.samples, "\n")
-  cat("N.trees:           ", object$n.trees, "\n")
-  cat("mtry:              ", object$mtry, "\n")
-  cat("min.node.size      ", object$min.node.size, "\n")
-  if (object$replace) cat("Subsampling scheme:     Bootstrap \n" ) else cat("Subsampling scheme: No replacement \n" )
-  cat("Honesty:           ", object$honesty, "\n")
-  if(object$honesty) cat("Honest fraction:   ", object$honesty.fraction)
-  cat("\n\n")
-  
-  cat("In-sample accuracy: \n")
-  cat("MSE: ", round(object$mean.squared.error, 3), "\n")
-  cat("RPS: ", round(object$mean.ranked.score, 3))
+  cat("Tuning parameters: \n")
+  cat("N. trees:          ", object$tuning.info$n.trees, "\n")
+  cat("mtry:              ", object$tuning.info$mtry, "\n")
+  cat("min.node.size      ", object$tuning.info$min.node.size, "\n")
+  if (object$tuning.info$replace) cat("Subsampling scheme:     Bootstrap \n" ) else cat("Subsampling scheme: No replacement \n" )
+  cat("Honesty:           ", object$tuning.info$honesty, "\n")
+  if(object$tuning.info$honesty) cat("Honest fraction:   ", object$tuning.info$honesty.fraction)
 }
  
  
-#' Print Method for Morf Objects
+#' Print Method for morf Objects
 #'
-#' Prints a \code{morf} object.
+#' Prints an \code{\link{morf}} object.
 #'
-#' @param x \code{morf} object.
+#' @param x An \code{\link{morf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @seealso \code{\link{morf}}
@@ -347,27 +298,16 @@ summary.morf <- function(object, ...) {
 #' 
 #' @export
 print.morf <- function(x, ...) {
-  cat("Call: \n")
-  cat(deparse(x$call), "\n\n")
-  cat("Number of classes:               ", x$n.classes, "\n")
-  cat("Number of trees:                 ", x$n.trees, "\n")
-  cat("Sample size:                     ", x$n.samples, "\n")
-  cat("Number of covariates:            ", x$n.covariates, "\n")
-  cat("Mtry:                            ", x$mtry, "\n")
-  cat("Minimum node size:               ", x$min.node.size, "\n")
-  cat("Honesty:                         ", x$honesty, "\n")
-  if (x$honesty) cat("Fraction honesty:                ", x$honesty.fraction, "\n")
-  cat("MSE:                             ", round(x$mean.squared.error, 3), "\n")
-  cat("RPS:                             ", round(x$mean.ranked.score, 3))
+  summary.morf(x, ...)
 }
 
 
-#' Print Method for Morf Marginal Effects
+#' Print Method for morf.marginal Objects
 #'
-#' Prints a \code{morf.marginal} object.
+#' Prints an \code{morf.marginal} object.
 #'
-#' @param x \code{morf.marginal} object.
-#' @param latex If \code{TRUE}, prints LATEX code for a table displaying the marginal effects.
+#' @param x An \code{morf.marginal} object.
+#' @param latex If \code{TRUE}, prints LATEX code.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @details 

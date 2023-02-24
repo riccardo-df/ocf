@@ -2,40 +2,92 @@
 % Please edit documentation in R/evaluation-metrics.R
 \name{mean_squared_error}
 \alias{mean_squared_error}
-\title{Mean Squared Error}
+\alias{mean_ranked_score}
+\alias{classification_error}
+\title{Accuracy measures for ordered probability predictions}
 \usage{
 mean_squared_error(y, predictions, use.true = FALSE)
+
+mean_ranked_score(y, predictions, use.true = FALSE)
+
+classification_error(y, predictions)
 }
 \arguments{
-\item{y}{Either the observed outcome vector or a matrix of true probabilities.}
+\item{y}{Observed outcome vector.}
 
-\item{predictions}{Matrix of predictions.}
+\item{predictions}{Vector of predicted labels.}
 
 \item{use.true}{If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.}
 }
 \value{
-The mean squared error of the method.
+The MSE, the RPS, or the classification error of the method.
 }
 \description{
-Computes the mean squared error for evaluating the accuracy of ordered probability predictions.
+Accuracy measures for evaluating ordered probability predictions.
 }
 \details{
-If \code{use.true = FALSE}, the mean squared error is computed as follows:
+\subsection{MSE and RPS}{
 
-\deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
+If \code{use.true == FALSE}, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:
 
-otherwise:
+\deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
 
-\deqn{\frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2}
+\deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (1 (Y_i \leq m) - \hat{p}_m^* (x))^2}
+
+If \code{use.true == TRUE}, the MSE and the RPS are computed as follows (useful for simulation studies):
+
+\deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2}
+
+\deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
 
 where:
 
-\deqn{p_m (x) = P(Y_i = m \, | \, X_i = x)}
+\deqn{p_m (x) = P(Y_i = m | X_i = x)}
 
-The second formula is useful for simulation studies.
+\deqn{p_m^* (x) = P(Y_i \leq m | X_i = x)}
+}
+
+\subsection{Classification error}{
+
+Classification error is computed as follows:
+
+\deqn{CE = \frac{1}{n} \sum_{i = 1}^n 1 (Y_i \neq \hat{Y}_i)}
+
+where Y_i are the observed class labels.
+}
+}
+\examples{
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+
+## Training-test split.
+train_idx <- sample(seq_len(length(y)), length(y)/2)
+
+y_tr <- y[train_idx]
+X_tr <- X[train_idx, ]
+
+y_test <- y[-train_idx]
+X_test <- X[-train_idx, ]
+
+## Fit morf on training sample.
+forests <- morf(y_tr, X_tr)
+
+## Accuracy measures on test sample.
+predictions <- predict(forests, X_test)
+
+mean_squared_error(y_test, predictions$probabilities)
+mean_ranked_score(y_test, predictions$probabilities)
+classification_error(y_test, predictions$classification)
+
 }
 \seealso{
-\code{\link{morf}}, \code{\link{mean_ranked_score}}
+\code{\link{mean_ranked_score}}
 }
 \author{
 Riccardo Di Francesco

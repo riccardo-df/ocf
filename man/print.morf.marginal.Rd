@@ -2,19 +2,19 @@
 % Please edit documentation in R/generic-s3.R
 \name{print.morf.marginal}
 \alias{print.morf.marginal}
-\title{Print Method for Morf Marginal Effects}
+\title{Print Method for morf.marginal Objects}
 \usage{
 \method{print}{morf.marginal}(x, latex = FALSE, ...)
 }
 \arguments{
-\item{x}{\code{morf.marginal} object.}
+\item{x}{An \code{morf.marginal} object.}
 
-\item{latex}{If \code{TRUE}, prints LATEX code for a table displaying the marginal effects.}
+\item{latex}{If \code{TRUE}, prints LATEX code.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Prints a \code{morf.marginal} object.
+Prints an \code{morf.marginal} object.
 }
 \details{
 Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If

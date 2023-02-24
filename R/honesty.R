@@ -65,10 +65,10 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
   unique_leaves_train <- apply(train_leaves, 2, unique)
   unique_leaves_honest <- apply(honest_leaves, 2, unique)
   
-  ## Computing honest predictions. Notice that the output matrix stores first honest and then train units (row-wise).
+  ## Compute honest predictions. Notice that the output matrix stores first honest and then train units (row-wise).
   honest_fitted_values <- as.matrix(honest_fitted_cpp(unique_leaves_honest, y_m_honest, y_m_1_honest, honest_leaves, train_leaves))
   
-  ## Combining in dataset.
+  ## Combine.
   rownames(honest_fitted_values) <- c(rownames(honest_sample), rownames(train_sample))
   honest_fitted_values <- honest_fitted_values[order(as.numeric(row.names(honest_fitted_values))), ]
   

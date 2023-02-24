@@ -48,7 +48,8 @@ discrete nature of the covariate:
 \deqn{p_{m, j}^\prime \left( x \right) := P \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - P \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
     
 where \eqn{x_j} is the j-th element of the vector \eqn{x} and \eqn{\lceil x_j \rceil} and \eqn{\lfloor x_j \rfloor}
-correspond to \eqn{x} with its j-th element rounded up and down to the closest integer.\cr  
+correspond to \eqn{x} with its j-th element rounded up and down to the closest integer. The program assumes that 
+covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to discrete.\cr  
                      
 If \code{eval = "mean"}, then the mean marginal effects are estimated:
 
@@ -60,16 +61,6 @@ If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covar
 
 \code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
 evaluation point rather than the mean.\cr
-
-The program assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed
-to be categorical or binary.
-}
-\references{
-\itemize{
-  \item S Athey, J Tibshirani, S Wager (2019). Generalized random forests. The Annals of Statistics. \doi{10.1214/18-AOS1709}.
-  \item Lechner, M., & Okasa, G. (2019). Random forest estimation of the ordered choice model. arXiv preprint arXiv:1907.02436. \doi{10.48550/arXiv.1907.02436}.
-  \item Wright, M. N. & Ziegler, A. (2017). ranger: A fast implementation of random forests for high dimensional data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-}
 }
 \seealso{
 \code{\link{morf}}

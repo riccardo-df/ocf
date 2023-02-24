@@ -5,34 +5,32 @@
 \title{Modified Ordered Random Forest}
 \usage{
 morf(
-  x = NULL,
   y = NULL,
-  n.trees = 2000,
-  mtry = ceiling(sqrt(ncol(x))),
-  min.node.size = 5,
-  max.depth = 0,
-  alpha = 0.2,
-  replace = FALSE,
-  sample.fraction = ifelse(replace, 1, 0.5),
-  case.weights = NULL,
-  honesty = TRUE,
+  X = NULL,
+  honesty = FALSE,
   honesty.fraction = 0.5,
   inference = FALSE,
-  split.select.weights = NULL,
-  always.split.variables = NULL,
-  keep.inbag = FALSE,
-  inbag = NULL,
-  holdout = FALSE,
-  n.threads = NULL,
-  save.memory = FALSE,
-  verbose = TRUE,
-  seed = NULL
+  alpha = 0,
+  n.trees = 2000,
+  mtry = ceiling(sqrt(ncol(X))),
+  min.node.size = 5,
+  max.depth = 0,
+  replace = FALSE,
+  sample.fraction = ifelse(replace, 1, 0.5)
 )
 }
 \arguments{
-\item{x}{Covariate matrix (no intercept).}
-
 \item{y}{Outcome vector.}
+
+\item{X}{Covariate matrix (no intercept).}
+
+\item{honesty}{Whether to grow honest forests.}
+
+\item{honesty.fraction}{Fraction of honest sample. Ignored if \code{honesty = FALSE}.}
+
+\item{inference}{Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.}
+
+\item{alpha}{Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.}
 
 \item{n.trees}{Number of trees.}
 
@@ -42,128 +40,53 @@ morf(
 
 \item{max.depth}{Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
 
-\item{alpha}{Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.}
-
 \item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement.}
 
 \item{sample.fraction}{Fraction of observations to sample.}
-
-\item{case.weights}{Weights for sampling training observations. Observations with larger weights will be drawn with higher probability in the subsamples for the trees.}
-
-\item{honesty}{Whether to grow honest forests.}
-
-\item{honesty.fraction}{Fraction of honest sample. Ignored if \code{honesty = FALSE}.}
-
-\item{inference}{Whether to conduct weight-based inference. The weights' extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.}
-
-\item{split.select.weights}{Numeric vector with weights between 0 and 1, used to calculate the probability to select variables for splitting. Alternatively, one can use a list of size \code{n.trees} containing \code{split.select.weights} vectors, one for each tree.}
-
-\item{always.split.variables}{Character vector with variable names to be always selected in addition to the \code{mtry} variables tried for splitting.}
-
-\item{keep.inbag}{Save how often observations are in-bag in each tree.}
-
-\item{inbag}{Manually set observations per tree. List of size \code{n.trees}, containing in-bag counts for each observation. Can be used for stratified sampling.}
-
-\item{holdout}{Hold-out mode. Hold-out all samples with zero \code{case.weights} and use these for variable importance and prediction error.}
-
-\item{n.threads}{Number of threads. Default is number of CPUs available.}
-
-\item{save.memory}{Use memory saving splitting mode. It slows down the tree growing, use only if you encounter memory problems.}
-
-\item{verbose}{Show computation status and estimated runtime.}
-
-\item{seed}{Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed.}
 }
 \value{
-Object of class \code{morf} with elements:
-  \item{\code{forest.1}}{\code{morf.forest} object of the first class.}
-  \item{\code{forest.2}}{\code{morf.forest} object of the second class.} 
-  \item{\code{...}}{}
-  \item{\code{forest.M}}{\code{morf.forest} object of the last class.}
-  \item{\code{predictions}}{Matrix of predicted conditional class probabilities. If \code{honesty = TRUE}, these are honest predictions.}
-  \item{\code{standard.errors}}{Standard error of the predictions. Requires \code{inference = TRUE}.}
-  \item{\code{mean.squared.error}}{Mean squared error of the model, based on \code{predictions}.}
-  \item{\code{mean.ranked.score}}{Mean ranked probability score of the model, based on \code{predictions}.}
-  \item{\code{overall.importance}}{Measure of overall variable importance, computed as the mean of the importance of each variable across classes. Relative importance is provided.}
-  \item{\code{classes}}{Possible outcome values.}
-  \item{\code{n.classes}}{Number of classes.}
-  \item{\code{n.samples}}{Number of observations.}
-  \item{\code{n.covariates}}{Number of covariates.}
-  \item{\code{n.trees}}{Number of trees of each forest.}
-  \item{\code{mtry}}{Number of covariates considered for splitting at each step.}
-  \item{\code{min.node.size}}{Minimum node size.}
-  \item{\code{replace}}{Whether the subsamples to grow trees are drawn with replacement.}
-  \item{\code{honesty}}{Whether forests are honest.}
-  \item{\code{honesty.fraction}}{Fraction of units allocated to honest sample.}
-  \item{\code{full_data}}{Whole sample.}
-  \item{\code{honest_data}}{Honest sample.}
-  \item{\code{call}}{System call.}
+Object of class \code{morf}.
 }
 \description{
-Nonparametric estimation of the ordered choice model using random forests.
+Nonparametric estimator of the ordered choice model using random forests. The estimator modifies a standard random forest
+splitting criterion to build a collection of forests, each estimating the conditional probability of a single class.
 }
-\details{
-\subsection{Splitting Criterion}{
-\code{morf} fits \code{M} separated random forests, where \code{M} is the number of classes of \code{y}. 
-Each forest computes the \code{m}-th class conditional choice probabilities:
+\examples{
+\donttest{
+## Load data from orf package.
+set.seed(1986)
 
-\deqn{p_m (x) := P ( Y_i = m \, | \, X_i = x)}
+library(orf)
+data(odata)
 
-To estimate this quantity, \code{morf} exploits the following:
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
 
-\deqn{p_m (x) = E [\, 1 (Y_i \leq m) \, | \, X_i = x] - E[\, 1 ( Y_i \leq m - 1 ) \, | \, X_i = x]  
-                = \mu_m (x) - \mu_{m-1} (x)}
+## Training-test split.
+train_idx <- sample(seq_len(length(y)), length(y)/2)
 
-with \code{1(.)} an indicator of the truth of its argument. A straightforward estimator consists of
-estimating the two conditional expectations separately and taking the difference:
+y_tr <- y[train_idx]
+X_tr <- X[train_idx, ]
 
-\deqn{\hat{p}_m (x) = \hat{\mu}_m (x) - \hat{\mu}_{m-1} (x)}
+y_test <- y[-train_idx]
+X_test <- X[-train_idx, ]
 
-However, this strategy ignores potential correlation in the estimation errors of the two surfaces. An alternative 
-approach is to tackle the minimization of the mean squared error (MSE) of the particular estimation problem:
+## Fit morf on training sample.
+forests <- morf(y_tr, X_tr)
 
-\deqn{MSE[\hat{p}_m (x)] = MSE[\hat{\mu}_m (x)] + MSE [\hat{\mu}_{m-1} (x)] - 2 MCE[\hat{\mu}_m (x), \hat{\mu}_{m-1} (x)]}
+## We have compatibility with generic S3-methods.
+print(forests)
+summary(forests)
+predictions <- predict(forests, X_test)
 
-where the last term is the mean correlation error of the estimation. \code{morf} grows forests that tie the estimation 
-of the two conditional expectations together to make the correlation term positive. For this purpose, trees are built 
-by greedily minimizing the following expression:
+## Accuracy measures on test sample. 
+mean_squared_error(y_test, predictions$probabilities)
+mean_ranked_score(y_test, predictions$probabilities)
+classification_error(y_test, predictions$classification)}
 
-\deqn{Var( 1 (Y_i \leq m)) + Var( 1 (Y_i \leq m - 1)) - 2 * Cor(1 (Y_i \leq m), 1 (Y_i \leq m - 1))}
-}
-
-\subsection{Predictions}{
-Predictions in the \code{l}-th leaf are computed as:
-
-\deqn{\frac{1}{\{i: x_i \in L_l\}} \sum_{\{i: x_i \in L_l\}} 1 (Y_i \leq m) - \frac{1}{\{i: x_i \in L_l\}} \sum_{\{i: x_i \in L_l\}} 1 (Y_i \leq m - 1)}
-
-Notice that a normalization step may be needed to ensure that the estimated probabilities sum up to one across classes.
-}
-
-\subsection{Variable Importance}{
-For each covariate, an overall variable importance measure is provided. The \code{m}-th forest computes the 
-importance of the j-th covariate for the \code{m}-th class by recording the improvement in the splitting criterion 
-at each split placed on such covariate. Summing over all such splits of the trees in the \code{m}-th 
-forest gives the j-th covariate's importance for the \code{m}-th class. The overall variable importance measure of this 
-covariate is then defined as the mean of its importances in each class.
-}
-
-\subsection{Honest Forests}{
-Growing honest forests is a necessary requirements to conduct valid inference. \code{morf} implements honest estimation 
-as follows. The data set is split into a training sample and a honest sample. Forests are grown using only the training 
-sample. Then, for each prediction point, the weights relative to units from the honest sample are extracted, and 
-predictions are based on the honest outcomes (relying on the prediction method outlined above). This way, weights and
-outcomes are independent of each other, thereby allowing for valid weight-based inference.
-}
-}
-\references{
-\itemize{
-  \item S Athey, J Tibshirani, S Wager (2019). Generalized random forests. The Annals of Statistics. \doi{10.1214/18-AOS1709}.
-  \item Lechner, M., & Okasa, G. (2019). Random forest estimation of the ordered choice model. arXiv preprint arXiv:1907.02436. \doi{10.48550/arXiv.1907.02436}.
-  \item Wright, M. N. & Ziegler, A. (2017). ranger: A fast implementation of random forests for high dimensional data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-}
 }
 \seealso{
-\code{\link{predict.morf}}, \code{\link{marginal_effects}}
+\code{\link{marginal_effects}}
 }
 \author{
 Riccardo Di Francesco

@@ -2,17 +2,17 @@
 % Please edit documentation in R/generic-s3.R
 \name{summary.morf}
 \alias{summary.morf}
-\title{Summary Method for Morf Objects}
+\title{Summary Method for morf Objects}
 \usage{
 \method{summary}{morf}(object, ...)
 }
 \arguments{
-\item{object}{\code{morf} object.}
+\item{object}{An \code{\link{morf}} object.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Summarizes a \code{morf} object.
+Summarizes an \code{\link{morf}} object.
 }
 \seealso{
 \code{\link{morf}}, \code{\link{marginal_effects}}

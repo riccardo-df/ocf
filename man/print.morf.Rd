@@ -2,17 +2,17 @@
 % Please edit documentation in R/generic-s3.R
 \name{print.morf}
 \alias{print.morf}
-\title{Print Method for Morf Objects}
+\title{Print Method for morf Objects}
 \usage{
 \method{print}{morf}(x, ...)
 }
 \arguments{
-\item{x}{\code{morf} object.}
+\item{x}{An \code{\link{morf}} object.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Prints a \code{morf} object.
+Prints an \code{\link{morf}} object.
 }
 \seealso{
 \code{\link{morf}}

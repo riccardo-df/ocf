@@ -49,13 +49,6 @@
 #' @seealso \code{\link{morf}}
 #' 
 #' @author Riccardo Di Francesco
-#' 
-#' @references
-#' \itemize{
-#'   \item S Athey, J Tibshirani, S Wager (2019). Generalized random forests. The Annals of Statistics. \doi{10.1214/18-AOS1709}.
-#'   \item Lechner, M., & Okasa, G. (2019). Random forest estimation of the ordered choice model. arXiv preprint arXiv:1907.02436. \doi{10.48550/arXiv.1907.02436}.
-#'   \item Wright, M. N. & Ziegler, A. (2017). ranger: A fast implementation of random forests for high dimensional data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-#' }
 #'
 #' @export
 marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
@@ -64,14 +57,13 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   if (inference & !object$honesty) stop("Invalid inference if forests are not honest. Please feed in a morf object estimated with honesty = TRUE.", call. = FALSE)
   n_honest <- dim(object$honest_data)[1]
   y.classes <- object$classes
-  n.classes <- object$n.classes
+  n.classes <- length(y.classes)
   
   ## Data.
   # Handle and check.
   if (is.null(data)) data <- object$full_data
   if (sum(!(object$forest.1$covariate.names %in% colnames(data))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
-  if (length(colnames(data)) != length(object$forest.1$covariate.names) || 
-      any(colnames(data) != object[[1]]$covariate.names)) data <- data[, object$forest.1$covariate.names, drop = FALSE]
+  if (length(colnames(data)) != length(object$forests.info$forest.1$covariate.names) || any(colnames(data) != object[[1]]$covariate.names)) data <- data[, object$forests.info$forest.1$covariate.names, drop = FALSE]
   
   X <- data
   independent.variable.names <- colnames(X)

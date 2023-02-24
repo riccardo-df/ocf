@@ -2,62 +2,63 @@
 % Please edit documentation in R/generic-s3.R
 \name{predict.morf}
 \alias{predict.morf}
-\title{Prediction Method for Morf Objects}
+\title{Prediction Method for morf Objects}
 \usage{
-\method{predict}{morf}(
-  object,
-  data = NULL,
-  type = "response",
-  predict.all = FALSE,
-  n.trees = object$n.trees,
-  n.threads = NULL,
-  verbose = TRUE,
-  seed = NULL,
-  ...
-)
+\method{predict}{morf}(object, data = NULL, type = "response", ...)
 }
 \arguments{
-\item{object}{\code{morf} object.}
+\item{object}{An \code{\link{morf}} object.}
 
-\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_sample} is used.}
+\item{data}{Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_data} is used.}
 
 \item{type}{Type of prediction. Either \code{"response"} or \code{"terminalNodes"}.}
-
-\item{predict.all}{Return individual predictions for each tree instead of aggregated predictions for all trees (returns a matrix \code{n.samples} by \code{n.trees}).}
-
-\item{n.trees}{Number of trees used for prediction. The first \code{n.trees} in each forest are used. Default uses all trees in the forests.}
-
-\item{n.threads}{Number of threads. Default is number of CPUs available.}
-
-\item{verbose}{Verbose output on or off.}
-
-\item{seed}{Random seed. Default is \code{NULL}, which generates the seed from \code{R}. Set to \code{0} to ignore the \code{R} seed.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Object of class \code{morf.prediction} with elements:
-  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities. If forests are honest, then these predictions are honest.
-                            If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
-  \item{\code{n.trees}}{Number of trees.} 
-  \item{\code{n.covariates}}{Number of covariates.}
-  \item{\code{n.samples}}{Number of samples.}
-  \item{\code{honesty}}{Whether predictions are honest.}
+Desired predictions.
 }
 \description{
 Prediction method for class \code{\link{morf}}.
 }
 \details{
-For \code{type = "response"} (the default), the predicted conditional class probabilities are returned. If forests are 
-honest, then these predictions are honest.\cr
+If \code{type == "response"}, the routine returns the predicted conditional class probabilities and the predicted class 
+labels. If forests are honest, the predicted probabilities are honest.\cr
 
-For \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation in the given 
-dataset are returned.\cr
+If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
 }
-\references{
-\itemize{
-  \item Wright, M. N. & Ziegler, A. (2017). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. J Stat Softw 77:1-17. \doi{10.18637/jss.v077.i01}.
-  }
+\examples{
+\donttest{
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+
+## Training-test split.
+train_idx <- sample(seq_len(length(y)), length(y)/2)
+
+y_tr <- y[train_idx]
+X_tr <- X[train_idx, ]
+
+y_test <- y[-train_idx]
+X_test <- X[-train_idx, ]
+
+## Fit morf on training sample.
+forests <- morf(y_tr, X_tr)
+
+## Predict on test sample.
+predictions <- predict(forests, X_test)
+head(predictions$probabilities)
+predictions$classification
+
+## Get terminal nodes.
+predictions <- predict(forests, X_test, type = "terminalNodes")
+predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
+
 }
 \seealso{
 \code{\link{morf}}, \code{\link{marginal_effects}}

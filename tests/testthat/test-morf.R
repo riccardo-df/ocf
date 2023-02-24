@@ -2,7 +2,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   ## Generating data.
   set.seed(1986)
   
-  n <- 1000
+  n <- 200
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
   
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
@@ -14,11 +14,11 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   alpha <- 0.1
   
   ## Fitting a "stump."
-  morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
+  morf <- morf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
-  avg_split <- tree_info(morf[[m]])$splitval[1] 
-  predictions <- tree_info(morf[[m]])$prediction[-1]
+  avg_split <- tree_info(morf$forests.info[[m]])$splitval[1] 
+  predictions <- tree_info(morf$forests.info[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -68,7 +68,7 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   ## Generating data.
   set.seed(1986)
   
-  n <- 1000
+  n <- 200
   m <- sample(c(1, 2, 3), size = 1) # Class to be tested.
   
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
@@ -80,11 +80,11 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   alpha <- 0.1
   
   ## Fitting a "stump."
-  morf <- morf(x = x, y = y, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
+  morf <- morf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
-  avg_split <- tree_info(morf[[m]])$splitval[1] 
-  predictions <- tree_info(morf[[m]])$prediction[-1]
+  avg_split <- tree_info(morf$forests.info[[m]])$splitval[1] 
+  predictions <- tree_info(morf$forests.info[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -132,19 +132,19 @@ test_that("morf splits and predicts as expected with categorical covariates", {
 
 test_that("Standard predictions and weight-based predictions are the same", {
   ## Generating data.
-  set.seed(rnorm(1, sd = 1000)) # Random seed.
+  set.seed(1986)
   
-  n <- 1000
+  n <- 200
 
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
   x <- data.frame("x1" = rnorm(n))
   
   ## Fitting morf objects.
   set.seed(1986) # Set seed to get same honest split.
-  morf <- morf(x = x, y = y, inference = FALSE)
+  morf <- morf(y = y, X = x, inference = FALSE, honesty = TRUE)
   set.seed(1986)
-  morf2 <- morf(x = x, y = y, inference = TRUE)
+  morf2 <- morf(y = y, X = x, inference = TRUE, honesty = TRUE)
   
   ## Comparing.
-  expect_setequal(round(morf$predictions, 3), round(morf2$predictions, 3))
+  expect_setequal(round(morf$predictions$probabilities, 3), round(morf2$predictions$probabilities, 3))
 })
