@@ -1,6 +1,10 @@
 # Modified Ordered Random Forest
  
-Nonparametric estimator of the ordered choice model using random forests. `morf` modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probability of a single class. The weights induced by each forest are used to estimate the variance of the predictions and obtain estimation and inference about the covariates’ marginal effects.
+Nonparametric estimator of the ordered choice model using random forests. 
+
+`morf` modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probability of a single class. Under an honesty condition, the predicted conditional probabilities are asymptotically normal and consistent. This allows us to conduct valid inference using standard methods, e.g., by constructing conventional confidence intervals. However, honesty generally comes at the expense of a larger mean squared error. Thus, if inference is not of interest, adaptive (i.e., non-honest) estimation is recommended.
+
+The package also implements a nonparametric estimator of the covariates’ marginal effects. Following the approach of Lechner & Mareckova (2022), we can use the weights induced by each forest to estimate the variance of the marginal effects.
 
  ## Installation  
 The current development version of the package can be installed using the `devtools` package:
