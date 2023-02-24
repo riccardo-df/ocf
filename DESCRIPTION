@@ -2,8 +2,6 @@ Package: morf
 Type: Package
 Title: Modified Ordered Random Forest
 Version: 1.0.0
-Author@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com",
-  role = c("aut", "cre"))
 Authors@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com", role = c("aut", "cre"))
 Description: Nonparametric estimator of the ordered choice model using random forests. The estimator modifies a 
     standard random forest splitting criterion to build a collection of forests, each estimating the conditional 
