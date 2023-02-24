@@ -1,9 +1,9 @@
-#' Accuracy measures for ordered probability predictions
+#' Accuracy Measures for Ordered Probability Predictions
 #'
 #' Accuracy measures for evaluating ordered probability predictions.
 #'
 #' @param y Either the observed outcome vector or a matrix of true probabilities.
-#' @param predictions Matrix of predictions.
+#' @param predictions Predictions.
 #' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
 #' 
 #' @return The MSE, the RPS, or the classification error of the method.
@@ -40,6 +40,9 @@
 #' @md
 #' @details 
 #' ## MSE and RPS
+#' When calling \code{\link{mean_squared_error}} or \code{\link{mean_ranked_score}}, \code{predictions} must be a matrix of predicted 
+#' class probabilities, with as many rows as observations in \code{y} and as many columns as classes of \code{y}.\cr
+#' 
 #' If \code{use.true == FALSE}, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:
 #' 
 #' \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
@@ -59,6 +62,8 @@
 #' \deqn{p_m^* (x) = P(Y_i \leq m | X_i = x)}
 #' 
 #' ## Classification error
+#' When calling \code{\link{classification_error}}, \code{predictions} must be a vector of predicted class labels.\cr
+#'  
 #' Classification error is computed as follows:
 #' 
 #' \deqn{CE = \frac{1}{n} \sum_{i = 1}^n 1 (Y_i \neq \hat{Y}_i)}
@@ -96,10 +101,6 @@ mean_squared_error <- function(y, predictions, use.true = FALSE) { # Taken from 
 
 
 #' Mean Ranked Probability Score
-#'
-#' @param y Either the observed outcome vector or a matrix of true probabilities. 
-#' @param predictions Matrix of predictions.
-#' @param use.true If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.
 #'
 #' @rdname mean_squared_error
 #'
@@ -142,9 +143,6 @@ mean_ranked_score <- function(y, predictions, use.true = FALSE) { # Taken from h
 
 #' Classification Error
 #'
-#' @param y Observed outcome vector. 
-#' @param predictions Vector of predicted labels.
-#'
 #' @rdname mean_squared_error
 #'
 #' @export
@@ -155,4 +153,3 @@ classification_error <- function(y, predictions) {
   ## Output.
   return(ce)
 }
-

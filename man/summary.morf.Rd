@@ -14,6 +14,24 @@
 \description{
 Summarizes an \code{\link{morf}} object.
 }
+\examples{
+\donttest{
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+
+## Fit morf on training sample.
+forests <- morf(y, X)
+
+## Summary.
+summary(forests)}
+
+}
 \seealso{
 \code{\link{morf}}, \code{\link{marginal_effects}}
 }

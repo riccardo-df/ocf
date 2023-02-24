@@ -82,44 +82,6 @@ check_mtry <- function(mtry, nv) {
 }
 
 
-##' Check Argument seed (Internal Use)
-##' 
-##' @param seed Random seed. 
-##' 
-##' @return 
-##' Appropriate value of \code{seed}.
-check_seed <- function(seed) {
-  if (is.null(seed)) seed <- stats::runif(1 , 0, .Machine$integer.max)
-  
-  return(seed)
-}
-
-
-##' Check Argument keep.inbag (Internal Use)
-##' 
-##' @param keep.inbag Save how often observations are in-bag in each tree. 
-check_keepinbag <- function(keep.inbag) {
-  if (!is.logical(keep.inbag)) stop("Invalid value for 'keep.inbag'", call. = FALSE)
-}
-
-
-##' Check Argument n.threads (Internal Use)
-##' 
-##' @param n.threads Number of threads. Default is number of CPUs available.
-##' 
-##' @return 
-##' Appropriate value of \code{n.threads}.
-check_nthreads <- function(n.threads) {
-  if (is.null(n.threads)) {
-    n.threads <- 0
-  } else if (!is.numeric(n.threads) || n.threads < 0) {
-    stop("Invalid value for 'n.threads'", call. = FALSE)
-  }
-  
-  return(n.threads)
-}
-
-
 ##' Check Argument min.node.size (Internal Use)
 ##' 
 ##' @param min.node.size Minimal node size.

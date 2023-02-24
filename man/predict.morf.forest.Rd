@@ -16,9 +16,7 @@
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Object of class \code{morf.prediction} with elements:
-  \item{\code{predictions}}{If \code{type = "response"}, predicted conditional class probabilities.
-                            If \code{type = "terminalNodes"}, the IDs of the terminal node in each tree for each observation.}
+Prediction results.
 }
 \description{
 Prediction method for class \code{morf.forest}.

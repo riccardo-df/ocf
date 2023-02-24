@@ -20,15 +20,15 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
   size <- floor(n * honesty.fraction)
   counter <- 0
   
-  ## Splitting the sample.
+  ## Sample split.
   while (TRUE) {
     train_sample_idx <- sample(1:n, size = size, replace = FALSE)
     counter <- counter + 1
     if(all(unique(y[train_sample_idx]) %in% unique(y[-train_sample_idx]))) break
-    if(counter == 100) stop("Cannot find balanced splits. Maybe one of the classes contains too few observations. Consider recoding your outcome into less categories or setting honesty = FALSE.", call. = FALSE)
+    if(counter == 100) stop("Cannot find balanced splits. Maybe one of the classes contains too few observations. Consider recoding your outcome into less categories or setting 'honesty = FALSE'.", call. = FALSE)
   }
 
-  ## Handling output.
+  ## Handle output.
   train_sample_idx <- as.integer(sort(train_sample_idx, decreasing = FALSE)) # Reordering to avoid rownames-related clashes.
   train_sample <- data[train_sample_idx, ]
   honest_sample <- data[-train_sample_idx, ]
@@ -41,13 +41,13 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 
 #' Honest In-Sample Predictions (Internal Use)
 #'
-#' Computes honest in-sample predictions for a \code{morf.forest} object relative to the m-th class.
+#' Computes honest in-sample predictions for an \code{morf.forest} object.
 #'
-#' @param forest \code{morf.forest} object.
+#' @param forest An \code{morf.forest} object.
 #' @param train_sample Training sample.
 #' @param honest_sample Honest sample. 
-#' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
-#' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
+#' @param y_m_honest Indicator variable, whether the outcome is smaller than or equal to the m-th class.
+#' @param y_m_1_honest Indicator variable, whether the outcome is smaller than or equal to the (m-1)-th class.
 #'
 #' @return 
 #' In-sample honest predictions.
@@ -79,13 +79,13 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
 
 #' Honest Out-of-Sample Predictions
 #'
-#' Computes honest out-of-sample predictions for a \code{morf.forest} object relative to the m-th class.
+#' Computes honest out-of-sample predictions for an \code{morf.forest} object.
 #'
 #' @param forest \code{morf.forest} object.
 #' @param test_sample Test sample.
 #' @param honest_sample Honest sample. 
-#' @param y_m_honest Indicator variable, whether the outcome is smaller or equal than the m-th class.
-#' @param y_m_1_honest Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.
+#' @param y_m_honest Indicator variable, whether the outcome is smaller than or equal to the m-th class.
+#' @param y_m_1_honest Indicator variable, whether the outcome is smaller than or equal to the (m-1)-th class.
 #'
 #' @return 
 #' Out-of-sample honest predictions.

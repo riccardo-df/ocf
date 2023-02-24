@@ -14,6 +14,24 @@
 \description{
 Prints an \code{\link{morf}} object.
 }
+\examples{
+\donttest{
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+
+## Fit morf.
+forests <- morf(y, X)
+
+## Print.
+print(forests)}
+
+}
 \seealso{
 \code{\link{morf}}
 }

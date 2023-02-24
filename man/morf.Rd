@@ -78,11 +78,12 @@ forests <- morf(y_tr, X_tr)
 print(forests)
 summary(forests)
 predictions <- predict(forests, X_test)
+head(predictions$probabilities)
+table(y_test, predictions$classification)
 
-## Accuracy measures on test sample. 
-mean_squared_error(y_test, predictions$probabilities)
-mean_ranked_score(y_test, predictions$probabilities)
-classification_error(y_test, predictions$classification)}
+## Compute standard errors. This requires honest forests.
+honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
+honest_forests$predictions$standard.errors}
 
 }
 \seealso{

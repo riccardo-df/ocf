@@ -4,7 +4,7 @@
 \alias{mean_squared_error}
 \alias{mean_ranked_score}
 \alias{classification_error}
-\title{Accuracy measures for ordered probability predictions}
+\title{Accuracy Measures for Ordered Probability Predictions}
 \usage{
 mean_squared_error(y, predictions, use.true = FALSE)
 
@@ -13,9 +13,9 @@ mean_ranked_score(y, predictions, use.true = FALSE)
 classification_error(y, predictions)
 }
 \arguments{
-\item{y}{Observed outcome vector.}
+\item{y}{Either the observed outcome vector or a matrix of true probabilities.}
 
-\item{predictions}{Vector of predicted labels.}
+\item{predictions}{Predictions.}
 
 \item{use.true}{If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.}
 }
@@ -27,6 +27,9 @@ Accuracy measures for evaluating ordered probability predictions.
 }
 \details{
 \subsection{MSE and RPS}{
+
+When calling \code{\link{mean_squared_error}} or \code{\link{mean_ranked_score}}, \code{predictions} must be a matrix of predicted
+class probabilities, with as many rows as observations in \code{y} and as many columns as classes of \code{y}.\cr
 
 If \code{use.true == FALSE}, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:
 
@@ -48,6 +51,8 @@ where:
 }
 
 \subsection{Classification error}{
+
+When calling \code{\link{classification_error}}, \code{predictions} must be a vector of predicted class labels.\cr
 
 Classification error is computed as follows:
 

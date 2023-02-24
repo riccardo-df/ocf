@@ -13,7 +13,7 @@ marginal_effects(
 )
 }
 \arguments{
-\item{object}{\code{morf} object.}
+\item{object}{An \code{\link{morf}} object.}
 
 \item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.}
 
@@ -21,46 +21,48 @@ marginal_effects(
 
 \item{bandwitdh}{How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.}
 
-\item{inference}{Whether to conduct weight-based inference. It considerably slows down the program.}
+\item{inference}{Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program.}
 }
 \value{
-Object of class \code{morf.marginal} with elements:
-  \item{\code{evaluation.type}}{Where the marginal effects are evaluated.}
-  \item{\code{bandwitdh}}{The bandwitdh parameter.}
-  \item{\code{n.classes}}{Number of classes.}
-  \item{\code{n.samples}}{Number of samples.}
-  \item{\code{n.trees}}{Number of trees in each forest.}
-  \item{\code{marginal.effects}}{Matrix of marginal effects.}
-  \item{\code{standard.errors}}{Matrix of standard errors, one for each marginal effect.}
-  \item{\code{p.values}}{Matrix of p-values testing the null hypotheses that the marginal effect is zero.}
-  \item{\code{ci.upper}}{Matrix of upper intervals.}
-  \item{\code{ci.lower}}{Matrix of lower intervals.}
+Object of class \code{morf.marginal}.
 }
 \description{
-Nonparametric estimation of marginal effects using a \code{morf} object.
+Nonparametric estimation of marginal effects using an \code{\link{morf}} object.
 }
 \details{
-The marginal effect of the j-th covariate on \eqn{p_m \left( \cdot \right)} is defined according to the continuous or 
-discrete nature of the covariate: 
- 
-\deqn{p_{m, j}^\prime \left( x \right) := \frac{\partial P \left( Y_i = m \, | \, X_i = x \right)}{\partial x_{j}}}
+\code{\link{marginal_effects}} can estimate mean marginal effects, marginal effects at the mean, or marginal effects at the
+median, according to the \code{eval} argument.\cr 
 
-\deqn{p_{m, j}^\prime \left( x \right) := P \left( Y_i = m \, | \, X_i = \lceil x_j \rceil \right) - P \left( Y_i = m \, | \, X_i = \lfloor x_j \rfloor \right)}
-    
-where \eqn{x_j} is the j-th element of the vector \eqn{x} and \eqn{\lceil x_j \rceil} and \eqn{\lfloor x_j \rfloor}
-correspond to \eqn{x} with its j-th element rounded up and down to the closest integer. The program assumes that 
-covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to discrete.\cr  
-                     
-If \code{eval = "mean"}, then the mean marginal effects are estimated:
+The routine assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to 
+be discrete.\cr
+}
+\examples{
+\donttest{
+## Load data from orf package.
+set.seed(1986)
 
-\deqn{MME := \frac{1}{n} \sum_{i = 1}^n p_{m, j}^\prime \left( X_i \right)}
+library(orf)
+data(odata)
 
-If \code{eval = "atmean"}, then the marginal effects evaluated at the mean covariates are estimated:
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
 
-\deqn{MEM := p_{m, j}^\prime ( \bar{X}_i )}  
+## Fit morf. Use large number of trees.
+forests <- morf(y, X, n.trees = 4000)
 
-\code{eval = "atmedian"} is similar to \code{eval = "atmean"}, where the median of the covariates is used as 
-evaluation point rather than the mean.\cr
+## Marginal effects at the mean.
+me <- marginal_effects(forests, eval = "atmean")
+print(me)
+summary(me)
+
+## Compute standard errors. This requires honest forests.
+honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
+honest_me$standard.errors
+honest_me$p.values # These are not corrected for multiple hypotheses testing!
+
+print(honest_me, latex = TRUE)}
+
 }
 \seealso{
 \code{\link{morf}}

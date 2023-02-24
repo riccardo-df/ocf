@@ -7,21 +7,21 @@
 honest_fitted(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest)
 }
 \arguments{
-\item{forest}{\code{morf.forest} object.}
+\item{forest}{An \code{morf.forest} object.}
 
 \item{train_sample}{Training sample.}
 
 \item{honest_sample}{Honest sample.}
 
-\item{y_m_honest}{Indicator variable, whether the outcome is smaller or equal than the m-th class.}
+\item{y_m_honest}{Indicator variable, whether the outcome is smaller than or equal to the m-th class.}
 
-\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.}
+\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller than or equal to the (m-1)-th class.}
 }
 \value{
 In-sample honest predictions.
 }
 \description{
-Computes honest in-sample predictions for a \code{morf.forest} object relative to the m-th class.
+Computes honest in-sample predictions for an \code{morf.forest} object.
 }
 \details{
 \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 

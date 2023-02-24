@@ -19,15 +19,15 @@ honest_predictions(
 
 \item{test_sample}{Test sample.}
 
-\item{y_m_honest}{Indicator variable, whether the outcome is smaller or equal than the m-th class.}
+\item{y_m_honest}{Indicator variable, whether the outcome is smaller than or equal to the m-th class.}
 
-\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller or equal than the (m-1)-th class.}
+\item{y_m_1_honest}{Indicator variable, whether the outcome is smaller than or equal to the (m-1)-th class.}
 }
 \value{
 Out-of-sample honest predictions.
 }
 \description{
-Computes honest out-of-sample predictions for a \code{morf.forest} object relative to the m-th class.
+Computes honest out-of-sample predictions for an \code{morf.forest} object.
 }
 \details{
 \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
