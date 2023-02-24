@@ -62,6 +62,7 @@ where Y_i are the observed class labels.
 }
 }
 \examples{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -88,7 +89,7 @@ predictions <- predict(forests, X_test)
 
 mean_squared_error(y_test, predictions$probabilities)
 mean_ranked_score(y_test, predictions$probabilities)
-classification_error(y_test, predictions$classification)
+classification_error(y_test, predictions$classification)}
 
 }
 \seealso{
