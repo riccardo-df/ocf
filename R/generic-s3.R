@@ -316,7 +316,7 @@ print.morf <- function(x, ...) {
 #' Summarizes an \code{morf.marginal} object.
 #' 
 #' @examples 
-#' #' \donttest{
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -332,7 +332,12 @@ print.morf <- function(x, ...) {
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
 #' summary(me)
-#' summary(me, latex = TRUE)}
+#' summary(me, latex = TRUE)
+#' 
+#' ## Add standard errors.
+#' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
+#' #' summary(me, latex = TRUE)}
 #' 
 #' @details 
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
@@ -415,7 +420,7 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' Prints an \code{morf.marginal} object.
 #' 
 #' @examples 
-#' #' \donttest{
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -430,8 +435,13 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
-#' print(me)
-#' print(me, latex = TRUE)}
+#' summary(me)
+#' summary(me, latex = TRUE)
+#' 
+#' ## Add standard errors.
+#' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
+#' #' summary(me, latex = TRUE)}
 #' 
 #' @details 
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If

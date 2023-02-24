@@ -24,7 +24,7 @@ Compilation of the LATEX code requires the following packages: \code{booktabs}, 
 standard errors have been estimated, they are printed in parenthesis below each point estimate.
 }
 \examples{
-#' \donttest{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
