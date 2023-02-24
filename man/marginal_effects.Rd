@@ -55,6 +55,9 @@ me <- marginal_effects(forests, eval = "atmean")
 print(me)
 summary(me)
 
+## LATEX.
+print(me, latex = TRUE)
+
 ## Compute standard errors. This requires honest forests.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
