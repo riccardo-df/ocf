@@ -39,13 +39,13 @@ forests <- morf(y, X, n.trees = 4000)
 
 ## Marginal effects at the mean.
 me <- marginal_effects(forests, eval = "atmean")
-summary(me)
-summary(me, latex = TRUE)
+print(me)
+print(me, latex = TRUE)
 
 ## Add standard errors.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
-#' summary(me, latex = TRUE)}
+print(honest_me, latex = TRUE)}
 
 }
 \seealso{

@@ -45,7 +45,7 @@ summary(me, latex = TRUE)
 ## Add standard errors.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
-#' summary(me, latex = TRUE)}
+summary(honest_me, latex = TRUE)}
 
 }
 \seealso{
