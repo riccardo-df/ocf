@@ -1,4 +1,4 @@
-# Modified Ordered Random Forest
+# Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
  
 R package to implement the modified ordered random forest (`morf`) estimator.
 
