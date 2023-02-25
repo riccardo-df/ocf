@@ -80,11 +80,14 @@
 </h1></div>
 <p>R package to implement the modified ordered random forest (<code>morf</code>) estimator.</p>
 <p><code>morf</code> is a nonparametric estimator of the ordered choice model. It modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. <code>morf</code> inherits the asymptotic properties of random forests. Thus, under an honesty condition the predicted conditional probabilities are asymptotically normal and consistent. Honesty is a subsample-splitting technique that ensures that different observations are used to place the splits and compute leaf predictions and is crucial to achieving consistency of the predictions. The particular honesty implementation used by <code>morf</code> allows for a weight-based estimation of the variance of the predicted probabilities. This is achieved by rewriting the random forest predictions as a weighted average of the outcomes. The weights, which are obtained for the predicted probabilities, can be properly transformed to obtain estimation and inference about the marginal effects.</p>
-<p>To get started, please check the online vignette for a short tutorial.</p>
-<p>## Installation<br>
-The current development version of the package can be installed using the <code>devtools</code> package:</p>
+<p>To get started, please check the online <a href="https://riccardo-df.github.io/morf/articles/morf-vignette.html">vignette</a> for a short tutorial.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The current development version of the package can be installed using the <code>devtools</code> package:</p>
 <pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/morf"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://riccardo-df.github.io/morf/">morf</a></span><span class="op">)</span></span></code></pre>
+</div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
