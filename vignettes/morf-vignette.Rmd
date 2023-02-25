@@ -1,0 +1,105 @@
+---
+title: "Short Tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{morf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(morf)
+```
+
+### Introduction
+In this tutorial, we show how to use `morf` to estimate conditional choice probabilities and marginal effects, and conduct inference about these statistical targets. For illustration purposes, we use the synthetic data set provided in the `orf` package:
+
+```{r data-generation}
+## Load data from orf package.
+set.seed(1986)
+
+library(orf)
+data(odata)
+
+y <- as.numeric(odata[, 1])
+X <- as.matrix(odata[, -1])
+```
+
+### Estimation and Inference about Conditional Probabilities
+The `morf` function constructs a collection of forests, one for each category of `y` (three in this case). We can then use the forests to predict out-of-sample conditional probabilities using the `predict` method. By default, `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
+
+```{r adaptive-morf}
+## Training-test split.
+train_idx <- sample(seq_len(length(y)), length(y)/2)
+
+y_tr <- y[train_idx]
+X_tr <- X[train_idx, ]
+
+y_test <- y[-train_idx]
+X_test <- X[-train_idx, ]
+
+## Fit morf on training sample. Use default settings.
+forests <- morf(y_tr, X_tr)
+
+## Summary of data and tuning parameters.
+summary(forests)
+
+## Out-of-sample predictions.
+predictions <- predict(forests, X_test)
+
+head(predictions$probabilities)
+
+table(y_test, predictions$classification)
+```
+
+We can also implement honesty, which is a necessary condition to get asymptotically normal and consistent predictions. However, honesty generally comes at the expense of a larger mean squared error. Thus, if inference is not of interest we recommend adaptive forests. In the following, we set `honesty = TRUE` to construct honest forests.
+
+```{r honest-morf}
+## Honest forests.
+honest_forests <- morf(y_tr, X_tr, honesty = TRUE)
+honest_predictions <- predict(honest_forests, X_test)
+
+## Compare predictions with adaptive fit.
+cbind(head(predictions$probabilities), head(honest_predictions$probabilities))
+```
+
+To extract the weights induced by each forest and estimate the standard errors we set `inference = TRUE`. This requires also to set `honesty = TRUE`, although in principle we could estimate standard errors also for adaptive forests. The point of implementing honesty is that it allows us to use the estimated standard errors to construct valid confidence intervals for the conditional probabilities. We again stress that if we care only about prediction performance we should set `honesty = FALSE` (this is the default). As a final remark, notice that the weights extraction considerably slows down the routine.
+
+```{r honest-morf-inference}
+## Compute standard errors.
+honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
+head(honest_forests$predictions$standard.errors)
+```
+
+### Estimation and Inference about Marginal Effects
+The package implements a nonparametric estimator of marginal effects. This can be used by calling the `marginal_effects` function, which allows the estimation of mean marginal effects, marginal effects at the mean, or marginal effects at the median, according to the `eval` argument. In the following, we construct our forests in the training sample and use them to estimate the marginal effects at the mean in the test sample. We use a larger number of trees here to get more stable results.
+
+```{r adaptive-me}
+## Fit morf. Use large number of trees.
+forests <- morf(y_tr, X_test, n.trees = 4000)
+
+## Marginal effects at the mean.
+me_atmean <- marginal_effects(forests, data = X_test, eval = "atmean")
+summary(me_atmean)
+```
+
+As before, we can set `inference = TRUE` to estimate the standard errors. Again, this requires the use of honest forests and considerably slows down the routine.
+
+```{r honest-me}
+##Honest forests.
+honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE) # Notice we do not need inference here!
+
+## Compute standard errors.
+honest_me_atmean <- marginal_effects(honest_forests, data = X_test , eval = "atmean", inference = TRUE)
+honest_me_atmean$standard.errors
+
+honest_me_atmean$p.values # These are not corrected for multiple hypotheses testing!
+
+## LATEX.
+print(honest_me_atmean, latex = TRUE)
+```

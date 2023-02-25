@@ -9,7 +9,7 @@
 #' @param alpha Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.
 #' @param honesty Whether to grow honest forests.
 #' @param honesty.fraction Fraction of honest sample. Ignored if \code{honesty = FALSE}.
-#' @param inference Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.
+#' @param inference Whether to extract weights and compute standard errors. The weights extraction considerably slows down the routine. \code{honesty = TRUE} is required for valid inference.
 #' @param mtry Number of covariates to possibly split at in each node. Default is the square root of the number of covariates.
 #' @param min.node.size Minimal node size.
 #' @param max.depth Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).

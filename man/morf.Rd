@@ -28,7 +28,7 @@ morf(
 
 \item{honesty.fraction}{Fraction of honest sample. Ignored if \code{honesty = FALSE}.}
 
-\item{inference}{Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program. \code{honesty = TRUE} is required for valid inference.}
+\item{inference}{Whether to extract weights and compute standard errors. The weights extraction considerably slows down the routine. \code{honesty = TRUE} is required for valid inference.}
 
 \item{alpha}{Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.}
 
