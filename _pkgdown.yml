@@ -22,6 +22,7 @@ reference:
 
   - title: Generic S3
     contents:
+      - predict.morf
       - print.morf
       - summary.morf
       - print.morf.marginal
