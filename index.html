@@ -49,7 +49,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="articles/morf-vignette.html">Get started</a>
+  <a href="articles/morf-short-tutorial.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -78,9 +78,8 @@
 <div class="page-header"><h1 id="modified-ordered-random-forest-">Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
 <a class="anchor" aria-label="anchor" href="#modified-ordered-random-forest-"></a>
 </h1></div>
-<p>R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model.</p>
-<p>MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Additionally, the package implements a nonparametric estimator of the marginal effects.</p>
-<p>The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by <code>morf</code> allows for a weight-based estimation of the variance of the predicted probabilities and the marginal effects.</p>
+<p>R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.</p>
+<p>MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by MORF allows for a weight-based estimation of the variance of the predicted probabilities and the marginal effects.</p>
 <p>To get started, please check the online <a href="https://riccardo-df.github.io/morf/articles/morf-vignette.html">vignette</a> for a short tutorial.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
