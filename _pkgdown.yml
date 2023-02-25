@@ -1,0 +1,35 @@
+url: https://riccardo-df.github.io/morf/
+
+template:
+  bootswatch: spacelab
+
+navbar:
+  type: default
+  left:
+  - text: "Get started"
+    href: articles/morf-vignette.html
+  - text: "Reference"
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/riccardo-df/aggTrees
+
+reference:
+  - title: Core functions
+    contents:
+      - morf
+      - marginal_effects
+
+  - title: Generic S3
+    contents:
+      - print.morf
+      - summary.morf
+      - print.morf.marginal
+      - summary.morf.marginal
+
+  - title: Utils
+    contents:
+    - mean_squared_error
+    - mean_ranked_score
+    - classification_error
+    - tree_info
