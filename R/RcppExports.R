@@ -9,6 +9,7 @@
 #' @param leaf_IDs_honest_list List of size \code{n.trees}, storing the leaf of each tree where honest units fall into.
 #' @param leaf_size_honest_list List of size \code{n.trees}, storing the size of the leaves of each tree computed with honest units.
 #'
+#' @keywords internal
 forest_weights_fitted_cpp <- function(leaf_IDs_train_list, leaf_IDs_honest_list, leaf_size_honest_list) {
     .Call('_morf_forest_weights_fitted_cpp', PACKAGE = 'morf', leaf_IDs_train_list, leaf_IDs_honest_list, leaf_size_honest_list)
 }
@@ -22,6 +23,7 @@ forest_weights_fitted_cpp <- function(leaf_IDs_train_list, leaf_IDs_honest_list,
 #' @param leaf_size_honest_list List of size \code{n.trees}, storing the size of the leaves of each tree computed with honest units.
 #' @param w 1 if marginal effects are being computed, 0 otherwise for normal prediction.
 #'
+#' @keywords internal
 forest_weights_predicted_cpp <- function(leaf_IDs_test_list, leaf_IDs_honest_list, leaf_size_honest_list, w) {
     .Call('_morf_forest_weights_predicted_cpp', PACKAGE = 'morf', leaf_IDs_test_list, leaf_IDs_honest_list, leaf_size_honest_list, w)
 }
@@ -36,6 +38,7 @@ forest_weights_predicted_cpp <- function(leaf_IDs_test_list, leaf_IDs_honest_lis
 #' @param honest_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th honest observation falls in each tree.
 #' @param train_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th training observation falls in each tree.
 #' 
+#' @keywords internal
 honest_fitted_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, train_leaves) {
     .Call('_morf_honest_fitted_cpp', PACKAGE = 'morf', unique_leaves_honest, y_m, y_m_1, honest_leaves, train_leaves)
 }
@@ -50,6 +53,7 @@ honest_fitted_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, t
 #' @param honest_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th honest observation falls in each tree.
 #' @param test_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th test observation falls in each tree.
 #' 
+#' @keywords internal
 honest_predictions_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, test_leaves) {
     .Call('_morf_honest_predictions_cpp', PACKAGE = 'morf', unique_leaves_honest, y_m, y_m_1, honest_leaves, test_leaves)
 }

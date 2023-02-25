@@ -20,3 +20,4 @@ forest_weights_fitted_cpp(
 \description{
 Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
 }
+\keyword{internal}

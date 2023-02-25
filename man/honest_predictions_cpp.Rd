@@ -26,3 +26,4 @@ honest_predictions_cpp(
 \description{
 Computes honest out-of-sample predictions for a morf.forest object relative to the desired class.
 }
+\keyword{internal}

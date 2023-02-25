@@ -9,6 +9,7 @@ using namespace Rcpp;
 //' @param leaf_IDs_honest_list List of size \code{n.trees}, storing the leaf of each tree where honest units fall into.
 //' @param leaf_size_honest_list List of size \code{n.trees}, storing the size of the leaves of each tree computed with honest units.
 //'
+//' @keywords internal
 // [[Rcpp::export]]
 NumericMatrix forest_weights_fitted_cpp(List leaf_IDs_train_list, List leaf_IDs_honest_list, List leaf_size_honest_list) { // Taken from https://github.com/okasag/orf/blob/master/orf/src/get_weights_rcpp.cpp
   // Declaring variables.

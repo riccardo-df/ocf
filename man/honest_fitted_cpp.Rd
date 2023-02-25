@@ -26,3 +26,4 @@ honest_fitted_cpp(
 \description{
 Computes honest in-sample predictions for a morf.forest object relative to the desired class.
 }
+\keyword{internal}

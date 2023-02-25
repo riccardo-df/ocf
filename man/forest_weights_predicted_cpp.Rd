@@ -23,3 +23,4 @@ forest_weights_predicted_cpp(
 \description{
 Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
 }
+\keyword{internal}

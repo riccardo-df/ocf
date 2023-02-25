@@ -11,6 +11,7 @@ using namespace Rcpp;
 //' @param honest_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th honest observation falls in each tree.
 //' @param test_leaves Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th test observation falls in each tree.
 //' 
+//' @keywords internal
 // [[Rcpp::export]]
 NumericVector honest_predictions_cpp(List unique_leaves_honest, NumericVector y_m, NumericVector y_m_1, 
                             NumericMatrix honest_leaves, NumericMatrix test_leaves) { // Taken from https://github.com/okasag/orf/blob/master/orf/src/pred_honest_rcpp.cpp

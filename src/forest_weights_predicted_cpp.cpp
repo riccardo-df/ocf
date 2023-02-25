@@ -10,6 +10,7 @@ using namespace Rcpp;
 //' @param leaf_size_honest_list List of size \code{n.trees}, storing the size of the leaves of each tree computed with honest units.
 //' @param w 1 if marginal effects are being computed, 0 otherwise for normal prediction.
 //'
+//' @keywords internal
 // [[Rcpp::export]]
 NumericVector forest_weights_predicted_cpp(List leaf_IDs_test_list, List leaf_IDs_honest_list, List leaf_size_honest_list, int w) {
   // Declaring variables.
