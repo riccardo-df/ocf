@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_mtry}
 \alias{check_mtry}
-\title{Check Argument mtry (Internal Use)}
+\title{Check Argument mtry}
 \usage{
 check_mtry(mtry, nv)
 }
@@ -15,5 +15,6 @@ check_mtry(mtry, nv)
 Appropriate value of \code{mtry}.
 }
 \description{
-Check Argument mtry (Internal Use)
+Check Argument mtry
 }
+\keyword{internal}

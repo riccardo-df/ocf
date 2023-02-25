@@ -34,3 +34,4 @@ Computes honest out-of-sample predictions for an \code{morf.forest} object.
 honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
 to build the trees.
 }
+\keyword{internal}

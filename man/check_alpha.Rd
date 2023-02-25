@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_alpha}
 \alias{check_alpha}
-\title{Check Argument alpha (Internal Use)}
+\title{Check Argument alpha}
 \usage{
 check_alpha(alpha)
 }
@@ -10,5 +10,6 @@ check_alpha(alpha)
 \item{alpha}{Fraction of observations that must lie on each side of each split.}
 }
 \description{
-Check Argument alpha (Internal Use)
+Check Argument alpha
 }
+\keyword{internal}

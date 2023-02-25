@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_x_y}
 \alias{check_x_y}
-\title{Check Arguments x and y (Internal Use)}
+\title{Check Arguments x and y}
 \usage{
 check_x_y(x, y)
 }
@@ -12,5 +12,6 @@ check_x_y(x, y)
 \item{y}{Outcome vector.}
 }
 \description{
-Check Arguments x and y (Internal Use)
+Check Arguments x and y
 }
+\keyword{internal}

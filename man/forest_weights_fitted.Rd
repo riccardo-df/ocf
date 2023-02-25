@@ -2,7 +2,7 @@
 % Please edit documentation in R/weights.R
 \name{forest_weights_fitted}
 \alias{forest_weights_fitted}
-\title{Forest In-Sample Honest Weights (Internal Use)}
+\title{Forest In-Sample Honest Weights}
 \usage{
 forest_weights_fitted(forest, honest_sample, train_sample)
 }
@@ -22,3 +22,4 @@ Computes forest in-sample honest weights for an \code{morf.forest} object.
 \details{
 \code{forest} must have been grown using only the training sample.
 }
+\keyword{internal}

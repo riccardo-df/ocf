@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_samplefraction}
 \alias{check_samplefraction}
-\title{Check Argument sample.fraction (Internal Use)}
+\title{Check Argument sample.fraction}
 \usage{
 check_samplefraction(sample.fraction)
 }
@@ -10,5 +10,6 @@ check_samplefraction(sample.fraction)
 \item{sample.fraction}{Fraction of observations to sample.}
 }
 \description{
-Check Argument sample.fraction (Internal Use)
+Check Argument sample.fraction
 }
+\keyword{internal}

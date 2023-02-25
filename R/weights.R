@@ -1,4 +1,4 @@
-#' Forest In-Sample Honest Weights (Internal Use)
+#' Forest In-Sample Honest Weights
 #'
 #' Computes forest in-sample honest weights for an \code{morf.forest} object.
 #'
@@ -8,6 +8,8 @@
 #' 
 #' @return 
 #' Matrix of in-sample honest weights.
+#' 
+#' @keywords internal
 #' 
 #' @details 
 #' \code{forest} must have been grown using only the training sample. 
@@ -37,7 +39,7 @@ forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken
 }
 
 
-#' Forest Out-of-Sample Weights (Internal Use)
+#' Forest Out-of-Sample Weights
 #'
 #' Computes forest out-of-sample honest weights for an \code{morf.forest} object.
 #'
@@ -47,6 +49,8 @@ forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken
 #'
 #' @return 
 #' Matrix of out-of-sample honest weights.
+#' 
+#' @keywords internal
 #'
 #' @details 
 #' \code{forest} must have been grown using only the training sample. 

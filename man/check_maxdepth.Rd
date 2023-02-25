@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_maxdepth}
 \alias{check_maxdepth}
-\title{Check Argument max.depth (Internal Use)}
+\title{Check Argument max.depth}
 \usage{
 check_maxdepth(max.depth)
 }
@@ -10,5 +10,6 @@ check_maxdepth(max.depth)
 \item{max.depth}{Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).}
 }
 \description{
-Check Argument max.depth (Internal Use)
+Check Argument max.depth
 }
+\keyword{internal}

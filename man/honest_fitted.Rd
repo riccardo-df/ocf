@@ -2,7 +2,7 @@
 % Please edit documentation in R/honesty.R
 \name{honest_fitted}
 \alias{honest_fitted}
-\title{Honest In-Sample Predictions (Internal Use)}
+\title{Honest In-Sample Predictions}
 \usage{
 honest_fitted(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest)
 }
@@ -27,3 +27,4 @@ Computes honest in-sample predictions for an \code{morf.forest} object.
 \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
 using the outcome from the honest sample (using the prediction method of \code{\link{morf}}).
 }
+\keyword{internal}

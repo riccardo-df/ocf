@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_minnodesize}
 \alias{check_minnodesize}
-\title{Check Argument min.node.size (Internal Use)}
+\title{Check Argument min.node.size}
 \usage{
 check_minnodesize(min.node.size)
 }
@@ -10,5 +10,6 @@ check_minnodesize(min.node.size)
 \item{min.node.size}{Minimal node size.}
 }
 \description{
-Check Argument min.node.size (Internal Use)
+Check Argument min.node.size
 }
+\keyword{internal}

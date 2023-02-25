@@ -1,4 +1,4 @@
-#' Honest Sample Split (Internal Use)
+#' Honest Sample Split
 #'
 #' Randomly spits the sample into a training sample and an honest sample.
 #'
@@ -9,6 +9,8 @@
 #' List with elements:
 #'   \item{\code{train_sample}}{Training sample.}
 #'   \item{\code{honest_sample}}{Honest sample.}
+#'   
+#' @keywords internal
 #' 
 #' @details 
 #' \code{class_honest_split} looks for balanced splits, i.e., splits such as all the outcome's classes are represented
@@ -39,7 +41,7 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 }
 
 
-#' Honest In-Sample Predictions (Internal Use)
+#' Honest In-Sample Predictions
 #'
 #' Computes honest in-sample predictions for an \code{morf.forest} object.
 #'
@@ -51,6 +53,8 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 #'
 #' @return 
 #' In-sample honest predictions.
+#' 
+#' @keywords internal
 #'
 #' @details 
 #' \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
@@ -89,6 +93,8 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
 #'
 #' @return 
 #' Out-of-sample honest predictions.
+#' 
+#' @keywords internal
 #'
 #' @details 
 #' \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 

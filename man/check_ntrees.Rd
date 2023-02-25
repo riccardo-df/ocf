@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_ntrees}
 \alias{check_ntrees}
-\title{Check Argument n.trees (Internal Use)}
+\title{Check Argument n.trees}
 \usage{
 check_ntrees(n.trees)
 }
@@ -10,5 +10,6 @@ check_ntrees(n.trees)
 \item{n.trees}{Number of trees.}
 }
 \description{
-Check Argument n.trees (Internal Use)
+Check Argument n.trees
 }
+\keyword{internal}

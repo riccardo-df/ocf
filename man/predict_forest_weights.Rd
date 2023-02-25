@@ -2,7 +2,7 @@
 % Please edit documentation in R/weights.R
 \name{predict_forest_weights}
 \alias{predict_forest_weights}
-\title{Forest Out-of-Sample Weights (Internal Use)}
+\title{Forest Out-of-Sample Weights}
 \usage{
 predict_forest_weights(forest, honest_sample, test_sample)
 }
@@ -22,3 +22,4 @@ Computes forest out-of-sample honest weights for an \code{morf.forest} object.
 \details{
 \code{forest} must have been grown using only the training sample.
 }
+\keyword{internal}

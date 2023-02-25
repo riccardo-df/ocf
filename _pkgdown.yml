@@ -13,23 +13,23 @@ navbar:
   right:
   - icon: fa-github fa-lg
     href: https://github.com/riccardo-df/morf
-# 
-# reference:
-#   - title: Core functions
-#     contents:
-#       - morf
-#       - marginal_effects
-# 
-#   - title: Generic S3
-#     contents:
-#       - print.morf
-#       - summary.morf
-#       - print.morf.marginal
-#       - summary.morf.marginal
-# 
-#   - title: Utils
-#     contents:
-#     - mean_squared_error
-#     - mean_ranked_score
-#     - classification_error
-#     - tree_info
+
+reference:
+  - title: Core functions
+    contents:
+      - morf
+      - marginal_effects
+
+  - title: Generic S3
+    contents:
+      - print.morf
+      - summary.morf
+      - print.morf.marginal
+      - summary.morf.marginal
+
+  - title: Utils
+    contents:
+    - mean_squared_error
+    - mean_ranked_score
+    - classification_error
+    - tree_info

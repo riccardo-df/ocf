@@ -2,7 +2,7 @@
 % Please edit documentation in R/honesty.R
 \name{class_honest_split}
 \alias{class_honest_split}
-\title{Honest Sample Split (Internal Use)}
+\title{Honest Sample Split}
 \usage{
 class_honest_split(data, honesty.fraction = 0.5)
 }
@@ -23,3 +23,4 @@ Randomly spits the sample into a training sample and an honest sample.
 \code{class_honest_split} looks for balanced splits, i.e., splits such as all the outcome's classes are represented
 in both the training and the honest sample. After 100 trials, the program throws an error.
 }
+\keyword{internal}

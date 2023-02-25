@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_honesty_inference}
 \alias{check_honesty_inference}
-\title{Check Arguments honesty, honesty.fraction and inference (Internal Use)}
+\title{Check Arguments honesty, honesty.fraction and inference}
 \usage{
 check_honesty_inference(honesty, honesty.fraction, inference)
 }
@@ -14,5 +14,6 @@ check_honesty_inference(honesty, honesty.fraction, inference)
 \item{inference}{Whether to conduct weight-based inference.}
 }
 \description{
-Check Arguments honesty, honesty.fraction and inference (Internal Use)
+Check Arguments honesty, honesty.fraction and inference
 }
+\keyword{internal}
