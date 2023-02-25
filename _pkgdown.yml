@@ -7,7 +7,7 @@ navbar:
   type: default
   left:
   - text: "Get started"
-    href: articles/morf-vignette.html
+    href: articles/morf-short-tutorial.html
   - text: "Reference"
     href: reference/index.html
   right:
