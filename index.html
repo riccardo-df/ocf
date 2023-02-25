@@ -68,7 +68,8 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="modified-ordered-random-forest">Modified Ordered Random Forest<a class="anchor" aria-label="anchor" href="#modified-ordered-random-forest"></a>
+<div class="page-header"><h1 id="modified-ordered-random-forest-">Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
+<a class="anchor" aria-label="anchor" href="#modified-ordered-random-forest-"></a>
 </h1></div>
 <p>R package to implement the modified ordered random forest (<code>morf</code>) estimator.</p>
 <p><code>morf</code> is a nonparametric estimator of the ordered choice model. It modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. <code>morf</code> inherits the asymptotic properties of random forests. Thus, under an honesty condition the predicted conditional probabilities are asymptotically normal and consistent. Honesty is a subsample-splitting technique that ensures that different observations are used to place the splits and compute leaf predictions and is crucial to achieving consistency of the predictions. The particular honesty implementation used by <code>morf</code> allows for a weight-based estimation of the variance of the predicted probabilities. This is achieved by rewriting the random forest predictions as a weighted average of the outcomes. The weights, which are obtained for the predicted probabilities, can be properly transformed to obtain estimation and inference about the marginal effects.</p>
