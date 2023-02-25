@@ -95,7 +95,7 @@ tree_info <- function(object, tree = 1) {
 }
 
 
-#' Renaming Variables for LATEX Usage (Internal Use)
+#' Renaming Variables for LATEX Usage
 #'
 #' Renames variables where the character "_" is used, which causes clashes in LATEX. Useful for the \code{phased} print method.
 #'
@@ -103,6 +103,8 @@ tree_info <- function(object, tree = 1) {
 #'
 #' @return
 #' The renamed string vector. Strings where "_" is not found are not modified by \code{rename_latex}.
+#' 
+#' @keywords internal
 rename_latex <- function(names) {
   ## Locating variables that need renaming.
   idx <- grepl("_", names, fixed = TRUE)

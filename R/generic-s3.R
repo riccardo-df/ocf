@@ -100,7 +100,7 @@ predict.morf <- function(object, data = NULL, type = "response", ...) {
 }
 
 
-#' Prediction Method for morf.forest Objects (Internal Use)
+#' Prediction Method for morf.forest Objects
 #'
 #' Prediction method for class \code{morf.forest}.
 #'
@@ -111,6 +111,8 @@ predict.morf <- function(object, data = NULL, type = "response", ...) {
 #' 
 #' @return 
 #' Prediction results.
+#' 
+#' @keywords internal
 #' 
 #' @details 
 #' If \code{type === "response"} (the default), the predicted conditional class probabilities are returned. If forests are 

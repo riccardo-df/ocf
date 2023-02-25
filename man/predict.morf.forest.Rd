@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic-s3.R
 \name{predict.morf.forest}
 \alias{predict.morf.forest}
-\title{Prediction Method for morf.forest Objects (Internal Use)}
+\title{Prediction Method for morf.forest Objects}
 \usage{
 \method{predict}{morf.forest}(object, data, type = "response", ...)
 }
@@ -33,3 +33,4 @@ If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for
 \author{
 Riccardo Di Francesco
 }
+\keyword{internal}
