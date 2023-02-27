@@ -20,7 +20,7 @@ void ForestOrdered::loadForest(size_t num_trees,
   trees.reserve(num_trees);
   for (size_t i = 0; i < num_trees; ++i) {
     trees.push_back(
-        make_unique<TreeOrdered>(forest_child_nodeIDs[i], forest_split_varIDs[i], forest_split_values[i]));
+      std::make_unique<TreeOrdered>(forest_child_nodeIDs[i], forest_split_varIDs[i], forest_split_values[i]));
   }
 
   // Creating thread ranges.
@@ -48,7 +48,7 @@ void ForestOrdered::initInternal() {
 void ForestOrdered::growInternal() {
   trees.reserve(num_trees);
   for (size_t i = 0; i < num_trees; ++i) {
-    trees.push_back(make_unique<TreeOrdered>());
+    trees.push_back(std::make_unique<TreeOrdered>());
   }
 }
 
@@ -223,7 +223,7 @@ void ForestOrdered::loadFromFileInternal(std::ifstream& infile) {
     }
 
     // Creating tree.
-    trees.push_back(make_unique<TreeOrdered>(child_nodeIDs, split_varIDs, split_values));
+    trees.push_back(std::make_unique<TreeOrdered>(child_nodeIDs, split_varIDs, split_values));
   }
 }
 

@@ -87,13 +87,13 @@ Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::Nu
     
     // Initializing data. 
     if (use_sparse_data) {
-      data = make_unique<DataSparse>(sparse_x, input_y, variable_names, num_rows, num_cols);
+      data = std::make_unique<DataSparse>(sparse_x, input_y, variable_names, num_rows, num_cols);
     } else {
-      data = make_unique<DataRcpp>(input_x, input_y, variable_names, num_rows, num_cols);
+      data = std::make_unique<DataRcpp>(input_x, input_y, variable_names, num_rows, num_cols);
     }
     
     // Using ordered forest.
-    forest = make_unique<ForestOrdered>();
+    forest = std::make_unique<ForestOrdered>();
 
     ImportanceMode importance_mode = (ImportanceMode) importance_mode_r;
     SplitRule splitrule = (SplitRule) splitrule_r;
