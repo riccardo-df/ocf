@@ -1,4 +1,0 @@
-## Use c++11
-CXX_STD = CXX14
-PKG_CPPFLAGS = -DR_BUILD
-
