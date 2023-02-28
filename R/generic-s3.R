@@ -11,7 +11,6 @@
 #' Desired predictions.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -40,7 +39,7 @@
 #' 
 #' ## Get terminal nodes.
 #' predictions <- predict(forests, X_test, type = "terminalNodes")
-#' predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
+#' predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.
 #'
 #' @details 
 #' If \code{type == "response"}, the routine returns the predicted conditional class probabilities and the predicted class 
@@ -226,7 +225,6 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' Summarizes an \code{\link{morf}} object.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -240,7 +238,7 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' forests <- morf(y, X)
 #' 
 #' ## Summary.
-#' summary(forests)}
+#' summary(forests)
 #' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 #' 
@@ -280,7 +278,6 @@ summary.morf <- function(object, ...) {
 #' Prints an \code{\link{morf}} object.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -294,7 +291,7 @@ summary.morf <- function(object, ...) {
 #' forests <- morf(y, X)
 #' 
 #' ## Print.
-#' print(forests)}
+#' print(forests)
 #' 
 #' @seealso \code{\link{morf}}
 #' 
@@ -448,7 +445,6 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' @details 
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 #' standard errors have been estimated, they are printed in parenthesis below each point estimate.
-#' 
 #' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}.
 #' 

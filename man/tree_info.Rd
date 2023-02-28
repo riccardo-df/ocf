@@ -31,7 +31,6 @@ Nodes and variables IDs are 0-indexed, i.e., node 0 is the root node. \cr
 All values smaller than or equal to \code{splitval} go to the left and all values larger go to the right.
 }
 \examples{
-\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -46,7 +45,7 @@ forests <- morf(y, X)
 
 ## Extract information from tenth tree of first forest.
 info <- tree_info(forests$forests.info$forest.1, tree = 10)
-info}
+head(info)
   
 }
 \seealso{

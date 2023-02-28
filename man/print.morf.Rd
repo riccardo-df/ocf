@@ -18,7 +18,6 @@ Prints an \code{\link{morf}} object.
 Prints an \code{\link{morf}} object.
 }
 \examples{
-\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -32,7 +31,7 @@ X <- as.matrix(odata[, -1])
 forests <- morf(y, X)
 
 ## Print.
-print(forests)}
+print(forests)
 
 }
 \seealso{

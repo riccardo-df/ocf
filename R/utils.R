@@ -16,7 +16,6 @@
 #'    \item{\code{prediction}}{One column with the predicted conditional class probabilities.} 
 #'    
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -31,7 +30,7 @@
 #' 
 #' ## Extract information from tenth tree of first forest.
 #' info <- tree_info(forests$forests.info$forest.1, tree = 10)
-#' info}
+#' head(info)
 #'   
 #' @details 
 #' Nodes and variables IDs are 0-indexed, i.e., node 0 is the root node. \cr

@@ -28,7 +28,6 @@ labels. If forests are honest, the predicted probabilities are honest.\cr
 If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
 }
 \examples{
-\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -57,7 +56,7 @@ predictions$classification
 
 ## Get terminal nodes.
 predictions <- predict(forests, X_test, type = "terminalNodes")
-predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
+predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.
 
 }
 \seealso{
