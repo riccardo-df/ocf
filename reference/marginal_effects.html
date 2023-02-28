@@ -108,7 +108,8 @@ be discrete.<br></p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
@@ -117,26 +118,17 @@ be discrete.<br></p>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Training-test split (20/80%).</span></span></span>
-<span class="r-in"><span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">y_tr</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">X_tr</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">train_idx</span>, <span class="op">]</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">y_test</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">X_test</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span>, <span class="op">]</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Fit morf on training sample.. Use large number of trees.</span></span></span>
+<span class="r-in"><span><span class="co">## Fit morf . Use large number of trees.</span></span></span>
 <span class="r-in"><span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="morf.html">morf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Marginal effects at the mean on test sample.</span></span></span>
-<span class="r-in"><span><span class="va">me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">forests</span>, data <span class="op">=</span> <span class="va">X_test</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Marginal effects at the mean.</span></span></span>
+<span class="r-in"><span><span class="va">me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Morf marginal effects results </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes:    3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          800 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          1000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
@@ -147,16 +139,16 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.409  -0.156  -1.253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.048  -0.111   0.160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.302   0.018   0.284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.036   0.013   0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1  -0.478  -0.012   0.489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.002  -0.156   0.155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.274  -0.001   0.275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.020  -0.005   0.025</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Morf marginal effects results </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes:    3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          800 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          1000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
@@ -167,10 +159,10 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.409  -0.156  -1.253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.048  -0.111   0.160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.302   0.018   0.284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.036   0.013   0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1  -0.478  -0.012   0.489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.002  -0.156   0.155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.274  -0.001   0.275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.020  -0.005   0.025</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## LATEX.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -187,10 +179,10 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; 1.409 &amp; -0.156 &amp; -1.253 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.048 &amp; -0.111 &amp; 0.16 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.302 &amp; 0.018 &amp; 0.284 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; -0.036 &amp; 0.013 &amp; 0.023 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.478 &amp; -0.012 &amp; 0.489 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; 0.002 &amp; -0.156 &amp; 0.155 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.274 &amp; -0.001 &amp; 0.275 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; -0.02 &amp; -0.005 &amp; 0.025 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -202,14 +194,54 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="morf.html">morf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span><span class="op">$</span><span class="va">standard.errors</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       P'(Y=1)    P'(Y=2)   P'(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.15152089 0.39411954 0.3009047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.07557754 0.12324248 0.1072803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.09943567 0.10890777 0.1159298</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.01160408 0.01164306 0.0242432</span>
 <span class="r-in"><span><span class="va">honest_me</span><span class="op">$</span><span class="va">p.values</span> <span class="co"># These are not corrected for multiple hypotheses testing!</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       P'(Y=1)   P'(Y=2)    P'(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.09677029 0.6522228 0.15371143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.04829078 0.8639022 0.11225605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.01017815 0.8901080 0.01960077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.90543792 0.8708218 0.98305739</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \renewcommand{\arraystretch}{1.1}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \begin{table}[H]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \centering</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \begin{adjustbox}{width = 0.75\textwidth}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \begin{tabular}{@{\extracolsep{5pt}}l c c c}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &amp; Class 1 &amp; Class 2 &amp; Class 3 \\</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.252 &amp; -0.178 &amp; 0.429 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.152) &amp; (0.394) &amp; (0.301) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.149 &amp; -0.021 &amp; 0.17 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.076) &amp; (0.123) &amp; (0.107) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.256 &amp; -0.015 &amp; 0.271 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.099) &amp; (0.109) &amp; (0.116) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0.001 &amp; -0.002 &amp; 0.001 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.012) &amp; (0.012) &amp; (0.024) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \end{tabular}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \end{adjustbox}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \caption{Marginal effects.}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:morf.marginal.effects}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
