@@ -20,7 +20,6 @@
 #' Object of class \code{morf}.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -30,8 +29,8 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), length(y)/2)
+#' ## Training-test split (20/80%).
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
 #' 
 #' y_tr <- y[train_idx]
 #' X_tr <- X[train_idx, ]
@@ -49,6 +48,7 @@
 #' head(predictions$probabilities)
 #' table(y_test, predictions$classification)
 #' 
+#' \dontrun{
 #' ## Compute standard errors. This requires honest forests.
 #' honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
 #' head(honest_forests$predictions$standard.errors)}

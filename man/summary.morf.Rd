@@ -18,6 +18,7 @@ Summarizes an \code{\link{morf}} object.
 Summarizes an \code{\link{morf}} object.
 }
 \examples{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -31,7 +32,7 @@ X <- as.matrix(odata[, -1])
 forests <- morf(y, X)
 
 ## Summary.
-summary(forests)
+summary(forests)}
 
 }
 \seealso{

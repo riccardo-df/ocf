@@ -20,8 +20,8 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), length(y)/2)
+#' ## Training-test split (20/80%).
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
 #' 
 #' y_tr <- y[train_idx]
 #' X_tr <- X[train_idx, ]
@@ -225,6 +225,7 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' Summarizes an \code{\link{morf}} object.
 #' 
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -238,7 +239,7 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' forests <- morf(y, X)
 #' 
 #' ## Summary.
-#' summary(forests)
+#' summary(forests)}
 #' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 #' 
@@ -278,6 +279,7 @@ summary.morf <- function(object, ...) {
 #' Prints an \code{\link{morf}} object.
 #' 
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -291,7 +293,7 @@ summary.morf <- function(object, ...) {
 #' forests <- morf(y, X)
 #' 
 #' ## Print.
-#' print(forests)
+#' print(forests)}
 #' 
 #' @seealso \code{\link{morf}}
 #' 

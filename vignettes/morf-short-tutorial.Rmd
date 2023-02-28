@@ -80,10 +80,10 @@ head(honest_forests$predictions$standard.errors)
 The package implements a nonparametric estimator of marginal effects. This can be used by calling the `marginal_effects` function, which allows the estimation of mean marginal effects, marginal effects at the mean, or marginal effects at the median, according to the `eval` argument. In the following, we construct our forests in the training sample and use them to estimate the marginal effects at the mean in the test sample. We use a larger number of trees here to get more stable results.
 
 ```{r adaptive-me}
-## Fit morf. Use large number of trees.
-forests <- morf(y_tr, X_test, n.trees = 4000)
+## Fit morf on training sample. Use large number of trees.
+forests <- morf(y_tr, X_tr, n.trees = 4000)
 
-## Marginal effects at the mean.
+## Marginal effects at the mean on test sample.
 me_atmean <- marginal_effects(forests, data = X_test, eval = "atmean")
 summary(me_atmean)
 ```
@@ -92,7 +92,7 @@ As before, we can set `inference = TRUE` to estimate the standard errors. Again,
 
 ```{r honest-me}
 ##Honest forests.
-honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE) # Notice we do not need inference here!
+honest_forests <- morf(y_tr, X_tr, n.trees = 4000, honesty = TRUE) # Notice we do not need inference here!
 
 ## Compute standard errors.
 honest_me_atmean <- marginal_effects(honest_forests, data = X_test , eval = "atmean", inference = TRUE)

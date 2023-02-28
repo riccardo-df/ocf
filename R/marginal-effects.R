@@ -12,7 +12,7 @@
 #' Object of class \code{morf.marginal}.
 #' 
 #' @examples 
-#' \donttest{
+#' #' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -22,7 +22,7 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf. Use large number of trees.
+#' ## Fit morf . Use large number of trees.
 #' forests <- morf(y, X, n.trees = 4000)
 #' 
 #' ## Marginal effects at the mean.

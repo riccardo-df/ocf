@@ -18,8 +18,8 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), length(y)/2)
+#' ## Training-test split (20/80%).
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
 #' 
 #' y_tr <- y[train_idx]
 #' X_tr <- X[train_idx, ]
