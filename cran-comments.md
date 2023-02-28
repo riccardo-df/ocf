@@ -2,7 +2,7 @@
 
 This is a resubmission. In this version I have:
 
--   Unwrapped the examples that can be executed in \<5 sec.
+-   Removed \donttest from the examples that can be executed in \<5 sec.
 
 ## R CMD check results
 
