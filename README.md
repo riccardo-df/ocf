@@ -1,4 +1,8 @@
 # Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
  
 R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.
 
