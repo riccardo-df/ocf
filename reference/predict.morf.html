@@ -98,8 +98,7 @@ labels. If forests are honest, the predicted probabilities are honest.<br></p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
@@ -148,7 +147,7 @@ labels. If forests are honest, the predicted probabilities are honest.<br></p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Get terminal nodes.</span></span></span>
 <span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span>, type <span class="op">=</span> <span class="st">"terminalNodes"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">predictions</span><span class="op">$</span><span class="va">forest.1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span> <span class="co"># Rows are observations, columns are forests.# }</span></span></span>
+<span class="r-in"><span><span class="va">predictions</span><span class="op">$</span><span class="va">forest.1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span> <span class="co"># Rows are observations, columns are forests.</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   29   41   61   27   15   37   25   80   29    29    27    57    35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   33   24  106   74   19   38   76   68   92    90    30    67    16</span>
