@@ -217,10 +217,10 @@ in the training sample and use them to estimate the marginal effects at
 the mean in the test sample. We use a larger number of trees here to get
 more stable results.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Fit morf. Use large number of trees.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_test</span>, n.trees <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co">## Fit morf on training sample. Use large number of trees.</span></span>
+<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, n.trees <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Marginal effects at the mean.</span></span>
+<span><span class="co">## Marginal effects at the mean on test sample.</span></span>
 <span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, data <span class="op">=</span> <span class="va">X_test</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Morf marginal effects results </span></span>
@@ -238,32 +238,32 @@ more stable results.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Marginal Effects: </span></span>
 <span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1   2.171  -0.770  -1.401</span></span>
-<span><span class="co">#&gt; X2  -0.023  -0.060   0.084</span></span>
-<span><span class="co">#&gt; X3  -0.002   0.003  -0.001</span></span>
-<span><span class="co">#&gt; X4  -0.067   0.111  -0.044</span></span></code></pre></div>
+<span><span class="co">#&gt; X1  -0.481  -1.904   2.385</span></span>
+<span><span class="co">#&gt; X2  -0.151   0.087   0.064</span></span>
+<span><span class="co">#&gt; X3  -0.169   0.137   0.032</span></span>
+<span><span class="co">#&gt; X4   0.013  -0.017   0.004</span></span></code></pre></div>
 <p>As before, we can set <code>inference = TRUE</code> to estimate the
 standard errors. Again, this requires the use of honest forests and
 considerably slows down the routine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
 <span></span>
 <span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, data <span class="op">=</span> <span class="va">X_test</span> , eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">standard.errors</span></span>
-<span><span class="co">#&gt;       P'(Y=1)    P'(Y=2)    P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1 0.17927181 0.66833784 0.74615354</span></span>
-<span><span class="co">#&gt; X2 0.12220391 0.13619835 0.08142314</span></span>
-<span><span class="co">#&gt; X3 0.12813135 0.09401420 0.10277211</span></span>
-<span><span class="co">#&gt; X4 0.04416793 0.01535275 0.01553786</span></span>
+<span><span class="co">#&gt;        P'(Y=1)    P'(Y=2)     P'(Y=3)</span></span>
+<span><span class="co">#&gt; X1 0.445356260 0.73757605 0.444194151</span></span>
+<span><span class="co">#&gt; X2 0.155020266 0.10402467 0.087810622</span></span>
+<span><span class="co">#&gt; X3 0.089482204 0.08735010 0.053257396</span></span>
+<span><span class="co">#&gt; X4 0.004589474 0.01110736 0.007883281</span></span>
 <span></span>
 <span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">p.values</span> <span class="co"># These are not corrected for multiple hypotheses testing!</span></span>
-<span><span class="co">#&gt;       P'(Y=1)   P'(Y=2)     P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1 0.43854102 0.9097233 0.773589290</span></span>
-<span><span class="co">#&gt; X2 0.11232883 0.7699091 0.004074591</span></span>
-<span><span class="co">#&gt; X3 0.01495845 0.4575155 0.018562943</span></span>
-<span><span class="co">#&gt; X4 0.58402693 0.7230779 0.227728291</span></span>
+<span><span class="co">#&gt;      P'(Y=1)    P'(Y=2)    P'(Y=3)</span></span>
+<span><span class="co">#&gt; X1 0.1558480 0.89109092 0.09889229</span></span>
+<span><span class="co">#&gt; X2 0.2701744 0.09518272 0.97594194</span></span>
+<span><span class="co">#&gt; X3 0.3211495 0.64720541 0.35951141</span></span>
+<span><span class="co">#&gt; X4 0.1609340 0.32237341 0.56317317</span></span>
 <span></span>
 <span><span class="co">## LATEX.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -280,14 +280,14 @@ considerably slows down the routine.</p>
 <span><span class="co">#&gt;         \addlinespace[2pt]</span></span>
 <span><span class="co">#&gt;         \hline \\[-1.8ex] </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;         \texttt{X1} &amp; -0.139 &amp; -0.076 &amp; 0.215 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.179) &amp; (0.668) &amp; (0.746) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X2} &amp; -0.194 &amp; -0.04 &amp; 0.234 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.122) &amp; (0.136) &amp; (0.081) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X3} &amp; -0.312 &amp; 0.07 &amp; 0.242 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.128) &amp; (0.094) &amp; (0.103) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X4} &amp; 0.024 &amp; -0.005 &amp; -0.019 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.044) &amp; (0.015) &amp; (0.016) \\ </span></span>
+<span><span class="co">#&gt;         \texttt{X1} &amp; -0.632 &amp; -0.101 &amp; 0.733 \\ </span></span>
+<span><span class="co">#&gt;                      &amp; (0.445) &amp; (0.738) &amp; (0.444) \\ </span></span>
+<span><span class="co">#&gt;         \texttt{X2} &amp; -0.171 &amp; 0.174 &amp; -0.003 \\ </span></span>
+<span><span class="co">#&gt;                      &amp; (0.155) &amp; (0.104) &amp; (0.088) \\ </span></span>
+<span><span class="co">#&gt;         \texttt{X3} &amp; -0.089 &amp; 0.04 &amp; 0.049 \\ </span></span>
+<span><span class="co">#&gt;                      &amp; (0.089) &amp; (0.087) &amp; (0.053) \\ </span></span>
+<span><span class="co">#&gt;         \texttt{X4} &amp; 0.006 &amp; -0.011 &amp; 0.005 \\ </span></span>
+<span><span class="co">#&gt;                      &amp; (0.005) &amp; (0.011) &amp; (0.008) \\ </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;         \addlinespace[3pt]</span></span>
 <span><span class="co">#&gt;         \\[-1.8ex]\hline</span></span>
