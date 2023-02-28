@@ -37,6 +37,7 @@ The routine assumes that covariates with more than ten unique values are continu
 be discrete.\cr
 }
 \examples{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
@@ -46,27 +47,17 @@ data(odata)
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
 
-## Training-test split (20/80\%).
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
-
-y_tr <- y[train_idx]
-X_tr <- X[train_idx, ]
-
-y_test <- y[-train_idx]
-X_test <- X[-train_idx, ]
-
-## Fit morf on training sample.. Use large number of trees.
+## Fit morf . Use large number of trees.
 forests <- morf(y, X, n.trees = 4000)
 
-## Marginal effects at the mean on test sample.
-me <- marginal_effects(forests, data = X_test, eval = "atmean")
+## Marginal effects at the mean.
+me <- marginal_effects(forests, eval = "atmean")
 print(me)
 summary(me)
 
 ## LATEX.
 print(me, latex = TRUE)
 
-\dontrun{
 ## Compute standard errors. This requires honest forests.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)

@@ -12,7 +12,7 @@
 #' Object of class \code{morf.marginal}.
 #' 
 #' @examples 
-#' #' \donttest{
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 

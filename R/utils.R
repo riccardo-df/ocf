@@ -16,6 +16,7 @@
 #'    \item{\code{prediction}}{One column with the predicted conditional class probabilities.} 
 #'    
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -25,12 +26,12 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf on training sample.
+#' ## Fit morf.
 #' forests <- morf(y, X)
 #' 
 #' ## Extract information from tenth tree of first forest.
 #' info <- tree_info(forests$forests.info$forest.1, tree = 10)
-#' head(info)
+#' head(info)}
 #'   
 #' @details 
 #' Nodes and variables IDs are 0-indexed, i.e., node 0 is the root node. \cr
