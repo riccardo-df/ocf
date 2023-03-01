@@ -16,7 +16,8 @@ morf(
   min.node.size = 5,
   max.depth = 0,
   replace = FALSE,
-  sample.fraction = ifelse(replace, 1, 0.5)
+  sample.fraction = ifelse(replace, 1, 0.5),
+  n.threads = 1
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ morf(
 \item{replace}{If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement.}
 
 \item{sample.fraction}{Fraction of observations to sample.}
+
+\item{n.threads}{Number of threads. Zero corresponds to the number of CPUs available.}
 }
 \value{
 Object of class \code{morf}.

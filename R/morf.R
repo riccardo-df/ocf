@@ -15,6 +15,7 @@
 #' @param max.depth Maximal tree depth. A value of 0 corresponds to unlimited depth, 1 to "stumps" (one split per tree).
 #' @param replace If \code{TRUE}, grow trees on bootstrap subsamples. Otherwise, trees are grown on random subsamples drawn without replacement. 
 #' @param sample.fraction Fraction of observations to sample. 
+#' @param n.threads Number of threads. Zero corresponds to the number of CPUs available.
 #' 
 #' @return 
 #' Object of class \code{morf}.
@@ -66,7 +67,7 @@
 morf <- function(y = NULL, X = NULL,
                  honesty = FALSE, honesty.fraction = 0.5, inference = FALSE, alpha = 0,
                  n.trees = 2000, mtry = ceiling(sqrt(ncol(X))), min.node.size = 5, max.depth = 0, 
-                 replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5)) {
+                 replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), n.threads = 1) {
   ## 0.) Defaults for variables not needed.
   splitrule.num <- 1; treetype <- 3; probability <- FALSE
   importance.mode <- 1; scale.permutation.importance <- FALSE; local.importance <- FALSE
@@ -77,7 +78,7 @@ morf <- function(y = NULL, X = NULL,
   regularization.factor <- c(0, 0); regularization.usedepth <- FALSE; case.weights <- c(0, 0); use.case.weights <- FALSE; 
   split.select.weights <- list(c(0, 0)); use.split.select.weights <- FALSE; always.split.variables <- c("0", "0"); 
   use.always.split.variables <- FALSE; inbag <- list(c(0 ,0)); use.inbag <- FALSE; keep.inbag <- FALSE; holdout <- FALSE; 
-  n.threads <- 0; save.memory <- FALSE; verbose <- TRUE; seed <- stats::runif(1 , 0, .Machine$integer.max)
+  save.memory <- FALSE; verbose <- TRUE; seed <- stats::runif(1 , 0, .Machine$integer.max)
   
   ## 1.) Handling inputs and checks.
   # 1a.) Generic checks.
