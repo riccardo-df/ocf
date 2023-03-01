@@ -37,12 +37,12 @@ The routine assumes that covariates with more than ten unique values are continu
 be discrete.\cr
 }
 \examples{
-\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
 library(orf)
 data(odata)
+odata <- odata[1:200, ] # Subset to reduce elapsed time.
 
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
@@ -58,6 +58,7 @@ summary(me)
 ## LATEX.
 print(me, latex = TRUE)
 
+\dontrun{
 ## Compute standard errors. This requires honest forests.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)

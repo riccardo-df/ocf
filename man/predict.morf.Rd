@@ -33,12 +33,13 @@ set.seed(1986)
 
 library(orf)
 data(odata)
+odata <- odata[1:200, ] # Subset to reduce elapsed time.
 
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
 
-## Training-test split (20/80\%).
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
+## Training-test split.
+train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
 
 y_tr <- y[train_idx]
 X_tr <- X[train_idx, ]

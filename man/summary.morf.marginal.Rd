@@ -24,12 +24,12 @@ Compilation of the LATEX code requires the following packages: \code{booktabs}, 
 standard errors have been estimated, they are printed in parenthesis below each point estimate.
 }
 \examples{
-\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
 library(orf)
 data(odata)
+odata <- odata[1:200, ] # Subset to reduce elapsed time.
 
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
@@ -42,6 +42,7 @@ me <- marginal_effects(forests, eval = "atmean")
 summary(me)
 summary(me, latex = TRUE)
 
+\dontrun{
 ## Add standard errors.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)

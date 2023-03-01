@@ -35,7 +35,7 @@ The `morf` function constructs a collection of forests, one for each category of
 
 ```{r adaptive-morf}
 ## Training-test split.
-train_idx <- sample(seq_len(length(y)), length(y)/2)
+train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
 
 y_tr <- y[train_idx]
 X_tr <- X[train_idx, ]

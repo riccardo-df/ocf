@@ -16,12 +16,13 @@
 #' 
 #' library(orf)
 #' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Training-test split (20/80%).
-#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.2))
+#' ## Training-test split.
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
 #' 
 #' y_tr <- y[train_idx]
 #' X_tr <- X[train_idx, ]
@@ -225,21 +226,21 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' Summarizes an \code{\link{morf}} object.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
 #' library(orf)
 #' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf on training sample.
+#' ## Fit morf.
 #' forests <- morf(y, X)
 #' 
 #' ## Summary.
-#' summary(forests)}
+#' summary(forests)
 #' 
 #' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
 #' 
@@ -285,6 +286,7 @@ summary.morf <- function(object, ...) {
 #' 
 #' library(orf)
 #' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -317,12 +319,12 @@ print.morf <- function(x, ...) {
 #' Summarizes an \code{morf.marginal} object.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
 #' library(orf)
 #' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -335,6 +337,7 @@ print.morf <- function(x, ...) {
 #' summary(me)
 #' summary(me, latex = TRUE)
 #' 
+#' \dontrun{
 #' ## Add standard errors.
 #' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
@@ -421,12 +424,12 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' Prints an \code{morf.marginal} object.
 #' 
 #' @examples 
-#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
 #' library(orf)
 #' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -439,6 +442,7 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' print(me)
 #' print(me, latex = TRUE)
 #' 
+#' \dontrun{
 #' ## Add standard errors.
 #' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
