@@ -67,7 +67,8 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span>  min.node.size <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  max.depth <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  replace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  sample.fraction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">replace</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span></span>
+<span>  sample.fraction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">replace</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  n.threads <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -119,6 +120,10 @@ splitting criterion to build a collection of forests, each estimating the condit
 
 <dt>sample.fraction</dt>
 <dd><p>Fraction of observations to sample.</p></dd>
+
+
+<dt>n.threads</dt>
+<dd><p>Number of threads. Zero corresponds to the number of CPUs available.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -192,10 +192,11 @@ errors to construct valid confidence intervals for the conditional
 probabilities. We again stress that if we care only about prediction
 performance we should set <code>honesty = FALSE</code> (this is the
 default). As a final remark, notice that the weights extraction
-considerably slows down the routine.</p>
+considerably slows down the routine. However, we can increase the number
+of threads used to construct the forests to speed up the routine.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/morf.html">morf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Zero corresponds to the number of CPUs available.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          P(Y=1)     P(Y=2)     P(Y=3)</span></span>
 <span><span class="co">#&gt; [1,] 0.06114787 0.09194353 0.10702135</span></span>
