@@ -2,8 +2,7 @@
 
 This is a resubmission. In this version I have:
 
--   Removed \donttest from the examples that can be executed in \<5 sec;
--   Changed the default number of CPUs to one.
+-   Replaced \dontrun{} with \donttest{}.
 
 ## R CMD check results
 

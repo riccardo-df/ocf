@@ -42,7 +42,7 @@ me <- marginal_effects(forests, eval = "atmean")
 summary(me)
 summary(me, latex = TRUE)
 
-\dontrun{
+\donttest{
 ## Add standard errors.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)

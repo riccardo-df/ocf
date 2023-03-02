@@ -58,7 +58,7 @@ summary(me)
 ## LATEX.
 print(me, latex = TRUE)
 
-\dontrun{
+\donttest{
 ## Compute standard errors. This requires honest forests.
 honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)

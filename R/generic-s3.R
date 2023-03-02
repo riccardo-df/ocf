@@ -337,7 +337,7 @@ print.morf <- function(x, ...) {
 #' summary(me)
 #' summary(me, latex = TRUE)
 #' 
-#' \dontrun{
+#' \donttest{
 #' ## Add standard errors.
 #' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
@@ -442,7 +442,7 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' print(me)
 #' print(me, latex = TRUE)
 #' 
-#' \dontrun{
+#' \donttest{
 #' ## Add standard errors.
 #' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
