@@ -157,11 +157,42 @@ standard errors have been estimated, they are printed in parenthesis below each 
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">## Add standard errors.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="morf.html">morf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu"><a href="marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \renewcommand{\arraystretch}{1.1}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \begin{table}[H]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \centering</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \begin{adjustbox}{width = 0.75\textwidth}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \begin{tabular}{@{\extracolsep{5pt}}l c c c}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &amp; Class 1 &amp; Class 2 &amp; Class 3 \\</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.489 &amp; -0.006 &amp; 0.495 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.351) &amp; (0.978) &amp; (0.269) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.29 &amp; 0.345 &amp; -0.055 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.158) &amp; (0.142) &amp; (0.11) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.108 &amp; 0.061 &amp; 0.047 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.079) &amp; (0.16) &amp; (0.091) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0.002 &amp; -0.002 &amp; 0 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.002) &amp; (0.003) &amp; (0.005) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \end{tabular}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \end{adjustbox}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \caption{Marginal effects.}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:morf.marginal.effects}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
