@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   morf-short-tutorial: morf-short-tutorial.html
-last_built: 2023-03-14T06:50Z
+last_built: 2023-03-17T17:07Z
 urls:
   reference: https://riccardo-df.github.io/morf/reference
   article: https://riccardo-df.github.io/morf/articles
