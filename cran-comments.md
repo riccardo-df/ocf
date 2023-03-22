@@ -1,10 +1,6 @@
 ## Resubmission
-This is a resubmission. The previous submission was rejected because of a function that
-writes in the user's home filespace.
-However, the offending function lives under the "tools/" folder and is only called during
-the package configuration to write a "Makevars" file in the "src/" folder that selects the appropriate 
-C++ version. My understanding is that this should be in line with CRAN policies. I apologize if I 
-misunderstood and this is not the case.
+This is a resubmission. In the previous submission I was asked to confirm that there are no references describing the methods in
+this package. I confirm this.
 
 ## R CMD check results
 
