@@ -4,7 +4,7 @@
 
 library(tools)
 
-for (std in c('CXX20', 'CXX17', 'CXX14')) {
+for (std in c('CXX17', 'CXX14')) {
   cat('Checking if R knows a', std, 'compiler... ')
   out <- suppressWarnings(Rcmd(paste('config', std)))
   if (out == 0) break
