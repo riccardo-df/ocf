@@ -2,6 +2,8 @@
  
  <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/morf)](https://CRAN.R-project.org/package=morf)
+![CRAN Downloads overall](http://cranlogs.r-pkg.org/badges/grand-total/aggTrees)
+[![R-CMD-check](https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
  
 R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.
