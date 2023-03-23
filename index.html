@@ -78,15 +78,17 @@
 <div class="page-header"><h1 id="modified-ordered-random-forest-">Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
 <a class="anchor" aria-label="anchor" href="#modified-ordered-random-forest-"></a>
 </h1></div>
+<p><!-- badges: start --> <a href="https://CRAN.R-project.org/package=morf" class="external-link"><img src="https://www.r-pkg.org/badges/version/morf" alt="CRAN status"></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/morf" alt="CRAN Downloads overall"><a href="https://github.com/riccardo-df/aggTrees/morf/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
 <p>R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.</p>
 <p>MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by MORF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.</p>
 <p>To get started, please check the online <a href="https://riccardo-df.github.io/morf/articles/morf-vignette.html">vignette</a> for a short tutorial.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The current development version of the package can be installed using the <code>devtools</code> package:</p>
-<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/morf"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://riccardo-df.github.io/morf/">morf</a></span><span class="op">)</span></span></code></pre>
+<p>The package can be downloaded from CRAN:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"morf"</span><span class="op">)</span></span></code></pre>
+<p>Alternatively, the current development version of the package can be installed using the <code>devtools</code> package:</p>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/morf"</span><span class="op">)</span> <span class="co"># run install.packages("devtools") if needed.</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -103,7 +105,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=morf" class="external-link">View on CRAN</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
