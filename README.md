@@ -1,5 +1,11 @@
 # Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
  
+ <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/morf)](https://CRAN.R-project.org/package=morf)
+![CRAN Downloads overall](http://cranlogs.r-pkg.org/badges/grand-total/morf)
+[![R-CMD-check](https://github.com/riccardo-df/morf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/riccardo-df/aggTrees/morf/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+ 
 R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.
 
 MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by MORF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.
@@ -7,12 +13,18 @@ MORF modifies a standard random forest splitting criterion to build a collection
 To get started, please check the online [vignette](https://riccardo-df.github.io/morf/articles/morf-vignette.html) for a short tutorial.
 
 ## Installation  
-The current development version of the package can be installed using the `devtools` package:
+The package can be downloaded from CRAN:
 
 ```
-devtools::install_github("riccardo-df/morf")
-library(morf)
+install.packages("morf")
 ```
+
+Alternatively, the current development version of the package can be installed using the `devtools` package:
+
+```
+devtools::install_github("riccardo-df/morf") # run install.packages("devtools") if needed.
+```
+
 ## References
 
 - Athey, S., Tibshirani, J., & Wager, S. (2019).
