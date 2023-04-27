@@ -56,7 +56,7 @@
 #' @author Riccardo Di Francesco
 #'
 #' @export
-marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.01, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
+marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## 1.) Handling inputs and checks.
   if (!inherits(object, "morf")) stop("Invalid 'object'.", call. = FALSE) 
   if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a morf object estimated with 'honesty = TRUE'.", call. = FALSE)
