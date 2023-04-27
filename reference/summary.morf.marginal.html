@@ -117,17 +117,17 @@ standard errors have been estimated, they are printed in parenthesis below each 
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Bandwidth:            0.01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bandwidth:            0.1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of trees:      4000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Honest forests:       FALSE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Honesty fraction:     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.277  -0.555  -0.722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.186   0.172   0.013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1   0.166  -0.227   0.061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.133   0.049   0.084</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.247   0.038   0.209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.066   0.024   0.043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.068  -0.037   0.105</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
@@ -142,10 +142,10 @@ standard errors have been estimated, they are printed in parenthesis below each 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; 1.277 &amp; -0.555 &amp; -0.722 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.186 &amp; 0.172 &amp; 0.013 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; 0.166 &amp; -0.227 &amp; 0.061 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.133 &amp; 0.049 &amp; 0.084 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.247 &amp; 0.038 &amp; 0.209 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; -0.066 &amp; 0.024 &amp; 0.043 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; -0.068 &amp; -0.037 &amp; 0.105 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -175,14 +175,14 @@ standard errors have been estimated, they are printed in parenthesis below each 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.489 &amp; -0.006 &amp; 0.495 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.351) &amp; (0.978) &amp; (0.269) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.29 &amp; 0.345 &amp; -0.055 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.158) &amp; (0.142) &amp; (0.11) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.226 &amp; 0.041 &amp; 0.184 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.133) &amp; (0.297) &amp; (0.107) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.08 &amp; -0.091 &amp; 0.171 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.036) &amp; (0.089) &amp; (0.117) \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.108 &amp; 0.061 &amp; 0.047 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.079) &amp; (0.16) &amp; (0.091) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0.002 &amp; -0.002 &amp; 0 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.002) &amp; (0.003) &amp; (0.005) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0 &amp; -0.011 &amp; 0.011 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.022) &amp; (0.034) &amp; (0.03) \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
