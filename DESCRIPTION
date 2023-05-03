@@ -25,5 +25,6 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://riccardo-df.github.io/morf/
+URL: https://riccardo-df.github.io/morf/,
+    https://riccardo-df.github.io/ocf/
 Biarch: TRUE
