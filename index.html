@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modified Ordered Random Forest • morf</title>
+<title>Ordered Correlation Forest • ocf</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,11 +17,11 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Modified Ordered Random Forest">
-<meta property="og:description" content="Nonparametric estimator of the ordered choice model using random forests. The estimator modifies a
+<script src="pkgdown.js"></script><meta property="og:title" content="Ordered Correlation Forest">
+<meta property="og:description" content="Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies a
     standard random forest splitting criterion to build a collection of forests, each estimating the conditional 
     probability of a single class. The package also implements a nonparametric estimator of the covariates’ marginal effects.">
-<meta property="og:image" content="https://riccardo-df.github.io/morf/logo.svg">
+<meta property="og:image" content="https://riccardo-df.github.io/ocf/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -41,7 +41,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">morf</a>
+        <a class="navbar-link" href="index.html">ocf</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
@@ -49,7 +49,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="articles/morf-short-tutorial.html">Get started</a>
+  <a href="articles/ocf-short-tutorial.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -57,7 +57,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/riccardo-df/morf" class="external-link">
+  <a href="https://github.com/riccardo-df/ocf" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -75,17 +75,17 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="modified-ordered-random-forest-">Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
-<a class="anchor" aria-label="anchor" href="#modified-ordered-random-forest-"></a>
+<div class="page-header"><h1 id="ordered-correlation-forest-">Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
+<a class="anchor" aria-label="anchor" href="#ordered-correlation-forest-"></a>
 </h1></div>
-<p>R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.</p>
-<p>MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by MORF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.</p>
-<p>To get started, please check the online <a href="https://riccardo-df.github.io/morf/articles/morf-vignette.html">vignette</a> for a short tutorial.</p>
+<p>R package to implement ordered correlation forests (OCF), a nonparametric estimator for ordered non-numeric outcomes. Additionally, the package implements a nonparametric estimator of the covariates’ marginal effects.</p>
+<p>OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by OCF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.</p>
+<p>To get started, please check the online <a href="https://riccardo-df.github.io/ocf/articles/ocf-vignette.html">vignette</a> for a short tutorial.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>The current development version of the package can be installed using the <code>devtools</code> package:</p>
-<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/morf"</span><span class="op">)</span> <span class="co"># run install.packages("devtools") if needed.</span></span></code></pre>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/ocf"</span><span class="op">)</span> <span class="co"># run install.packages("devtools") if needed.</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -102,14 +102,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
-<h2 data-toc-skip>Links</h2>
-<ul class="list-unstyled">
-<li><a href="https://cloud.r-project.org/package=morf" class="external-link">View on CRAN</a></li>
-</ul>
-</div>
-
-<div class="license">
+    <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -121,7 +114,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing morf</a></li>
+<li><a href="authors.html#citation">Citing ocf</a></li>
 </ul>
 </div>
 

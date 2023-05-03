@@ -2,9 +2,9 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  morf-short-tutorial: morf-short-tutorial.html
-last_built: 2023-04-27T11:54Z
+  ocf-short-tutorial: ocf-short-tutorial.html
+last_built: 2023-05-03T13:09Z
 urls:
-  reference: https://riccardo-df.github.io/morf/reference
-  article: https://riccardo-df.github.io/morf/articles
+  reference: https://riccardo-df.github.io/ocf/reference
+  article: https://riccardo-df.github.io/ocf/articles
 
