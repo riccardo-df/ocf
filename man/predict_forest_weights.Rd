@@ -7,7 +7,7 @@
 predict_forest_weights(forest, honest_sample, test_sample)
 }
 \arguments{
-\item{forest}{An \code{morf.forest} object.}
+\item{forest}{An \code{ocf.forest} object.}
 
 \item{honest_sample}{Honest sample.}
 
@@ -17,7 +17,7 @@ predict_forest_weights(forest, honest_sample, test_sample)
 Matrix of out-of-sample honest weights.
 }
 \description{
-Computes forest out-of-sample honest weights for an \code{morf.forest} object.
+Computes forest out-of-sample honest weights for an \code{ocf.forest} object.
 }
 \details{
 \code{forest} must have been grown using only the training sample.

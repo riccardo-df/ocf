@@ -7,7 +7,7 @@
 forest_weights_fitted(forest, honest_sample, train_sample)
 }
 \arguments{
-\item{forest}{An \code{morf.forest} object.}
+\item{forest}{An \code{ocf.forest} object.}
 
 \item{honest_sample}{Honest sample.}
 
@@ -17,7 +17,7 @@ forest_weights_fitted(forest, honest_sample, train_sample)
 Matrix of in-sample honest weights.
 }
 \description{
-Computes forest in-sample honest weights for an \code{morf.forest} object.
+Computes forest in-sample honest weights for an \code{ocf.forest} object.
 }
 \details{
 \code{forest} must have been grown using only the training sample.

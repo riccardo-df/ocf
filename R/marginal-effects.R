@@ -1,15 +1,15 @@
 #' Marginal Effects for Modified Ordered Random Forests
 #'
-#' Nonparametric estimation of marginal effects using an \code{\link{morf}} object.
+#' Nonparametric estimation of marginal effects using an \code{\link{ocf}} object.
 #'
-#' @param object An \code{\link{morf}} object.
+#' @param object An \code{\link{ocf}} object.
 #' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
 #' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
 #' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.
 #' @param inference Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program.
 #' 
 #' @return 
-#' Object of class \code{morf.marginal}.
+#' Object of class \code{ocf.marginal}.
 #' 
 #' @examples 
 #' ## Load data from orf package.
@@ -22,8 +22,8 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf . Use large number of trees.
-#' forests <- morf(y, X, n.trees = 4000)
+#' ## Fit ocf . Use large number of trees.
+#' forests <- ocf(y, X, n.trees = 4000)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
@@ -35,7 +35,7 @@
 #' 
 #' \donttest{
 #' ## Compute standard errors. This requires honest forests.
-#' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' honest_me$standard.errors
 #' honest_me$p.values # These are not corrected for multiple hypotheses testing!
@@ -51,15 +51,15 @@
 #'
 #' @importFrom stats median sd pnorm
 #'
-#' @seealso \code{\link{morf}}
+#' @seealso \code{\link{ocf}}
 #' 
 #' @author Riccardo Di Francesco
 #'
 #' @export
 marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## 1.) Handling inputs and checks.
-  if (!inherits(object, "morf")) stop("Invalid 'object'.", call. = FALSE) 
-  if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a morf object estimated with 'honesty = TRUE'.", call. = FALSE)
+  if (!inherits(object, "ocf")) stop("Invalid 'object'.", call. = FALSE) 
+  if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a ocf object estimated with 'honesty = TRUE'.", call. = FALSE)
   n_honest <- dim(object$honest_data)[1]
   y.classes <- sort(unique(object$full_data[, 1]))
   n.classes <- length(y.classes)
@@ -175,7 +175,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
       numerators[[j]] <- predictions_up - predictions_down
     }
   } else { # 5b.) If not inference, use standard prediction strategy. 
-    # 5ba.) Predict by shifting the j-th covariate. Normalization step done within predict.morf.
+    # 5ba.) Predict by shifting the j-th covariate. Normalization step done within predict.ocf.
     predictions_up <- lapply(X_up_data, function(x) {predict(object, x)$probabilities})
     predictions_down <- lapply(X_down_data, function(x) {predict(object, x)$probabilities})
     numerators <- mapply(function(x, y) {x - y}, predictions_up, predictions_down, SIMPLIFY = FALSE)
@@ -239,7 +239,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   results$honesty <- object$tuning.info$honesty
   results$honesty.fraction <- object$tuning.info$honesty.fraction
 
-  class(results) <- "morf.marginal"
+  class(results) <- "ocf.marginal"
   
   ## Output.
   return(results)

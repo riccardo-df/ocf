@@ -7,7 +7,7 @@
 #include "utility.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class DataRcpp: public Data {
 public:
@@ -60,6 +60,6 @@ private:
   Rcpp::NumericMatrix y;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* DATARCPP_H_ */

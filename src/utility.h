@@ -20,7 +20,7 @@
 #include "globals.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 /**
  * Split sequence start, ..., end in num_parts parts with sizes as equal as possible.
@@ -377,6 +377,6 @@ template<class T, size_t N> struct _Unique_if<T[N]> {
 } // namespace detail
 
 }
-// namespace morf
+// namespace ocf
 
 #endif /* UTILITY_H_ */

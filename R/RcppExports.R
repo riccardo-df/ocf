@@ -3,7 +3,7 @@
 
 #' Forest In-Sample Honest Weights
 #'
-#' Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+#' Computes forest in-sample honest weights for a \code{ocf.forest} object relative to the m-th class.
 #'
 #' @param leaf_IDs_train_list List of size \code{n.trees}, storing the leaf of each tree where training units fall into.
 #' @param leaf_IDs_honest_list List of size \code{n.trees}, storing the leaf of each tree where honest units fall into.
@@ -11,12 +11,12 @@
 #'
 #' @keywords internal
 forest_weights_fitted_cpp <- function(leaf_IDs_train_list, leaf_IDs_honest_list, leaf_size_honest_list) {
-    .Call('_morf_forest_weights_fitted_cpp', PACKAGE = 'morf', leaf_IDs_train_list, leaf_IDs_honest_list, leaf_size_honest_list)
+    .Call('_ocf_forest_weights_fitted_cpp', PACKAGE = 'ocf', leaf_IDs_train_list, leaf_IDs_honest_list, leaf_size_honest_list)
 }
 
 #' Forest Out-of-Sample Honest Weights
 #'
-#' Computes forest out-of-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+#' Computes forest out-of-sample honest weights for a \code{ocf.forest} object relative to the m-th class.
 #'
 #' @param leaf_IDs_test_list List of size \code{n.trees}, storing the leaf of each tree where training units fall into.
 #' @param leaf_IDs_honest_list List of size \code{n.trees}, storing the leaf of each tree where honest units fall into.
@@ -25,12 +25,12 @@ forest_weights_fitted_cpp <- function(leaf_IDs_train_list, leaf_IDs_honest_list,
 #'
 #' @keywords internal
 forest_weights_predicted_cpp <- function(leaf_IDs_test_list, leaf_IDs_honest_list, leaf_size_honest_list, w) {
-    .Call('_morf_forest_weights_predicted_cpp', PACKAGE = 'morf', leaf_IDs_test_list, leaf_IDs_honest_list, leaf_size_honest_list, w)
+    .Call('_ocf_forest_weights_predicted_cpp', PACKAGE = 'ocf', leaf_IDs_test_list, leaf_IDs_honest_list, leaf_size_honest_list, w)
 }
 
 #' Honest In-Sample Predictions 
 #'
-#' Computes honest in-sample predictions for a morf.forest object relative to the desired class.
+#' Computes honest in-sample predictions for a ocf.forest object relative to the desired class.
 #'
 #' @param unique_leaves_honest List of size \code{n.trees}, storing the unique leaf ids of each tree relative to the honest sample.
 #' @param y_m Indicator variable, equal to 1 if the \code{y} is lower or equal than the m-th class and zero otherwise.
@@ -40,12 +40,12 @@ forest_weights_predicted_cpp <- function(leaf_IDs_test_list, leaf_IDs_honest_lis
 #' 
 #' @keywords internal
 honest_fitted_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, train_leaves) {
-    .Call('_morf_honest_fitted_cpp', PACKAGE = 'morf', unique_leaves_honest, y_m, y_m_1, honest_leaves, train_leaves)
+    .Call('_ocf_honest_fitted_cpp', PACKAGE = 'ocf', unique_leaves_honest, y_m, y_m_1, honest_leaves, train_leaves)
 }
 
 #' Honest Out-of-Sample Predictions 
 #'
-#' Computes honest out-of-sample predictions for a morf.forest object relative to the desired class.
+#' Computes honest out-of-sample predictions for a ocf.forest object relative to the desired class.
 #' 
 #' @param unique_leaves_honest List of size \code{n.trees}, storing the unique leaf ids of each tree relative to the honest sample.
 #' @param y_m Indicator variable, equal to 1 if the \code{y} is lower or equal than the m-th class and zero otherwise.
@@ -55,18 +55,18 @@ honest_fitted_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, t
 #' 
 #' @keywords internal
 honest_predictions_cpp <- function(unique_leaves_honest, y_m, y_m_1, honest_leaves, test_leaves) {
-    .Call('_morf_honest_predictions_cpp', PACKAGE = 'morf', unique_leaves_honest, y_m, y_m_1, honest_leaves, test_leaves)
+    .Call('_ocf_honest_predictions_cpp', PACKAGE = 'ocf', unique_leaves_honest, y_m, y_m_1, honest_leaves, test_leaves)
 }
 
-morfCpp <- function(treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance) {
-    .Call('_morf_morfCpp', PACKAGE = 'morf', treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance)
+ocfCpp <- function(treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance) {
+    .Call('_ocf_ocfCpp', PACKAGE = 'ocf', treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance)
 }
 
 numSmaller <- function(values, reference) {
-    .Call('_morf_numSmaller', PACKAGE = 'morf', values, reference)
+    .Call('_ocf_numSmaller', PACKAGE = 'ocf', values, reference)
 }
 
 randomObsNode <- function(groups, y, inbag_counts) {
-    .Call('_morf_randomObsNode', PACKAGE = 'morf', groups, y, inbag_counts)
+    .Call('_ocf_randomObsNode', PACKAGE = 'ocf', groups, y, inbag_counts)
 }
 

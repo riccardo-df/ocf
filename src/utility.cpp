@@ -14,7 +14,7 @@
 #include "globals.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 void equalSplit(std::vector<unsigned int>& result, unsigned int start, unsigned int end, unsigned int num_parts) {
 
@@ -394,4 +394,4 @@ std::stringstream& readFromStream(std::stringstream& in, double& token) {
 }
 // #nocov end
 
-} // namespace morf
+} // namespace ocf

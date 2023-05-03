@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // forest_weights_fitted_cpp
 NumericMatrix forest_weights_fitted_cpp(List leaf_IDs_train_list, List leaf_IDs_honest_list, List leaf_size_honest_list);
-RcppExport SEXP _morf_forest_weights_fitted_cpp(SEXP leaf_IDs_train_listSEXP, SEXP leaf_IDs_honest_listSEXP, SEXP leaf_size_honest_listSEXP) {
+RcppExport SEXP _ocf_forest_weights_fitted_cpp(SEXP leaf_IDs_train_listSEXP, SEXP leaf_IDs_honest_listSEXP, SEXP leaf_size_honest_listSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -26,7 +26,7 @@ END_RCPP
 }
 // forest_weights_predicted_cpp
 NumericVector forest_weights_predicted_cpp(List leaf_IDs_test_list, List leaf_IDs_honest_list, List leaf_size_honest_list, int w);
-RcppExport SEXP _morf_forest_weights_predicted_cpp(SEXP leaf_IDs_test_listSEXP, SEXP leaf_IDs_honest_listSEXP, SEXP leaf_size_honest_listSEXP, SEXP wSEXP) {
+RcppExport SEXP _ocf_forest_weights_predicted_cpp(SEXP leaf_IDs_test_listSEXP, SEXP leaf_IDs_honest_listSEXP, SEXP leaf_size_honest_listSEXP, SEXP wSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -40,7 +40,7 @@ END_RCPP
 }
 // honest_fitted_cpp
 NumericVector honest_fitted_cpp(List unique_leaves_honest, NumericVector y_m, NumericVector y_m_1, NumericMatrix honest_leaves, NumericMatrix train_leaves);
-RcppExport SEXP _morf_honest_fitted_cpp(SEXP unique_leaves_honestSEXP, SEXP y_mSEXP, SEXP y_m_1SEXP, SEXP honest_leavesSEXP, SEXP train_leavesSEXP) {
+RcppExport SEXP _ocf_honest_fitted_cpp(SEXP unique_leaves_honestSEXP, SEXP y_mSEXP, SEXP y_m_1SEXP, SEXP honest_leavesSEXP, SEXP train_leavesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // honest_predictions_cpp
 NumericVector honest_predictions_cpp(List unique_leaves_honest, NumericVector y_m, NumericVector y_m_1, NumericMatrix honest_leaves, NumericMatrix test_leaves);
-RcppExport SEXP _morf_honest_predictions_cpp(SEXP unique_leaves_honestSEXP, SEXP y_mSEXP, SEXP y_m_1SEXP, SEXP honest_leavesSEXP, SEXP test_leavesSEXP) {
+RcppExport SEXP _ocf_honest_predictions_cpp(SEXP unique_leaves_honestSEXP, SEXP y_mSEXP, SEXP y_m_1SEXP, SEXP honest_leavesSEXP, SEXP test_leavesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -68,9 +68,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// morfCpp
-Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::NumericMatrix& input_y, std::vector<std::string> variable_names, unsigned int mtry, unsigned int num_trees, bool verbose, unsigned int seed, unsigned int num_threads, bool write_forest, unsigned int importance_mode_r, unsigned int min_node_size, std::vector<std::vector<double>>& split_select_weights, bool use_split_select_weights, std::vector<std::string>& always_split_variable_names, bool use_always_split_variable_names, bool prediction_mode, Rcpp::List loaded_forest, Rcpp::RawMatrix snp_data, bool sample_with_replacement, bool probability, std::vector<std::string>& unordered_variable_names, bool use_unordered_variable_names, bool save_memory, unsigned int splitrule_r, std::vector<double>& case_weights, bool use_case_weights, std::vector<double>& class_weights, bool predict_all, bool keep_inbag, std::vector<double>& sample_fraction, double alpha, double minprop, bool holdout, unsigned int prediction_type_r, unsigned int num_random_splits, Eigen::SparseMatrix<double>& sparse_x, bool use_sparse_data, bool order_snps, bool oob_error, unsigned int max_depth, std::vector<std::vector<size_t>>& inbag, bool use_inbag, std::vector<double>& regularization_factor, bool use_regularization_factor, bool regularization_usedepth, std::vector<double>& alpha_balance);
-RcppExport SEXP _morf_morfCpp(SEXP treetypeSEXP, SEXP input_xSEXP, SEXP input_ySEXP, SEXP variable_namesSEXP, SEXP mtrySEXP, SEXP num_treesSEXP, SEXP verboseSEXP, SEXP seedSEXP, SEXP num_threadsSEXP, SEXP write_forestSEXP, SEXP importance_mode_rSEXP, SEXP min_node_sizeSEXP, SEXP split_select_weightsSEXP, SEXP use_split_select_weightsSEXP, SEXP always_split_variable_namesSEXP, SEXP use_always_split_variable_namesSEXP, SEXP prediction_modeSEXP, SEXP loaded_forestSEXP, SEXP snp_dataSEXP, SEXP sample_with_replacementSEXP, SEXP probabilitySEXP, SEXP unordered_variable_namesSEXP, SEXP use_unordered_variable_namesSEXP, SEXP save_memorySEXP, SEXP splitrule_rSEXP, SEXP case_weightsSEXP, SEXP use_case_weightsSEXP, SEXP class_weightsSEXP, SEXP predict_allSEXP, SEXP keep_inbagSEXP, SEXP sample_fractionSEXP, SEXP alphaSEXP, SEXP minpropSEXP, SEXP holdoutSEXP, SEXP prediction_type_rSEXP, SEXP num_random_splitsSEXP, SEXP sparse_xSEXP, SEXP use_sparse_dataSEXP, SEXP order_snpsSEXP, SEXP oob_errorSEXP, SEXP max_depthSEXP, SEXP inbagSEXP, SEXP use_inbagSEXP, SEXP regularization_factorSEXP, SEXP use_regularization_factorSEXP, SEXP regularization_usedepthSEXP, SEXP alpha_balanceSEXP) {
+// ocfCpp
+Rcpp::List ocfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::NumericMatrix& input_y, std::vector<std::string> variable_names, unsigned int mtry, unsigned int num_trees, bool verbose, unsigned int seed, unsigned int num_threads, bool write_forest, unsigned int importance_mode_r, unsigned int min_node_size, std::vector<std::vector<double>>& split_select_weights, bool use_split_select_weights, std::vector<std::string>& always_split_variable_names, bool use_always_split_variable_names, bool prediction_mode, Rcpp::List loaded_forest, Rcpp::RawMatrix snp_data, bool sample_with_replacement, bool probability, std::vector<std::string>& unordered_variable_names, bool use_unordered_variable_names, bool save_memory, unsigned int splitrule_r, std::vector<double>& case_weights, bool use_case_weights, std::vector<double>& class_weights, bool predict_all, bool keep_inbag, std::vector<double>& sample_fraction, double alpha, double minprop, bool holdout, unsigned int prediction_type_r, unsigned int num_random_splits, Eigen::SparseMatrix<double>& sparse_x, bool use_sparse_data, bool order_snps, bool oob_error, unsigned int max_depth, std::vector<std::vector<size_t>>& inbag, bool use_inbag, std::vector<double>& regularization_factor, bool use_regularization_factor, bool regularization_usedepth, std::vector<double>& alpha_balance);
+RcppExport SEXP _ocf_ocfCpp(SEXP treetypeSEXP, SEXP input_xSEXP, SEXP input_ySEXP, SEXP variable_namesSEXP, SEXP mtrySEXP, SEXP num_treesSEXP, SEXP verboseSEXP, SEXP seedSEXP, SEXP num_threadsSEXP, SEXP write_forestSEXP, SEXP importance_mode_rSEXP, SEXP min_node_sizeSEXP, SEXP split_select_weightsSEXP, SEXP use_split_select_weightsSEXP, SEXP always_split_variable_namesSEXP, SEXP use_always_split_variable_namesSEXP, SEXP prediction_modeSEXP, SEXP loaded_forestSEXP, SEXP snp_dataSEXP, SEXP sample_with_replacementSEXP, SEXP probabilitySEXP, SEXP unordered_variable_namesSEXP, SEXP use_unordered_variable_namesSEXP, SEXP save_memorySEXP, SEXP splitrule_rSEXP, SEXP case_weightsSEXP, SEXP use_case_weightsSEXP, SEXP class_weightsSEXP, SEXP predict_allSEXP, SEXP keep_inbagSEXP, SEXP sample_fractionSEXP, SEXP alphaSEXP, SEXP minpropSEXP, SEXP holdoutSEXP, SEXP prediction_type_rSEXP, SEXP num_random_splitsSEXP, SEXP sparse_xSEXP, SEXP use_sparse_dataSEXP, SEXP order_snpsSEXP, SEXP oob_errorSEXP, SEXP max_depthSEXP, SEXP inbagSEXP, SEXP use_inbagSEXP, SEXP regularization_factorSEXP, SEXP use_regularization_factorSEXP, SEXP regularization_usedepthSEXP, SEXP alpha_balanceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -121,13 +121,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type use_regularization_factor(use_regularization_factorSEXP);
     Rcpp::traits::input_parameter< bool >::type regularization_usedepth(regularization_usedepthSEXP);
     Rcpp::traits::input_parameter< std::vector<double>& >::type alpha_balance(alpha_balanceSEXP);
-    rcpp_result_gen = Rcpp::wrap(morfCpp(treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance));
+    rcpp_result_gen = Rcpp::wrap(ocfCpp(treetype, input_x, input_y, variable_names, mtry, num_trees, verbose, seed, num_threads, write_forest, importance_mode_r, min_node_size, split_select_weights, use_split_select_weights, always_split_variable_names, use_always_split_variable_names, prediction_mode, loaded_forest, snp_data, sample_with_replacement, probability, unordered_variable_names, use_unordered_variable_names, save_memory, splitrule_r, case_weights, use_case_weights, class_weights, predict_all, keep_inbag, sample_fraction, alpha, minprop, holdout, prediction_type_r, num_random_splits, sparse_x, use_sparse_data, order_snps, oob_error, max_depth, inbag, use_inbag, regularization_factor, use_regularization_factor, regularization_usedepth, alpha_balance));
     return rcpp_result_gen;
 END_RCPP
 }
 // numSmaller
 Rcpp::IntegerVector numSmaller(Rcpp::NumericVector values, Rcpp::NumericVector reference);
-RcppExport SEXP _morf_numSmaller(SEXP valuesSEXP, SEXP referenceSEXP) {
+RcppExport SEXP _ocf_numSmaller(SEXP valuesSEXP, SEXP referenceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -139,7 +139,7 @@ END_RCPP
 }
 // randomObsNode
 Rcpp::NumericMatrix randomObsNode(Rcpp::IntegerMatrix groups, Rcpp::NumericVector y, Rcpp::IntegerMatrix inbag_counts);
-RcppExport SEXP _morf_randomObsNode(SEXP groupsSEXP, SEXP ySEXP, SEXP inbag_countsSEXP) {
+RcppExport SEXP _ocf_randomObsNode(SEXP groupsSEXP, SEXP ySEXP, SEXP inbag_countsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -152,17 +152,17 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_morf_forest_weights_fitted_cpp", (DL_FUNC) &_morf_forest_weights_fitted_cpp, 3},
-    {"_morf_forest_weights_predicted_cpp", (DL_FUNC) &_morf_forest_weights_predicted_cpp, 4},
-    {"_morf_honest_fitted_cpp", (DL_FUNC) &_morf_honest_fitted_cpp, 5},
-    {"_morf_honest_predictions_cpp", (DL_FUNC) &_morf_honest_predictions_cpp, 5},
-    {"_morf_morfCpp", (DL_FUNC) &_morf_morfCpp, 47},
-    {"_morf_numSmaller", (DL_FUNC) &_morf_numSmaller, 2},
-    {"_morf_randomObsNode", (DL_FUNC) &_morf_randomObsNode, 3},
+    {"_ocf_forest_weights_fitted_cpp", (DL_FUNC) &_ocf_forest_weights_fitted_cpp, 3},
+    {"_ocf_forest_weights_predicted_cpp", (DL_FUNC) &_ocf_forest_weights_predicted_cpp, 4},
+    {"_ocf_honest_fitted_cpp", (DL_FUNC) &_ocf_honest_fitted_cpp, 5},
+    {"_ocf_honest_predictions_cpp", (DL_FUNC) &_ocf_honest_predictions_cpp, 5},
+    {"_ocf_ocfCpp", (DL_FUNC) &_ocf_ocfCpp, 47},
+    {"_ocf_numSmaller", (DL_FUNC) &_ocf_numSmaller, 2},
+    {"_ocf_randomObsNode", (DL_FUNC) &_ocf_randomObsNode, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_morf(DllInfo *dll) {
+RcppExport void R_init_ocf(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(morf)
+library(ocf)
 
-test_check("morf")
+test_check("ocf")

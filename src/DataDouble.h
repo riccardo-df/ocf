@@ -10,7 +10,7 @@
 #include "utility.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class DataDouble: public Data {
 public:
@@ -55,7 +55,7 @@ private:
   std::vector<double> y;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* DATADOUBLE_H_ */
 // #nocov end

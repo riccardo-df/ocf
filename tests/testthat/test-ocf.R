@@ -1,4 +1,4 @@
-test_that("morf splits and predicts as expected with continuos covariates", {
+test_that("ocf splits and predicts as expected with continuos covariates", {
   ## Generating data.
   set.seed(1986)
   
@@ -14,11 +14,11 @@ test_that("morf splits and predicts as expected with continuos covariates", {
   alpha <- 0.1
   
   ## Fitting a "stump."
-  morf <- morf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
+  ocf <- ocf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
-  avg_split <- tree_info(morf$forests.info[[m]])$splitval[1] 
-  predictions <- tree_info(morf$forests.info[[m]])$prediction[-1]
+  avg_split <- tree_info(ocf$forests.info[[m]])$splitval[1] 
+  predictions <- tree_info(ocf$forests.info[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -64,7 +64,7 @@ test_that("morf splits and predicts as expected with continuos covariates", {
 })
 
 
-test_that("morf splits and predicts as expected with categorical covariates", {
+test_that("ocf splits and predicts as expected with categorical covariates", {
   ## Generating data.
   set.seed(1986)
   
@@ -80,11 +80,11 @@ test_that("morf splits and predicts as expected with categorical covariates", {
   alpha <- 0.1
   
   ## Fitting a "stump."
-  morf <- morf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
+  ocf <- ocf(y = y, X = x, n.trees = 1, max.depth = 1, replace = FALSE, sample.fraction = 1, min.node.size = 1, 
                honesty = FALSE, alpha = alpha)
   
-  avg_split <- tree_info(morf$forests.info[[m]])$splitval[1] 
-  predictions <- tree_info(morf$forests.info[[m]])$prediction[-1]
+  avg_split <- tree_info(ocf$forests.info[[m]])$splitval[1] 
+  predictions <- tree_info(ocf$forests.info[[m]])$prediction[-1]
   split_values <- combn(x[, 1], 2)[, which(avg_split == combn(x[, 1], 2, mean))]
   
   ## R splitting criterion.
@@ -139,12 +139,12 @@ test_that("Standard predictions and weight-based predictions are the same", {
   y <- sample(c(1, 2, 3), size = n, replace = TRUE)
   x <- data.frame("x1" = rnorm(n))
   
-  ## Fitting morf objects.
+  ## Fitting ocf objects.
   set.seed(1986) # Set seed to get same honest split.
-  morf <- morf(y = y, X = x, inference = FALSE, honesty = TRUE)
+  ocf <- ocf(y = y, X = x, inference = FALSE, honesty = TRUE)
   set.seed(1986)
-  morf2 <- morf(y = y, X = x, inference = TRUE, honesty = TRUE)
+  ocf2 <- ocf(y = y, X = x, inference = TRUE, honesty = TRUE)
   
   ## Comparing.
-  expect_setequal(round(morf$predictions$probabilities, 3), round(morf2$predictions$probabilities, 3))
+  expect_setequal(round(ocf$predictions$probabilities, 3), round(ocf2$predictions$probabilities, 3))
 })

@@ -15,7 +15,7 @@
 #include "DataDouble.h"
 #include "DataFloat.h"
 
-namespace morf {
+namespace ocf {
 
 Forest::Forest() :
     verbose_out(0), num_trees(DEFAULT_NUM_TREE), mtry(0), min_node_size(0), num_independent_variables(0), seed(0), 
@@ -1088,4 +1088,4 @@ void Forest::showProgress(std::string operation, size_t max_progress) {
 }
 #endif
 
-} // namespace morf
+} // namespace ocf

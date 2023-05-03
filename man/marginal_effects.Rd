@@ -8,12 +8,12 @@ marginal_effects(
   object,
   data = NULL,
   eval = "atmean",
-  bandwitdh = 0.01,
+  bandwitdh = 0.1,
   inference = FALSE
 )
 }
 \arguments{
-\item{object}{An \code{\link{morf}} object.}
+\item{object}{An \code{\link{ocf}} object.}
 
 \item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.}
 
@@ -24,10 +24,10 @@ marginal_effects(
 \item{inference}{Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program.}
 }
 \value{
-Object of class \code{morf.marginal}.
+Object of class \code{ocf.marginal}.
 }
 \description{
-Nonparametric estimation of marginal effects using an \code{\link{morf}} object.
+Nonparametric estimation of marginal effects using an \code{\link{ocf}} object.
 }
 \details{
 \code{\link{marginal_effects}} can estimate mean marginal effects, marginal effects at the mean, or marginal effects at the
@@ -47,8 +47,8 @@ odata <- odata[1:200, ] # Subset to reduce elapsed time.
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
 
-## Fit morf . Use large number of trees.
-forests <- morf(y, X, n.trees = 4000)
+## Fit ocf . Use large number of trees.
+forests <- ocf(y, X, n.trees = 4000)
 
 ## Marginal effects at the mean.
 me <- marginal_effects(forests, eval = "atmean")
@@ -60,7 +60,7 @@ print(me, latex = TRUE)
 
 \donttest{
 ## Compute standard errors. This requires honest forests.
-honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 honest_me$standard.errors
 honest_me$p.values # These are not corrected for multiple hypotheses testing!
@@ -69,7 +69,7 @@ print(honest_me, latex = TRUE)}
 
 }
 \seealso{
-\code{\link{morf}}
+\code{\link{ocf}}
 }
 \author{
 Riccardo Di Francesco

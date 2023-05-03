@@ -7,7 +7,7 @@
 honest_fitted(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest)
 }
 \arguments{
-\item{forest}{An \code{morf.forest} object.}
+\item{forest}{An \code{ocf.forest} object.}
 
 \item{train_sample}{Training sample.}
 
@@ -21,10 +21,10 @@ honest_fitted(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest)
 In-sample honest predictions.
 }
 \description{
-Computes honest in-sample predictions for an \code{morf.forest} object.
+Computes honest in-sample predictions for an \code{ocf.forest} object.
 }
 \details{
 \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
-using the outcome from the honest sample (using the prediction method of \code{\link{morf}}).
+using the outcome from the honest sample (using the prediction method of \code{\link{ocf}}).
 }
 \keyword{internal}

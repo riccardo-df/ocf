@@ -3,11 +3,11 @@
 #include <string>
 
 #include "utility.h"
-#include "ForestOrdered.h"
-#include "TreeOrdered.h"
+#include "OrderedCorrelationForest.h"
+#include "OrderedCorrelationTree.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 void ForestOrdered::loadForest(size_t num_trees,
     std::vector<std::vector<std::vector<size_t>> >& forest_child_nodeIDs,
@@ -239,4 +239,4 @@ size_t ForestOrdered::getTreePredictionTerminalNodeID(size_t tree_idx, size_t sa
 
 // #nocov end
 
-}// namespace morf
+}// namespace ocf

@@ -6,7 +6,7 @@
 
 #include "globals.h"
 #include "Forest.h"
-#include "ForestOrdered.h"
+#include "OrderedCorrelationForest.h"
 #include "Data.h"
 #include "DataChar.h"
 #include "DataRcpp.h"
@@ -14,11 +14,11 @@
 #include "DataSparse.h"
 #include "utility.h"
 
-using namespace morf;
+using namespace ocf;
 
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
-Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::NumericMatrix& input_y,
+Rcpp::List ocfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::NumericMatrix& input_y,
     std::vector<std::string> variable_names, unsigned int mtry, unsigned int num_trees, bool verbose, unsigned int seed, 
     unsigned int num_threads, bool write_forest, unsigned int importance_mode_r, unsigned int min_node_size,
     std::vector<std::vector<double>>& split_select_weights, bool use_split_select_weights,
@@ -117,7 +117,7 @@ Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::Nu
       temp.loadForest(num_trees, child_nodeIDs, split_varIDs, split_values, is_ordered);
     }
 
-    // Running Morf.
+    // Running ocf.
     forest->run(false, oob_error);
 
     if (use_split_select_weights && importance_mode != IMP_NONE) {
@@ -176,7 +176,7 @@ Rcpp::List morfCpp(unsigned int treetype, Rcpp::NumericMatrix& input_x, Rcpp::Nu
     }
   } catch (std::exception& e) {
     if (strcmp(e.what(), "User interrupt.") != 0) {
-      Rcpp::Rcerr << "Error: " << e.what() << " Morf will EXIT now." << std::endl;
+      Rcpp::Rcerr << "Error: " << e.what() << " ocf will EXIT now." << std::endl;
     }
     return result;
   }

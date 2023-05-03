@@ -7,7 +7,7 @@
 #include "utility.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class DataSparse: public Data {
 public:
@@ -54,6 +54,6 @@ private:
   Rcpp::NumericMatrix y;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* DATASPARSE_H_ */

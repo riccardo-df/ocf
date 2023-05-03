@@ -1,16 +1,16 @@
-# Modified Ordered Random Forest <a href="https://riccardo-df.github.io/morf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
+# Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
  
-R package to implement modified ordered random forests (MORF), a nonparametric estimator of the ordered choice model. Additionally, the package implements a nonparametric estimator of the marginal effects.
+R package to implement ordered correlation forests (OCF), a nonparametric estimator for ordered non-numeric outcomes. Additionally, the package implements a nonparametric estimator of the covariates' marginal effects.
 
-MORF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by MORF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.
+OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by OCF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.
 
-To get started, please check the online [vignette](https://riccardo-df.github.io/morf/articles/morf-vignette.html) for a short tutorial.
+To get started, please check the online [vignette](https://riccardo-df.github.io/ocf/articles/ocf-vignette.html) for a short tutorial.
 
 ## Installation  
 The current development version of the package can be installed using the `devtools` package:
 
 ```
-devtools::install_github("riccardo-df/morf") # run install.packages("devtools") if needed.
+devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") if needed.
 ```
 
 ## References

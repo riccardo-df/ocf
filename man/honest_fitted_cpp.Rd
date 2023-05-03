@@ -24,6 +24,6 @@ honest_fitted_cpp(
 \item{train_leaves}{Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th training observation falls in each tree.}
 }
 \description{
-Computes honest in-sample predictions for a morf.forest object relative to the desired class.
+Computes honest in-sample predictions for a ocf.forest object relative to the desired class.
 }
 \keyword{internal}

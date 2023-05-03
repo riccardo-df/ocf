@@ -24,6 +24,6 @@ honest_predictions_cpp(
 \item{test_leaves}{Matrix of size (\code{n.samples} x \code{n.trees}). The i-th row stores the id of the leaf where the i-th test observation falls in each tree.}
 }
 \description{
-Computes honest out-of-sample predictions for a morf.forest object relative to the desired class.
+Computes honest out-of-sample predictions for a ocf.forest object relative to the desired class.
 }
 \keyword{internal}

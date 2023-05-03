@@ -7,7 +7,7 @@
 tree_info(object, tree = 1)
 }
 \arguments{
-\item{object}{\code{morf.forest} object.}
+\item{object}{\code{ocf.forest} object.}
 
 \item{tree}{Number of the tree of interest.}
 }
@@ -23,7 +23,7 @@ A \code{data.frame} with the following columns:
    \item{\code{prediction}}{One column with the predicted conditional class probabilities.}
 }
 \description{
-Extracts tree information from a \code{morf.forest} object.
+Extracts tree information from a \code{ocf.forest} object.
 }
 \details{
 Nodes and variables IDs are 0-indexed, i.e., node 0 is the root node. \cr
@@ -42,8 +42,8 @@ odata <- odata[1:200, ] # Subset to reduce elapsed time.
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
 
-## Fit morf.
-forests <- morf(y, X)
+## Fit ocf.
+forests <- ocf(y, X)
 
 ## Extract information from tenth tree of first forest.
 info <- tree_info(forests$forests.info$forest.1, tree = 10)
@@ -51,7 +51,7 @@ head(info)}
   
 }
 \seealso{
-\code{\link{morf}}
+\code{\link{ocf}}
 }
 \author{
 Riccardo Di Francesco

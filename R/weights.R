@@ -1,8 +1,8 @@
 #' Forest In-Sample Honest Weights
 #'
-#' Computes forest in-sample honest weights for an \code{morf.forest} object.
+#' Computes forest in-sample honest weights for an \code{ocf.forest} object.
 #'
-#' @param forest An \code{morf.forest} object.
+#' @param forest An \code{ocf.forest} object.
 #' @param train_sample Training sample.
 #' @param honest_sample Honest sample. 
 #' 
@@ -41,9 +41,9 @@ forest_weights_fitted <- function(forest, honest_sample, train_sample) { # Taken
 
 #' Forest Out-of-Sample Weights
 #'
-#' Computes forest out-of-sample honest weights for an \code{morf.forest} object.
+#' Computes forest out-of-sample honest weights for an \code{ocf.forest} object.
 #'
-#' @param forest An \code{morf.forest} object.
+#' @param forest An \code{ocf.forest} object.
 #' @param test_sample Test sample.
 #' @param honest_sample Honest sample. 
 #'

@@ -1,6 +1,6 @@
 #include "DataSparse.h"
 
-namespace morf {
+namespace ocf {
 
 DataSparse::DataSparse(Eigen::SparseMatrix<double>& x, Rcpp::NumericMatrix& y, std::vector<std::string> variable_names, 
                        size_t num_rows, size_t num_cols) : x { }{
@@ -12,4 +12,4 @@ DataSparse::DataSparse(Eigen::SparseMatrix<double>& x, Rcpp::NumericMatrix& y, s
   this->num_cols_no_snp = num_cols;
 }
 
-} // namespace morf
+} // namespace ocf

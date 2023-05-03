@@ -7,7 +7,7 @@
 #include "globals.h"
 #include "Forest.h"
 
-namespace morf {
+namespace ocf {
 
 class ForestOrdered: public Forest {
 public:
@@ -39,6 +39,6 @@ private:
   size_t getTreePredictionTerminalNodeID(size_t tree_idx, size_t sample_idx) const;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* FORESTORDERED_H_ */

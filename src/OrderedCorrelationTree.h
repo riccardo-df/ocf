@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "Tree.h"
 
-namespace morf {
+namespace ocf {
 
 class TreeOrdered: public Tree {
 public:
@@ -87,6 +87,6 @@ private:
   std::vector<double> prods;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* TREEORDERED_H_ */

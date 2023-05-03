@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 //' Honest Out-of-Sample Predictions 
 //'
-//' Computes honest out-of-sample predictions for a morf.forest object relative to the desired class.
+//' Computes honest out-of-sample predictions for a ocf.forest object relative to the desired class.
 //' 
 //' @param unique_leaves_honest List of size \code{n.trees}, storing the unique leaf ids of each tree relative to the honest sample.
 //' @param y_m Indicator variable, equal to 1 if the \code{y} is lower or equal than the m-th class and zero otherwise.

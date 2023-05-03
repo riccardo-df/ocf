@@ -5,10 +5,10 @@
 #include <ctime>
 
 #include "utility.h"
-#include "TreeOrdered.h"
+#include "OrderedCorrelationTree.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 TreeOrdered::TreeOrdered(std::vector<std::vector<size_t>>& child_nodeIDs, std::vector<size_t>& split_varIDs,
     std::vector<double>& split_values) :
@@ -519,4 +519,4 @@ void TreeOrdered::addImpurityImportance(size_t nodeID, size_t varID, double decr
   }
 } 
 
-} // namespace morf
+} // namespace ocf

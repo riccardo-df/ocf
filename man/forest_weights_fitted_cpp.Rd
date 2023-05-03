@@ -18,6 +18,6 @@ forest_weights_fitted_cpp(
 \item{leaf_size_honest_list}{List of size \code{n.trees}, storing the size of the leaves of each tree computed with honest units.}
 }
 \description{
-Computes forest in-sample honest weights for a \code{morf.forest} object relative to the m-th class.
+Computes forest in-sample honest weights for a \code{ocf.forest} object relative to the m-th class.
 }
 \keyword{internal}

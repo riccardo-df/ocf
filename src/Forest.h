@@ -17,7 +17,7 @@
 #include "Tree.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class Forest {
 public:
@@ -265,6 +265,6 @@ protected:
 #endif
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* FOREST_H_ */

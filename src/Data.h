@@ -9,7 +9,7 @@
 
 #include "globals.h"
 
-namespace morf {
+namespace ocf {
 
 class Data {
 public:
@@ -155,6 +155,6 @@ protected:
   bool order_snps;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* DATA_H_ */

@@ -10,7 +10,7 @@
 #include "utility.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class DataFloat: public Data {
 public:
@@ -55,7 +55,7 @@ private:
   std::vector<float> y;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* DATAFLOAT_H_ */
 // #nocov end

@@ -3,7 +3,7 @@
 #include "Tree.h"
 #include "utility.h"
 
-namespace morf {
+namespace ocf {
 
 Tree::Tree() :
     mtry(0), num_samples(0), num_samples_oob(0), min_node_size(0), deterministic_varIDs(0), split_select_weights(0), 
@@ -579,4 +579,4 @@ void Tree::setManualInbag() {
   }
 }
 
-} // namespace morf
+} // namespace ocf

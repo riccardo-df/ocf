@@ -28,8 +28,8 @@
 #' y_test <- y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
-#' ## Fit morf on training sample.
-#' forests <- morf(y_tr, X_tr)
+#' ## Fit ocf on training sample.
+#' forests <- ocf(y_tr, X_tr)
 #' 
 #' ## Accuracy measures on test sample.
 #' predictions <- predict(forests, X_test)

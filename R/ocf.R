@@ -1,6 +1,6 @@
-#' Modified Ordered Random Forest
+#' Ordered Correlation Forest
 #' 
-#' Nonparametric estimator of the ordered choice model using random forests. The estimator modifies a standard random forest
+#' Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies a standard random forest
 #' splitting criterion to build a collection of forests, each estimating the conditional probability of a single class.
 #'
 #' @param y Outcome vector.
@@ -18,7 +18,7 @@
 #' @param n.threads Number of threads. Zero corresponds to the number of CPUs available.
 #' 
 #' @return 
-#' Object of class \code{morf}.
+#' Object of class \code{ocf}.
 #' 
 #' @examples 
 #' ## Load data from orf package.
@@ -40,8 +40,8 @@
 #' y_test <- y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
-#' ## Fit morf on training sample.
-#' forests <- morf(y_tr, X_tr)
+#' ## Fit ocf on training sample.
+#' forests <- ocf(y_tr, X_tr)
 #' 
 #' ## We have compatibility with generic S3-methods.
 #' print(forests)
@@ -51,19 +51,19 @@
 #' table(y_test, predictions$classification)
 #' \donttest{
 #' ## Compute standard errors. This requires honest forests.
-#' honest_forests <- morf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
+#' honest_forests <- ocf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
 #' head(honest_forests$predictions$standard.errors)}
 #' 
 #' @import utils stats orf
 #' @importFrom Rcpp evalCpp
-#' @useDynLib morf
+#' @useDynLib ocf
 #' 
 #' @seealso \code{\link{marginal_effects}}
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-morf <- function(y = NULL, X = NULL,
+ocf <- function(y = NULL, X = NULL,
                  honesty = FALSE, honesty.fraction = 0.5, inference = FALSE, alpha = 0,
                  n.trees = 2000, mtry = ceiling(sqrt(ncol(X))), min.node.size = 5, max.depth = 0, 
                  replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), n.threads = 1) {
@@ -169,7 +169,7 @@ morf <- function(y = NULL, X = NULL,
   
   ## 4.) Fitting a modified ordered forest to each pair of binary outcomes.
   forest_output <- lapply(train_outcomes, function(x) {
-    morfCpp(treetype, x_train, matrix(c(as.numeric(x$y_m_1_train), as.numeric(x$y_m_train)), ncol = 2), 
+    ocfCpp(treetype, x_train, matrix(c(as.numeric(x$y_m_1_train), as.numeric(x$y_m_train)), ncol = 2), 
             independent.variable.names, mtry, n.trees, verbose, seed, n.threads, write.forest, importance.mode, min.node.size, 
             split.select.weights, use.split.select.weights, always.split.variables, use.always.split.variables, 
             prediction.mode, loaded.forest, snp.data, replace, probability, unordered.factor.variables, 
@@ -193,7 +193,7 @@ morf <- function(y = NULL, X = NULL,
   }
   forest_output <- lapply(forest_output, function(x) {
     x$forest$covariate.names <- independent.variable.names
-    x$forest$treetype <- "modified.ordered"
+    x$forest$treetype <- "ordered.correlation"
     x})
   if (!is.null(covariate.levels)) {
     forest_output <- lapply(forest_output, function(x) {
@@ -202,7 +202,7 @@ morf <- function(y = NULL, X = NULL,
   }
   forests <- lapply(forest_output, function(x) {x$forest})
   forests <- lapply(forests, function(x) {
-    class(x) <- "morf.forest"
+    class(x) <- "ocf.forest"
     x})
   names(forests) <- paste("forest", y.classes, sep = ".")
   
@@ -243,7 +243,7 @@ morf <- function(y = NULL, X = NULL,
   # 6c.) Classification.
   classification <- apply(class.probabilities, 1, which.max)
   
-  ## 7.) Construct morf object.
+  ## 7.) Construct ocf object.
   output <- list()
   output$forests.info <- forests
   output$predictions <- list("probabilities" = class.probabilities, "standard.errors" = if (inference) sqrt(variances) else list(),
@@ -256,7 +256,7 @@ morf <- function(y = NULL, X = NULL,
   output$honest_data <- if (honesty) data.frame(y_honest, x_honest) else list()
   if (honesty) colnames(output$honest_data) <- colnames(train_sample)
 
-  class(output) <- "morf"
+  class(output) <- "ocf"
   
   ## 8.) Output.
   return(output)

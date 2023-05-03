@@ -1,8 +1,8 @@
 #' Tree Information in Readable Format
 #' 
-#' Extracts tree information from a \code{morf.forest} object. 
+#' Extracts tree information from a \code{ocf.forest} object. 
 #' 
-#' @param object \code{morf.forest} object.
+#' @param object \code{ocf.forest} object.
 #' @param tree Number of the tree of interest.
 #' 
 #' @return A \code{data.frame} with the following columns:
@@ -27,8 +27,8 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf.
-#' forests <- morf(y, X)
+#' ## Fit ocf.
+#' forests <- ocf(y, X)
 #' 
 #' ## Extract information from tenth tree of first forest.
 #' info <- tree_info(forests$forests.info$forest.1, tree = 10)
@@ -39,14 +39,14 @@
 #' 
 #' All values smaller than or equal to \code{splitval} go to the left and all values larger go to the right. 
 #' 
-#' @seealso \code{\link{morf}}
+#' @seealso \code{\link{ocf}}
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
 tree_info <- function(object, tree = 1) {
   ## Handling inputs and checks.
-  if (!inherits(object, "morf.forest")) stop("Invalid class of input object.", call. = FALSE)
+  if (!inherits(object, "ocf.forest")) stop("Invalid class of input object.", call. = FALSE)
   
   forest <- object
   

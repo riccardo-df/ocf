@@ -9,7 +9,7 @@
 #include "globals.h"
 #include "Data.h"
 
-namespace morf {
+namespace ocf {
 
 class Tree {
 public:
@@ -212,6 +212,6 @@ protected:
   size_t last_left_nodeID;
 };
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* TREE_H_ */

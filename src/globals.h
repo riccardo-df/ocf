@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
-namespace morf {
+namespace ocf {
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -77,6 +77,6 @@ const double STATUS_INTERVAL = 10.0;
 // Threshold for q value split method switch.
 const double Q_THRESHOLD = 0.02;
 
-} // namespace morf
+} // namespace ocf
 
 #endif /* GLOBALS_H_ */

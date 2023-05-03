@@ -1,4 +1,4 @@
-url: https://riccardo-df.github.io/morf/
+url: https://riccardo-df.github.io/ocf/
 
 template:
   bootswatch: spacelab
@@ -7,26 +7,26 @@ navbar:
   type: default
   left:
   - text: "Get started"
-    href: articles/morf-short-tutorial.html
+    href: articles/ocf-short-tutorial.html
   - text: "Reference"
     href: reference/index.html
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/riccardo-df/morf
+    href: https://github.com/riccardo-df/ocf
 
 reference:
   - title: Core functions
     contents:
-      - morf
+      - ocf
       - marginal_effects
 
   - title: Generic S3
     contents:
-      - predict.morf
-      - print.morf
-      - summary.morf
-      - print.morf.marginal
-      - summary.morf.marginal
+      - predict.ocf
+      - print.ocf
+      - summary.ocf
+      - print.ocf.marginal
+      - summary.ocf.marginal
 
   - title: Utils
     contents:

@@ -13,7 +13,7 @@ honest_predictions(
 )
 }
 \arguments{
-\item{forest}{\code{morf.forest} object.}
+\item{forest}{\code{ocf.forest} object.}
 
 \item{honest_sample}{Honest sample.}
 
@@ -27,11 +27,11 @@ honest_predictions(
 Out-of-sample honest predictions.
 }
 \description{
-Computes honest out-of-sample predictions for an \code{morf.forest} object.
+Computes honest out-of-sample predictions for an \code{ocf.forest} object.
 }
 \details{
 \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
-honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
+honest sample (using the prediction method of \code{\link{ocf}}). The honest sample must not have been used
 to build the trees.
 }
 \keyword{internal}

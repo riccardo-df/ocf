@@ -1,8 +1,8 @@
-#' Prediction Method for morf Objects
+#' Prediction Method for ocf Objects
 #'
-#' Prediction method for class \code{\link{morf}}.
+#' Prediction method for class \code{\link{ocf}}.
 #'
-#' @param object An \code{\link{morf}} object.
+#' @param object An \code{\link{ocf}} object.
 #' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests. If \code{data} is \code{NULL}, then \code{object$full_data} is used.
 #' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}. 
 #' @param ... Further arguments passed to or from other methods.
@@ -30,8 +30,8 @@
 #' y_test <- y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
-#' ## Fit morf on training sample.
-#' forests <- morf(y_tr, X_tr)
+#' ## Fit ocf on training sample.
+#' forests <- ocf(y_tr, X_tr)
 #' 
 #' ## Predict on test sample.
 #' predictions <- predict(forests, X_test)
@@ -48,14 +48,14 @@
 #' 
 #' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
 #'   
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @importFrom stats predict
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-predict.morf <- function(object, data = NULL, type = "response", ...) {
+predict.ocf <- function(object, data = NULL, type = "response", ...) {
   ## 0.) Default for variables not needed.
   predict.all <- FALSE; n.trees <- object$tuning.info$n.trees; n.threads <- NULL; verbose <- TRUE; seed <- NULL
   
@@ -100,11 +100,11 @@ predict.morf <- function(object, data = NULL, type = "response", ...) {
 }
 
 
-#' Prediction Method for morf.forest Objects
+#' Prediction Method for ocf.forest Objects
 #'
-#' Prediction method for class \code{morf.forest}.
+#' Prediction method for class \code{ocf.forest}.
 #'
-#' @param object An \code{morf.forest} object.
+#' @param object An \code{ocf.forest} object.
 #' @param data Data set of class \code{data.frame}. It must contain at least the same covariates used to train the forests.
 #' @param type Type of prediction. Either \code{"response"} or \code{"terminalNodes"}.
 #' @param ... Further arguments passed to or from other methods.
@@ -120,10 +120,10 @@ predict.morf <- function(object, data = NULL, type = "response", ...) {
 #' 
 #' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.
 #'   
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @author Riccardo Di Francesco
-predict.morf.forest <- function(object, data, type = "response", ...) {
+predict.ocf.forest <- function(object, data, type = "response", ...) {
   ## 0.) Default for variables not needed.
   predict.all <- FALSE; n.trees <- object$num.trees; n.threads <- 0; verbose <- TRUE; inbag.counts <- NULL; treetype <- 3; mtry <- 0;
   seed <- stats::runif(1 , 0, .Machine$integer.max); splitrule <- 1; max.depth <- 0; min.node.size <- 0; importance <- 0; 
@@ -137,7 +137,7 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
   
   ## 1.) Handling inputs and checks.
   forest <- object
-  if (!inherits(forest, "morf.forest")) stop("Invalid 'object'.", call. = FALSE) 
+  if (!inherits(forest, "ocf.forest")) stop("Invalid 'object'.", call. = FALSE) 
   if (is.null(forest$num.trees) || is.null(forest$child.nodeIDs) || is.null(forest$split.varIDs) ||
       is.null(forest$split.values) || is.null(forest$covariate.names) || is.null(forest$treetype)) stop("Invalid 'object'.", call. = FALSE)
   
@@ -186,8 +186,8 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
     stop("Missing values in columns: ", paste0(offending_columns, collapse = ", "), ".", call. = FALSE)
   }
 
-  ## 3.) Calling morf in prediction mode.
-  result <- morfCpp(treetype, x, y, forest$covariate.names, mtry,
+  ## 3.) Calling ocf in prediction mode.
+  result <- ocfCpp(treetype, x, y, forest$covariate.names, mtry,
                     n.trees, verbose, seed, n.threads, write.forest, importance,
                     min.node.size, split.select.weights, use.split.select.weights,
                     always.split.variables, use.always.split.variables,
@@ -215,15 +215,15 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 }
 
 
-#' Summary Method for morf Objects
+#' Summary Method for ocf Objects
 #' 
-#' Summarizes an \code{\link{morf}} object.
+#' Summarizes an \code{\link{ocf}} object.
 #' 
-#' @param object An \code{\link{morf}} object.
+#' @param object An \code{\link{ocf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
-#' Summarizes an \code{\link{morf}} object.
+#' Summarizes an \code{\link{ocf}} object.
 #' 
 #' @examples 
 #' ## Load data from orf package.
@@ -236,18 +236,18 @@ predict.morf.forest <- function(object, data, type = "response", ...) {
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf.
-#' forests <- morf(y, X)
+#' ## Fit ocf.
+#' forests <- ocf(y, X)
 #' 
 #' ## Summary.
 #' summary(forests)
 #' 
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-summary.morf <- function(object, ...) {
+summary.ocf <- function(object, ...) {
   cat("Call: \n")
   cat(deparse(object$tuning.info$call), "\n\n")
   
@@ -269,15 +269,15 @@ summary.morf <- function(object, ...) {
 }
  
  
-#' Print Method for morf Objects
+#' Print Method for ocf Objects
 #'
-#' Prints an \code{\link{morf}} object.
+#' Prints an \code{\link{ocf}} object.
 #'
-#' @param x An \code{\link{morf}} object.
+#' @param x An \code{\link{ocf}} object.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
-#' Prints an \code{\link{morf}} object.
+#' Prints an \code{\link{ocf}} object.
 #' 
 #' @examples 
 #' \donttest{
@@ -291,32 +291,32 @@ summary.morf <- function(object, ...) {
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf.
-#' forests <- morf(y, X)
+#' ## Fit ocf.
+#' forests <- ocf(y, X)
 #' 
 #' ## Print.
 #' print(forests)}
 #' 
-#' @seealso \code{\link{morf}}
+#' @seealso \code{\link{ocf}}
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-print.morf <- function(x, ...) {
-  summary.morf(x, ...)
+print.ocf <- function(x, ...) {
+  summary.ocf(x, ...)
 }
 
 
-#' Summary Method for morf.marginal Objects
+#' Summary Method for ocf.marginal Objects
 #'
-#' Summarizes an \code{morf.marginal} object.
+#' Summarizes an \code{ocf.marginal} object.
 #'
-#' @param object An \code{morf.marginal} object.
+#' @param object An \code{ocf.marginal} object.
 #' @param latex If \code{TRUE}, prints LATEX code.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
-#' Summarizes an \code{morf.marginal} object.
+#' Summarizes an \code{ocf.marginal} object.
 #' 
 #' @examples 
 #' ## Load data from orf package.
@@ -329,8 +329,8 @@ print.morf <- function(x, ...) {
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf. Use large number of trees.
-#' forests <- morf(y, X, n.trees = 4000)
+#' ## Fit ocf. Use large number of trees.
+#' forests <- ocf(y, X, n.trees = 4000)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
@@ -339,7 +339,7 @@ print.morf <- function(x, ...) {
 #' 
 #' \donttest{
 #' ## Add standard errors.
-#' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' summary(honest_me, latex = TRUE)}
 #' 
@@ -347,12 +347,12 @@ print.morf <- function(x, ...) {
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 #' standard errors have been estimated, they are printed in parenthesis below each point estimate.
 #' 
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}.
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-summary.morf.marginal <- function(object, latex = FALSE, ...) {
+summary.ocf.marginal <- function(object, latex = FALSE, ...) {
   if (!(latex %in% c(TRUE, FALSE))) stop("Invalid value of 'latex'.", call. = FALSE)
   
   if (latex) {
@@ -388,11 +388,11 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
         \\end{tabular}
         \\end{adjustbox}
         \\caption{Marginal effects.}
-        \\label{table:morf.marginal.effects}
+        \\label{table:ocf.marginal.effects}
     \\end{table}
 \\endgroup")
   } else {
-    cat("Morf marginal effects results \n\n")
+    cat("ocf marginal effects results \n\n")
     
     cat("Data info: \n")
     cat("Number of classes:   ", object$n.classes, "\n")
@@ -412,16 +412,16 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 }
 
 
-#' Print Method for morf.marginal Objects
+#' Print Method for ocf.marginal Objects
 #'
-#' Prints an \code{morf.marginal} object.
+#' Prints an \code{ocf.marginal} object.
 #'
-#' @param x An \code{morf.marginal} object.
+#' @param x An \code{ocf.marginal} object.
 #' @param latex If \code{TRUE}, prints LATEX code.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
-#' Prints an \code{morf.marginal} object.
+#' Prints an \code{ocf.marginal} object.
 #' 
 #' @examples 
 #' ## Load data from orf package.
@@ -434,8 +434,8 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit morf. Use large number of trees.
-#' forests <- morf(y, X, n.trees = 4000)
+#' ## Fit ocf. Use large number of trees.
+#' forests <- ocf(y, X, n.trees = 4000)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
@@ -444,7 +444,7 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' 
 #' \donttest{
 #' ## Add standard errors.
-#' honest_forests <- morf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' print(honest_me, latex = TRUE)}
 #' 
@@ -452,11 +452,11 @@ summary.morf.marginal <- function(object, latex = FALSE, ...) {
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 #' standard errors have been estimated, they are printed in parenthesis below each point estimate.
 #' 
-#' @seealso \code{\link{morf}}, \code{\link{marginal_effects}}.
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @author Riccardo Di Francesco
 #' 
 #' @export
-print.morf.marginal <- function(x, latex = FALSE, ...) {
-  summary.morf.marginal(x, latex, ...)
+print.ocf.marginal <- function(x, latex = FALSE, ...) {
+  summary.ocf.marginal(x, latex, ...)
 }

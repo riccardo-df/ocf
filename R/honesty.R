@@ -43,9 +43,9 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 
 #' Honest In-Sample Predictions
 #'
-#' Computes honest in-sample predictions for an \code{morf.forest} object.
+#' Computes honest in-sample predictions for an \code{ocf.forest} object.
 #'
-#' @param forest An \code{morf.forest} object.
+#' @param forest An \code{ocf.forest} object.
 #' @param train_sample Training sample.
 #' @param honest_sample Honest sample. 
 #' @param y_m_honest Indicator variable, whether the outcome is smaller than or equal to the m-th class.
@@ -58,7 +58,7 @@ class_honest_split <- function(data, honesty.fraction = 0.5) { # Inspired by htt
 #'
 #' @details 
 #' \code{forest} must have been grown using only the training sample. \code{honest_fitted} replaces the leaf estimates 
-#' using the outcome from the honest sample (using the prediction method of \code{\link{morf}}).
+#' using the outcome from the honest sample (using the prediction method of \code{\link{ocf}}).
 honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1_honest) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/honest_funs.R
   ## Handling inputs.
   # Getting terminal nodes for the training and honest sample.
@@ -83,9 +83,9 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
 
 #' Honest Out-of-Sample Predictions
 #'
-#' Computes honest out-of-sample predictions for an \code{morf.forest} object.
+#' Computes honest out-of-sample predictions for an \code{ocf.forest} object.
 #'
-#' @param forest \code{morf.forest} object.
+#' @param forest \code{ocf.forest} object.
 #' @param test_sample Test sample.
 #' @param honest_sample Honest sample. 
 #' @param y_m_honest Indicator variable, whether the outcome is smaller than or equal to the m-th class.
@@ -98,7 +98,7 @@ honest_fitted <- function(forest, train_sample, honest_sample, y_m_honest, y_m_1
 #'
 #' @details 
 #' \code{honest_predictions} replaces the leaf estimates of \code{forest} using the outcome from the associated 
-#' honest sample (using the prediction method of \code{\link{morf}}). The honest sample must not have been used
+#' honest sample (using the prediction method of \code{\link{ocf}}). The honest sample must not have been used
 #' to build the trees.
 honest_predictions <- function(forest, honest_sample, test_sample, y_m_honest, y_m_1_honest) {
   ## Handling inputs.
