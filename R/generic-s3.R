@@ -460,3 +460,163 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 print.ocf.marginal <- function(x, latex = FALSE, ...) {
   summary.ocf.marginal(x, latex, ...)
 }
+
+
+#' Prediction Method for mml Objects
+#'
+#' Prediction method for class \code{mml}.
+#'
+#' @param object An \code{mml} object.
+#' @param data Data set of class \code{data.frame}. It must contain the same covariates used to train the base learners. If \code{data} is \code{NULL}, then \code{object$X} is used.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return 
+#' Matrix of predictions.
+#' 
+#' @examples 
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Training-test split.
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' 
+#' y_tr <- y[train_idx]
+#' X_tr <- X[train_idx, ]
+#' 
+#' y_test <- y[-train_idx]
+#' X_test <- X[-train_idx, ]
+#' 
+#' ## Fit multinomial machine learning on training sample using two different learners.
+#' multinomial_forest <- multinomial_ml(y_tr, X_tr, learner = "forest")
+#' multinomial_l1 <- multinomial_ml(y_tr, X_tr, learner = "l1")
+#' 
+#' ## Predict out of sample.
+#' predictions_forest <- predict(multinomial_forest, X_test)
+#' predictions_l1 <- predict(multinomial_l1, X_test)
+#' 
+#' ## Compare predictions.
+#' cbind(head(predictions_forest), head(predictions_l1))
+#' 
+#' @details
+#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance.
+#' 
+#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
+#' 
+#' @importFrom stats predict
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
+predict.mml <- function(object, data = NULL, ...) {
+  ## 0.) Handling inputs and checks.
+  if (is.null(data)) data <- object$X
+  learner <- object$learner
+  estimators <- object$estimators
+  n_categories <- length(unique(object$y))
+  
+  ## 1.) Get predictions.
+  if (learner == "forest") {
+    predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
+  } else if (learner == "l1") {
+    data_scaled <- as.matrix(scale(data))
+    predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "response"))}) 
+  }
+  
+  ## 2.) Normalize and put into matrix.
+  predictions_final <- sapply(predictions, function(x) as.matrix(x))
+  predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
+  
+  ## 3.) Output.
+  return(predictions_final)
+}
+
+
+#' Prediction Method for oml Objects
+#'
+#' Prediction method for class \code{oml}.
+#'
+#' @param object An \code{oml} object.
+#' @param data Data set of class \code{data.frame}. It must contain the same covariates used to train the base learners. If \code{data} is \code{NULL}, then \code{object$X} is used.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return 
+#' Matrix of predictions.
+#' 
+#' @examples 
+#' ## Load data from orf package.
+#' set.seed(1986)
+#' 
+#' library(orf)
+#' data(odata)
+#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' 
+#' y <- as.numeric(odata[, 1])
+#' X <- as.matrix(odata[, -1])
+#' 
+#' ## Training-test split.
+#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' 
+#' y_tr <- y[train_idx]
+#' X_tr <- X[train_idx, ]
+#' 
+#' y_test <- y[-train_idx]
+#' X_test <- X[-train_idx, ]
+#' 
+#' ## Fit ordered machine learning on training sample using two different learners.
+#' ordered_forest <- ordered_ml(y_tr, X_tr, learner = "forest")
+#' ordered_l1 <- ordered_ml(y_tr, X_tr, learner = "l1")
+#' 
+#' ## Predict out of sample.
+#' predictions_forest <- predict(ordered_forest, X_test)
+#' predictions_l1 <- predict(ordered_l1, X_test)
+#' 
+#' ## Compare predictions.
+#' cbind(head(predictions_forest), head(predictions_l1))
+#' 
+#' @details
+#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance.
+#' 
+#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
+#' 
+#' @importFrom stats predict
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @export
+predict.oml <- function(object, data = NULL, ...) {
+  ## 0.) Handling inputs and checks.
+  if (is.null(data)) data <- object$X
+  learner <- object$learner
+  estimators <- object$estimators
+  n_categories <- length(unique(object$y))
+  n <- length(object$y)
+  
+  ## 1.) Get predictions.
+  if (learner == "forest") {
+    predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
+  } else if (learner == "l1") {
+    data_scaled <- as.matrix(scale(data))
+    predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "response"))}) 
+  }
+  
+  ## 2.) Pick differences.
+  predictions1 <- append(predictions, list(rep(1, n))) 
+  predictions0 <- append(list(rep(0, n)), predictions) 
+  differences <- as.list(mapply(function(x, y) x - y, predictions1, predictions0, SIMPLIFY = FALSE))
+  
+  ## 3.) Truncate, normalize and put into matrix.
+  predictions_final <- lapply(differences, function(x) ifelse((x < 0), 0, x))
+  predictions_final <- sapply(predictions_final, function(x) as.matrix(x))
+  predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
+  colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
+  
+  ## 4.) Output.
+  return(predictions_final)
+}

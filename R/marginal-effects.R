@@ -191,14 +191,14 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   ##     average for each class with colMeans (this does not affect results if atmean/atmedian).
   marginal_effects <- mapply(function(x, y) {x / y}, numerators, denominators, SIMPLIFY = FALSE)
   marginal_effects <- matrix(unlist(lapply(marginal_effects, function(x) {colMeans(x)}), use.names = FALSE), ncol = n.classes, byrow = TRUE)
-  colnames(marginal_effects) <- paste("P'(Y=", y.classes, ")", sep = "")
+  colnames(marginal_effects) <- paste0("P'(Y=", y.classes, ")")
   rownames(marginal_effects) <- colnames(X)
   
   ## 8.) Variance of marginal effects, if necessary.
   if (inference) {
     # 8a.) Pre-allocating memory.
     variances <- matrix(NA, ncol = n.classes, nrow = length(denominators))
-    colnames(variances) <- paste("P'(Y=", y.classes, ")", sep = "")
+    colnames(variances) <- paste0("P'(Y=", y.classes, ")")
     rownames(variances) <- colnames(X)
     
     # 8b.) Constants.
