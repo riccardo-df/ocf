@@ -2,11 +2,14 @@
 % Please edit documentation in R/evaluation-metrics.R
 \name{mean_squared_error}
 \alias{mean_squared_error}
+\alias{mean_absolute_error}
 \alias{mean_ranked_score}
 \alias{classification_error}
 \title{Accuracy Measures for Ordered Probability Predictions}
 \usage{
 mean_squared_error(y, predictions, use.true = FALSE)
+
+mean_absolute_error(y, predictions, use.true = FALSE)
 
 mean_ranked_score(y, predictions, use.true = FALSE)
 
@@ -26,20 +29,26 @@ The MSE, the RPS, or the classification error of the method.
 Accuracy measures for evaluating ordered probability predictions.
 }
 \details{
-\subsection{MSE and RPS}{
+\subsection{MSE, MAE, and RPS}{
 
-When calling \code{\link{mean_squared_error}} or \code{\link{mean_ranked_score}}, \code{predictions} must be a matrix of predicted
-class probabilities, with as many rows as observations in \code{y} and as many columns as classes of \code{y}.\cr
+When calling one of \code{\link{mean_squared_error}}, \code{\link{mean_absolute_error}}, or \code{\link{mean_ranked_score}},
+\code{predictions} must be a matrix of predicted  class probabilities, with as many rows as observations in \code{y} and as
+many columns as classes of \code{y}.\cr
 
-If \code{use.true == FALSE}, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:
+If \code{use.true == FALSE}, the mean squared error (MSE)m the mean absolute error (MAE)m and the mean ranked probability score
+(RPS) are computed as follows:
 
 \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
 
+\deqn{MAE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M |1 (Y_i = m) - \hat{p}_m (x)|}
+
 \deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (1 (Y_i \leq m) - \hat{p}_m^* (x))^2}
 
-If \code{use.true == TRUE}, the MSE and the RPS are computed as follows (useful for simulation studies):
+If \code{use.true == TRUE}, the MSE, the MAE, and the RPS are computed as follows (useful for simulation studies):
 
 \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2}
+
+\deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M |p_m (x) - \hat{p}_m (x)|}
 
 \deqn{RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2}
 
