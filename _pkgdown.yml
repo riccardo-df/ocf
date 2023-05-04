@@ -19,6 +19,8 @@ reference:
     contents:
       - ocf
       - marginal_effects
+      - multinomial_ml
+      - ordered_ml
 
   - title: Generic S3
     contents:
@@ -27,10 +29,13 @@ reference:
       - summary.ocf
       - print.ocf.marginal
       - summary.ocf.marginal
+      - predict.mml
+      - predict.oml
 
   - title: Utils
     contents:
     - mean_squared_error
+    - mean_absolute_error
     - mean_ranked_score
     - classification_error
     - tree_info
