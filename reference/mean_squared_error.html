@@ -80,7 +80,7 @@
     <h2>Value</h2>
     
 
-<p>The MSE, the RPS, or the classification error of the method.</p>
+<p>The MSE, the MAE, the RPS, or the CE of the method.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -92,7 +92,7 @@
 <p>When calling one of <code>mean_squared_error</code>, <code>mean_absolute_error</code>, or <code>mean_ranked_score</code>,
 <code>predictions</code> must be a matrix of predicted  class probabilities, with as many rows as observations in <code>y</code> and as
 many columns as classes of <code>y</code>.<br></p>
-<p>If <code>use.true == FALSE</code>, the mean squared error (MSE)m the mean absolute error (MAE)m and the mean ranked probability score
+<p>If <code>use.true == FALSE</code>, the mean squared error (MSE), the mean absolute error (MAE), and the mean ranked probability score
 (RPS) are computed as follows:</p>
 <p>$$MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2$$</p>
 <p>$$MAE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M |1 (Y_i = m) - \hat{p}_m (x)|$$</p>
@@ -111,7 +111,7 @@ many columns as classes of <code>y</code>.<br></p>
 
 
 <p>When calling <code>classification_error</code>, <code>predictions</code> must be a vector of predicted class labels.<br></p>
-<p>Classification error is computed as follows:</p>
+<p>Classification error (CE) is computed as follows:</p>
 <p>$$CE = \frac{1}{n} \sum_{i = 1}^n 1 (Y_i \neq \hat{Y}_i)$$</p>
 <p>where Y_i are the observed class labels.</p>
 </div>
