@@ -55,6 +55,8 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mean_squared_error</span><span class="op">(</span><span class="va">y</span>, <span class="va">predictions</span>, use.true <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">mean_absolute_error</span><span class="op">(</span><span class="va">y</span>, <span class="va">predictions</span>, use.true <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">mean_ranked_score</span><span class="op">(</span><span class="va">y</span>, <span class="va">predictions</span>, use.true <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">classification_error</span><span class="op">(</span><span class="va">y</span>, <span class="va">predictions</span><span class="op">)</span></span></code></pre></div>
@@ -84,16 +86,20 @@
     <h2>Details</h2>
     
 <div class="section">
-<h3 id="mse-and-rps">MSE and RPS<a class="anchor" aria-label="anchor" href="#mse-and-rps"></a></h3>
+<h3 id="mse-mae-and-rps">MSE, MAE, and RPS<a class="anchor" aria-label="anchor" href="#mse-mae-and-rps"></a></h3>
 
 
-<p>When calling <code>mean_squared_error</code> or <code>mean_ranked_score</code>, <code>predictions</code> must be a matrix of predicted
-class probabilities, with as many rows as observations in <code>y</code> and as many columns as classes of <code>y</code>.<br></p>
-<p>If <code>use.true == FALSE</code>, the mean squared error (MSE) and the mean ranked probability score (RPS) are computed as follows:</p>
+<p>When calling one of <code>mean_squared_error</code>, <code>mean_absolute_error</code>, or <code>mean_ranked_score</code>,
+<code>predictions</code> must be a matrix of predicted  class probabilities, with as many rows as observations in <code>y</code> and as
+many columns as classes of <code>y</code>.<br></p>
+<p>If <code>use.true == FALSE</code>, the mean squared error (MSE)m the mean absolute error (MAE)m and the mean ranked probability score
+(RPS) are computed as follows:</p>
 <p>$$MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2$$</p>
+<p>$$MAE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M |1 (Y_i = m) - \hat{p}_m (x)|$$</p>
 <p>$$RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (1 (Y_i \leq m) - \hat{p}_m^* (x))^2$$</p>
-<p>If <code>use.true == TRUE</code>, the MSE and the RPS are computed as follows (useful for simulation studies):</p>
+<p>If <code>use.true == TRUE</code>, the MSE, the MAE, and the RPS are computed as follows (useful for simulation studies):</p>
 <p>$$MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (p_m (x) - \hat{p}_m (x))^2$$</p>
+<p>$$MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M |p_m (x) - \hat{p}_m (x)|$$</p>
 <p>$$RPS = \frac{1}{n} \sum_{i = 1}^n \frac{1}{M - 1} \sum_{m = 1}^M (p_m^* (x) - \hat{p}_m^* (x))^2$$</p>
 <p>where:</p>
 <p>$$p_m (x) = P(Y_i = m | X_i = x)$$</p>
