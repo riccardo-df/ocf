@@ -129,7 +129,7 @@ mean_absolute_error <- function(y, predictions, use.true = FALSE) {
     indicator_mat <- y
   }
   
-  ## MSE.
+  ## MAE.
   mae <- mean(rowSums(apply((indicator_mat - predictions), 2, function(x) {abs(x)})))
   
   ## Output.

@@ -23,7 +23,7 @@ classification_error(y, predictions)
 \item{use.true}{If \code{TRUE}, then the program treats \code{y} as a matrix of true probabilities.}
 }
 \value{
-The MSE, the RPS, or the classification error of the method.
+The MSE, the MAE, the RPS, or the CE of the method.
 }
 \description{
 Accuracy measures for evaluating ordered probability predictions.
@@ -35,7 +35,7 @@ When calling one of \code{\link{mean_squared_error}}, \code{\link{mean_absolute_
 \code{predictions} must be a matrix of predicted  class probabilities, with as many rows as observations in \code{y} and as
 many columns as classes of \code{y}.\cr
 
-If \code{use.true == FALSE}, the mean squared error (MSE)m the mean absolute error (MAE)m and the mean ranked probability score
+If \code{use.true == FALSE}, the mean squared error (MSE), the mean absolute error (MAE), and the mean ranked probability score
 (RPS) are computed as follows:
 
 \deqn{MSE = \frac{1}{n} \sum_{i = 1}^n \sum_{m = 1}^M (1 (Y_i = m) - \hat{p}_m (x))^2}
@@ -63,7 +63,7 @@ where:
 
 When calling \code{\link{classification_error}}, \code{predictions} must be a vector of predicted class labels.\cr
 
-Classification error is computed as follows:
+Classification error (CE) is computed as follows:
 
 \deqn{CE = \frac{1}{n} \sum_{i = 1}^n 1 (Y_i \neq \hat{Y}_i)}
 
