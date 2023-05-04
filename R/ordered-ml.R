@@ -42,18 +42,19 @@
 #' 
 #' @details
 #' Ordered machine learning expresses conditional choice probabilities as the difference between the cumulative probabilities 
-#' of two adjacent classes, which in turn can be written as conditional expectations of binary variables:
+#' of two adjacent classes, which in turn can be expressed as conditional expectations of binary variables:
 #' 
 #' \deqn{p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i \leq m \right) | X_i \right] - \mathbb{E} \left[ 1 \left( Y_i \leq m - 1 \right) | X_i \right]}
 #' 
 #' Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
-#' (m-1)-th estimated surface to estimate conditional probabilities.
+#' (m-1)-th estimated surfaces to estimate conditional probabilities.
 #' 
 #' \code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 #' according to the user-specified parameter \code{learner}. If \code{learner == "forest"}, then the \code{\link[orf]{orf}}
 #' function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019). If 
 #' \code{learner == "l1"}, the covariates are scaled to have zero mean and unit variance, and the penalty parameters are chosen 
-#' via 10-fold cross-validation.\cr
+#' via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
+#' 
 #' 
 #' @import ranger glmnet orf
 #'  
@@ -70,7 +71,7 @@ ordered_ml <- function(y = NULL, X = NULL,
   n <- length(y)
   n_categories <- length(unique(y))
   
-  ## 1.) Fit the estimator on each dummy and get predictions.
+  ## 1.) Fit the estimator and get predictions.
   if (learner == "forest") {
     estimates <- orf(X, y, num.trees = 2000, honesty = FALSE)$forests
     predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
@@ -83,8 +84,9 @@ ordered_ml <- function(y = NULL, X = NULL,
       counter <- counter + 1
     }
     
-    # Fit the estimator on each dummy (but the last one).
-    X_scaled <- scale(as.matrix(X))
+    # Fit the estimator on each dummy.
+    X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
+    X_scaled <- scale(as.matrix(X_design))    
     cv_lassos <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
     best_lambdas <- lapply(cv_lassos, function(x) {x$lambda.min})
     

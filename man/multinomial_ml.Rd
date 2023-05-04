@@ -29,7 +29,8 @@ probabilities.\cr
 
 \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the covariates are scaled to have zero mean
-and unit variance, and the penalty parameters are chosen via 10-fold cross-validation.\cr
+and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is
+used to handle non-numeric covariates.\cr
 }
 \examples{
 ## Load data from orf package.

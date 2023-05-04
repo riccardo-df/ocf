@@ -532,6 +532,7 @@ predict.mml <- function(object, data = NULL, ...) {
   ## 2.) Normalize and put into matrix.
   predictions_final <- sapply(predictions, function(x) as.matrix(x))
   predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
+  colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
   
   ## 3.) Output.
   return(predictions_final)

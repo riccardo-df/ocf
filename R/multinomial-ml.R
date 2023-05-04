@@ -50,7 +50,8 @@
 #' 
 #' \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 #' according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the covariates are scaled to have zero mean
-#' and unit variance, and the penalty parameters are chosen via 10-fold cross-validation.\cr
+#' and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is
+#' used to handle non-numeric covariates.\cr
 #' 
 #' @import ranger glmnet orf
 #'  
@@ -79,7 +80,8 @@ multinomial_ml <- function(y = NULL, X = NULL,
     estimates <- lapply(train_outcomes, function(x) {ranger::ranger(y = x, x = X, num.trees = 2000)})
     predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
-    X_scaled <- scale(as.matrix(X))
+    X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
+    X_scaled <- scale(as.matrix(X_design))
     cv_lassos <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
     best_lambdas <- lapply(cv_lassos, function(x) {x$lambda.min})
     
