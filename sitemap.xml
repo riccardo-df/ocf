@@ -79,13 +79,25 @@
     <loc>https://riccardo-df.github.io/ocf/reference/mean_squared_error.html</loc>
   </url>
   <url>
+    <loc>https://riccardo-df.github.io/ocf/reference/multinomial_ml.html</loc>
+  </url>
+  <url>
     <loc>https://riccardo-df.github.io/ocf/reference/ocf.html</loc>
+  </url>
+  <url>
+    <loc>https://riccardo-df.github.io/ocf/reference/ordered_ml.html</loc>
+  </url>
+  <url>
+    <loc>https://riccardo-df.github.io/ocf/reference/predict.mml.html</loc>
   </url>
   <url>
     <loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.forest.html</loc>
   </url>
   <url>
     <loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.html</loc>
+  </url>
+  <url>
+    <loc>https://riccardo-df.github.io/ocf/reference/predict.oml.html</loc>
   </url>
   <url>
     <loc>https://riccardo-df.github.io/ocf/reference/predict_forest_weights.html</loc>
