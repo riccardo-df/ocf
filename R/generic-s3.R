@@ -525,7 +525,7 @@ predict.mml <- function(object, data = NULL, ...) {
   if (learner == "forest") {
     predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
   } else if (learner == "l1") {
-    data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = object$y, object$X))[, -1]
+    data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = 1, data))[, -1]
     data_scaled <- as.matrix(scale(data_design))
     predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "response"))}) 
   }
@@ -604,7 +604,7 @@ predict.oml <- function(object, data = NULL, ...) {
   if (learner == "forest") {
     predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
   } else if (learner == "l1") {
-    data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = object$y, object$X))[, -1]
+    data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = 1, data))[, -1]
     data_scaled <- as.matrix(scale(data_design))
     predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "response"))}) 
   }
