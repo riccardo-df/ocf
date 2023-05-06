@@ -74,7 +74,7 @@ ordered_ml <- function(y = NULL, X = NULL,
   
   ## 1.) Fit the estimator and get predictions.
   if (learner == "forest") {
-    estimates <- orf::orf(X, y, num.trees = 2000, honesty = FALSE)$forests
+    estimates <- orf::orf(X, as.numeric(y), num.trees = 2000, honesty = FALSE)$forests
     predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
     # Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. We do not need the M-th element.
