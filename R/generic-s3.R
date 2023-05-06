@@ -598,7 +598,7 @@ predict.oml <- function(object, data = NULL, ...) {
   learner <- object$learner
   estimators <- object$estimators
   n_categories <- length(unique(object$y))
-  n <- length(object$y)
+  n <- dim(data)[1]
   
   ## 1.) Get predictions.
   if (learner == "forest") {
@@ -606,7 +606,7 @@ predict.oml <- function(object, data = NULL, ...) {
   } else if (learner == "l1") {
     data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = 1, data))[, -1]
     data_scaled <- as.matrix(scale(data_design))
-    predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "response"))}) 
+    predictions <- lapply(estimators, function(model) {as.numeric(predict(model, data_scaled, type = "probs"))}) 
   }
   
   ## 2.) Pick differences.
