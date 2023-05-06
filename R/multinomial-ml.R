@@ -66,11 +66,12 @@ multinomial_ml <- function(y = NULL, X = NULL,
   check_x_y(X, y)
   if (!(learner %in% c("forest", "l1"))) stop("Invalid 'learner'. This must be either 'forest' or 'l1'.", call. = FALSE)
   n_categories <- length(unique(y))
+  y_classes <- sort(unique(y))
   
   ## 1.) Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. 
   train_outcomes <- list()
   counter <- 1
-  for (m in sort(unique(y))) {
+  for (m in y_classes) {
     train_outcomes[[counter]] <- ifelse(y == m, 1, 0)
     counter <- counter + 1
   }  
@@ -86,9 +87,12 @@ multinomial_ml <- function(y = NULL, X = NULL,
     best_lambdas <- lapply(cv_lassos, function(x) {x$lambda.min})
     
     estimates <- list()
-    for (m in sort(unique(y))) {
-      estimates[[m]] <- glmnet::glmnet(x = X_scaled, y = train_outcomes[[m]], alpha = 1, family = "binomial", lambda = best_lambdas[[m]])
+    counter <- 1
+    for (m in y_classes) {
+      estimates[[counter]] <- glmnet::glmnet(x = X_scaled, y = train_outcomes[[counter]], alpha = 1, family = "binomial", lambda = best_lambdas[[counter]])
+      counter <- counter + 1
     }
+    
     predictions <- lapply(estimates, function(model) {as.numeric(predict(model, X_scaled, type = "response"))}) 
   }
   

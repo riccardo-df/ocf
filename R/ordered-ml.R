@@ -70,19 +70,20 @@ ordered_ml <- function(y = NULL, X = NULL,
   if (!(learner %in% c("forest", "l1"))) stop("Invalid 'learner'. This must be either 'forest' or 'l1'.", call. = FALSE)
   n <- length(y)
   n_categories <- length(unique(y))
+  y_classes <- sort(unique(y))
   
   ## 1.) Fit the estimator and get predictions.
   if (learner == "forest") {
-    estimates <- orf(X, y, num.trees = 2000, honesty = FALSE)$forests
+    estimates <- orf::orf(X, y, num.trees = 2000, honesty = FALSE)$forests
     predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
     # Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. We do not need the M-th element.
     train_outcomes <- list()
     counter <- 1
-    for (m in sort(unique(y))[-n_categories]) {
-      train_outcomes[[counter]] <- ifelse(y <= m, 1, 0)
+    for (m in y_classes[-n_categories]) {
+      train_outcomes[[counter]] <- ifelse(y == m, 1, 0)
       counter <- counter + 1
-    }
+    }  
     
     # Fit the estimator on each dummy.
     X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
@@ -94,6 +95,7 @@ ordered_ml <- function(y = NULL, X = NULL,
     for (m in 1:(n_categories-1)) {
       estimates[[m]] <- glmnet::glmnet(x = X_scaled, y = train_outcomes[[m]], alpha = 1, family = "binomial", lambda = best_lambdas[[m]])
     }
+    
     predictions <- lapply(estimates, function(model) {as.numeric(predict(model, X_scaled, type = "response"))}) 
   }
   
