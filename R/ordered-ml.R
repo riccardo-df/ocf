@@ -74,29 +74,24 @@ ordered_ml <- function(y = NULL, X = NULL,
   
   ## 1.) Fit the estimator and get predictions.
   if (learner == "forest") {
-    estimates <- orf::orf(X, as.numeric(y), num.trees = 2000, honesty = FALSE)$forests
-    predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
+    estimators <- orf::orf(X, as.numeric(y), num.trees = 2000, honesty = FALSE)$forests
+    predictions <- lapply(estimators, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
     # Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. We do not need the M-th element.
     train_outcomes <- list()
     counter <- 1
     for (m in y_classes[-n_categories]) {
-      train_outcomes[[counter]] <- ifelse(y == m, 1, 0)
+      train_outcomes[[counter]] <- ifelse(y <= m, 1, 0)
       counter <- counter + 1
     }  
     
-    # Fit the estimator on each dummy.
+    # Construct design matrix and scale.
     X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
-    X_scaled <- scale(as.matrix(X_design))    
-    cv_lassos <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
-    best_lambdas <- lapply(cv_lassos, function(x) {x$lambda.min})
+    X_scaled <- scale(as.matrix(X_design))   
     
-    estimates <- list()
-    for (m in 1:(n_categories-1)) {
-      estimates[[m]] <- glmnet::glmnet(x = X_scaled, y = train_outcomes[[m]], alpha = 1, family = "binomial", lambda = best_lambdas[[m]])
-    }
-    
-    predictions <- lapply(estimates, function(model) {as.numeric(predict(model, X_scaled, type = "response"))}) 
+    # 10-fold CV to find best penalization parameters.
+    estimators <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
+    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, X_scaled, s = "lambda.min", type = "response"))}) 
   }
   
   ## 2.) Pick differences.
@@ -111,7 +106,7 @@ ordered_ml <- function(y = NULL, X = NULL,
   colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
   
   ## 4.) Output.
-  output <- list("estimators" = estimates,
+  output <- list("estimators" = estimators,
                  "predictions" = predictions_final,
                  "learner" = learner,
                  "X" = X,

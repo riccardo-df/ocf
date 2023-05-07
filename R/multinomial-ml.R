@@ -78,22 +78,16 @@ multinomial_ml <- function(y = NULL, X = NULL,
 
   ## 2.) Fit the estimator on each dummy and get predictions.
   if (learner == "forest") {
-    estimates <- lapply(train_outcomes, function(x) {ranger::ranger(y = x, x = X, num.trees = 2000)})
-    predictions <- lapply(estimates, function(x) {predict(x, X)$predictions}) 
+    estimators <- lapply(train_outcomes, function(outcome) {ranger::ranger(y = outcome, x = X, num.trees = 2000)})
+    predictions <- lapply(estimators, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
+    # Construct design matrix and scale.
     X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
     X_scaled <- scale(as.matrix(X_design))
-    cv_lassos <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
-    best_lambdas <- lapply(cv_lassos, function(x) {x$lambda.min})
     
-    estimates <- list()
-    counter <- 1
-    for (m in y_classes) {
-      estimates[[counter]] <- glmnet::glmnet(x = X_scaled, y = train_outcomes[[counter]], alpha = 1, family = "binomial", lambda = best_lambdas[[counter]])
-      counter <- counter + 1
-    }
-    
-    predictions <- lapply(estimates, function(model) {as.numeric(predict(model, X_scaled, type = "response"))}) 
+    # 10-fold CV to find best penalization parameters.
+    estimators <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
+    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, X_scaled, s = "lambda.min", type = "response"))}) 
   }
   
   ## 3.) Normalize and put into matrix.
@@ -102,7 +96,7 @@ multinomial_ml <- function(y = NULL, X = NULL,
   colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
   
   ## 4.) Output.
-  output <- list("estimators" = estimates,
+  output <- list("estimators" = estimators,
                  "predictions" = predictions_final,
                  "learner" = learner,
                  "X" = X,
