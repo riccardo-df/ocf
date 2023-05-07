@@ -129,13 +129,13 @@ via 10-fold cross-validation. Also, <code><a href="https://rdrr.io/r/stats/model
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)      P(Y=3)    P(Y=1)     P(Y=2)    P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.58398819 0.17484670 0.241165115 0.4359562 0.00000000 0.5640438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.68664820 0.02510394 0.288247854 0.3703145 0.00000000 0.6296855</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.51207274 0.17918358 0.308743683 0.3064776 0.00000000 0.6935224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.11919545 0.09320309 0.787601467 0.1328870 0.05086624 0.8162468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.88592777 0.10567994 0.008392298 0.5555138 0.00000000 0.4444862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03816846 0.27487683 0.686954704 0.2630736 0.00000000 0.7369264</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)      P(Y=3)    P(Y=1)    P(Y=2)     P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.58398819 0.17484670 0.241165115 0.6671699 0.1046750 0.22815508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.68664820 0.02510394 0.288247854 0.4820125 0.2126107 0.30537685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.51207274 0.17918358 0.308743683 0.3821736 0.1853964 0.43243006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.11919545 0.09320309 0.787601467 0.1328671 0.1369472 0.73018576</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.88592777 0.10567994 0.008392298 0.8192114 0.1451348 0.03565377</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03816846 0.27487683 0.686954704 0.2967165 0.2170562 0.48622728</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
