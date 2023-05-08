@@ -68,13 +68,14 @@ ordered_ml <- function(y = NULL, X = NULL,
   ## 0.) Handling inputs and checks.
   check_x_y(X, y)
   if (!(learner %in% c("forest", "l1"))) stop("Invalid 'learner'. This must be either 'forest' or 'l1'.", call. = FALSE)
+  y <- as.numeric(y)
   n <- length(y)
   n_categories <- length(unique(y))
   y_classes <- sort(unique(y))
   
   ## 1.) Fit the estimator and get predictions.
   if (learner == "forest") {
-    estimators <- orf::orf(X, as.numeric(y), num.trees = 2000, honesty = FALSE)$forests
+    estimators <- orf::orf(X, y, num.trees = 2000, honesty = FALSE)$forests
     predictions <- lapply(estimators, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
     # Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. We do not need the M-th element.
