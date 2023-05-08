@@ -53,7 +53,7 @@
 #' and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is
 #' used to handle non-numeric covariates.\cr
 #' 
-#' @import ranger glmnet orf
+#' @import ranger glmnet
 #'  
 #' @seealso \code{\link{ordered_ml}}, \code{\link{ocf}}
 #' 
@@ -68,7 +68,7 @@ multinomial_ml <- function(y = NULL, X = NULL,
   n_categories <- length(unique(y))
   y_classes <- sort(unique(y))
   
-  ## 1.) Generate binary outcomes for each class. The m-th element stores the indicator variables relative to the m-th class. 
+  ## 1.) Generate binary outcomes for each class. The m-th element stores the indicator variable relative to the m-th class. 
   train_outcomes <- list()
   counter <- 1
   for (m in y_classes) {
@@ -90,7 +90,7 @@ multinomial_ml <- function(y = NULL, X = NULL,
     predictions <- lapply(estimators, function(x) {as.numeric(predict(x, X_scaled, s = "lambda.min", type = "response"))}) 
   }
   
-  ## 3.) Normalize and put into matrix.
+  ## 3.) Put into matrix and normalize.
   predictions_final <- sapply(predictions, function(x) as.matrix(x))
   predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
   colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")

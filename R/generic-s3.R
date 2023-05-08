@@ -505,7 +505,8 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' cbind(head(predictions_forest), head(predictions_l1))
 #' 
 #' @details
-#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance.
+#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance. Also, 
+#' \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
 #' 
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
@@ -530,7 +531,7 @@ predict.mml <- function(object, data = NULL, ...) {
     predictions <- lapply(estimators, function(x) {as.numeric(predict(x, data_scaled, s = "lambda.min", type = "response"))}) 
   }
   
-  ## 2.) Normalize and put into matrix.
+  ## 2.) Put into matrix and normalize.
   predictions_final <- sapply(predictions, function(x) as.matrix(x))
   predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
   colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
@@ -583,7 +584,8 @@ predict.mml <- function(object, data = NULL, ...) {
 #' cbind(head(predictions_forest), head(predictions_l1))
 #' 
 #' @details
-#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance.
+#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance. Also, 
+#' \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
 #' 
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
@@ -614,7 +616,7 @@ predict.oml <- function(object, data = NULL, ...) {
   predictions0 <- append(list(rep(0, n)), predictions) 
   differences <- as.list(mapply(function(x, y) x - y, predictions1, predictions0, SIMPLIFY = FALSE))
   
-  ## 3.) Truncate, normalize and put into matrix.
+  ## 3.) Truncate, put into matrix, and normalize.
   predictions_final <- lapply(differences, function(x) ifelse((x < 0), 0, x))
   predictions_final <- sapply(predictions_final, function(x) as.matrix(x))
   predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)

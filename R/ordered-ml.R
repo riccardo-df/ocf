@@ -99,8 +99,8 @@ ordered_ml <- function(y = NULL, X = NULL,
   predictions0 <- append(list(rep(0, n)), predictions) 
   differences <- as.list(mapply(function(x, y) x - y, predictions1, predictions0, SIMPLIFY = FALSE))
   
-  ## 3.) Truncate, normalize and put into matrix.
-  predictions_final <- lapply(differences, function(x) ifelse((x < 0), 0, x))
+  ## 3.) Truncate, put into matrix, and normalize. 
+  predictions_final <- lapply(differences, function(x) ifelse(x < 0, 0, x))
   predictions_final <- sapply(predictions_final, function(x) as.matrix(x))
   predictions_final <- matrix(apply(predictions_final, 1, function(x) (x) / (sum(x))), ncol = n_categories, byrow = T)
   colnames(predictions_final) <- paste0("P(Y=", seq_len(n_categories), ")")
