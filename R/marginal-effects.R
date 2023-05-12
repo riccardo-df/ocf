@@ -4,6 +4,7 @@
 #'
 #' @param object An \code{\link{ocf}} object.
 #' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
+#' @param which_covariates Character vector storing the names of the covariates for which marginal effect estimation is desired. If empty (the default), marginal effects are estimated for all covariates.
 #' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
 #' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.
 #' @param inference Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program.
@@ -56,14 +57,15 @@
 #' @author Riccardo Di Francesco
 #'
 #' @export
-marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
+marginal_effects <- function(object, data = NULL, which_covariates = c(), 
+                             eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## 1.) Handling inputs and checks.
   if (!inherits(object, "ocf")) stop("Invalid 'object'.", call. = FALSE) 
   if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a ocf object estimated with 'honesty = TRUE'.", call. = FALSE)
   n_honest <- dim(object$honest_data)[1]
   y.classes <- sort(unique(object$full_data[, 1]))
   n.classes <- length(y.classes)
-  
+
   ## 2.) Data.
   # 2a.) Handle and check.
   if (is.null(data)) data <- object$full_data
@@ -71,8 +73,7 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
   if (length(colnames(data)) != length(object$forests.info$forest.1$covariate.names)) data <- data[, object$forests.info$forest.1$covariate.names, drop = FALSE]
   
   X <- data
-  independent.variable.names <- colnames(X)
-  if (length(independent.variable.names) < 1) stop("No covariates found. Maybe 'X' is missing? colnames?", call. = FALSE)
+  if (length(colnames(X)) < 1) stop("No covariates found. Maybe 'X' is missing colnames?", call. = FALSE)
 
   # 2b.) Save the covariates' types.
   X_unique <- apply(data, 2, function(x) length(unique(x)))
@@ -144,6 +145,13 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     X_down_data[[j]][1] <- min(X[, j])
   }
   
+  # 4c.) Drop covariates not of interest.
+  if (!is.null(which_covariates)) {
+    idx_interest <- which(colnames(X) %in% which_covariates) 
+    X_up_data <- sapply(idx_interest, function(x) {X_up_data[[x]]}, simplify = FALSE)
+    X_down_data <- sapply(idx_interest, function(x) {X_down_data[[x]]}, simplify = FALSE)
+  } 
+
   ## 5.) Compute numerator: difference in conditional class probabilities. 
   if (inference) { # 5a.) If inference, extract weights and use these to predict.
     # 5aa.) Generate binary outcomes with honest sample. 
@@ -181,25 +189,26 @@ marginal_effects <- function(object, data = NULL, eval = "atmean", bandwitdh = 0
     numerators <- mapply(function(x, y) {x - y}, predictions_up, predictions_down, SIMPLIFY = FALSE)
   }
   
-  ## 6.) Denominator: approximate the marginal change in the covariates, and enforce this to equal one for discrete covariates.
+  ## 6.) Denominator: approximate the marginal change in the covariates, and enforce this to equal one for discrete covariates. Drop covariates not of interest.
   denominators <- 2 * bandwitdh * standard_deviations
   for (i in (union(X_categorical, X_dummy))) {
     denominators[[i]] <- 1
   }
+  if (!is.null(which_covariates)) denominators <- denominators[idx_interest]
   
   ## 7.) Marginal effects. First, estimate them for each prediction point (we have only one if atmean/atmedian). Then, 
   ##     average for each class with colMeans (this does not affect results if atmean/atmedian).
   marginal_effects <- mapply(function(x, y) {x / y}, numerators, denominators, SIMPLIFY = FALSE)
   marginal_effects <- matrix(unlist(lapply(marginal_effects, function(x) {colMeans(x)}), use.names = FALSE), ncol = n.classes, byrow = TRUE)
   colnames(marginal_effects) <- paste0("P'(Y=", y.classes, ")")
-  rownames(marginal_effects) <- colnames(X)
+  if (!is.null(which_covariates)) rownames(marginal_effects) <- colnames(X)[idx_interest] else rownames(marginal_effects) <- colnames(X)
   
   ## 8.) Variance of marginal effects, if necessary.
   if (inference) {
     # 8a.) Pre-allocating memory.
     variances <- matrix(NA, ncol = n.classes, nrow = length(denominators))
     colnames(variances) <- paste0("P'(Y=", y.classes, ")")
-    rownames(variances) <- colnames(X)
+    if (!is.null(which_covariates)) rownames(variances) <- colnames(X)[idx_interest] else rownames(variances) <- colnames(X)
     
     # 8b.) Constants.
     denominators_squared <- 1 / denominators^2

@@ -68,7 +68,7 @@ honest_predictions <- predict(honest_forests, X_test)
 cbind(head(predictions$probabilities), head(honest_predictions$probabilities))
 ```
 
-To extract the weights induced by each forest and estimate the standard errors we set `inference = TRUE`. This requires also to set `honesty = TRUE`, although in principle we could estimate standard errors also for adaptive forests. The point of implementing honesty is that it allows us to use the estimated standard errors to construct valid confidence intervals for the conditional probabilities. We again stress that if we care only about prediction performance we should set `honesty = FALSE` (this is the default). As a final remark, notice that the weights extraction considerably slows down the routine. However, we can increase the number of threads used to construct the forests to speed up the routine.
+To extract the weights induced by each forest and estimate the standard errors we set `inference = TRUE`. This requires also to set `honesty = TRUE`: the formula for the variance is valid only for honest predictions. We again stress that if we care only about prediction performance we should set `honesty = FALSE` (this is the default). As a final remark, notice that the weights extraction considerably slows down the routine. However, we can increase the number of threads used to construct the forests to speed up the routine.
 
 ```{r honest-ocf-inference}
 ## Compute standard errors.
@@ -91,7 +91,7 @@ summary(me_atmean)
 As before, we can set `inference = TRUE` to estimate the standard errors. Again, this requires the use of honest forests and considerably slows down the routine.
 
 ```{r honest-me}
-##Honest forests.
+## Honest forests.
 honest_forests <- ocf(y_tr, X_tr, n.trees = 4000, honesty = TRUE) # Notice we do not need inference here!
 
 ## Compute standard errors.

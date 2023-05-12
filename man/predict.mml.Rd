@@ -20,7 +20,8 @@ Matrix of predictions.
 Prediction method for class \code{mml}.
 }
 \details{
-If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance.
+If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance. Also, 
+\code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
 }
 \examples{
 ## Load data from orf package.

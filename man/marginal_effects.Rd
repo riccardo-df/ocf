@@ -7,6 +7,7 @@
 marginal_effects(
   object,
   data = NULL,
+  which_covariates = c(),
   eval = "atmean",
   bandwitdh = 0.1,
   inference = FALSE
@@ -16,6 +17,8 @@ marginal_effects(
 \item{object}{An \code{\link{ocf}} object.}
 
 \item{data}{Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.}
+
+\item{which_covariates}{Character vector storing the names of the covariates for which marginal effect estimation is desired. If empty (the default), marginal effects are estimated for all covariates.}
 
 \item{eval}{Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.}
 
