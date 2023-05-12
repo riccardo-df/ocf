@@ -185,15 +185,13 @@ forests.</p>
 <span><span class="co">#&gt; [6,] 0.03066153 0.2633758 0.70596271 0.07797359 0.3204103 0.60161614</span></span></code></pre></div>
 <p>To extract the weights induced by each forest and estimate the
 standard errors we set <code>inference = TRUE</code>. This requires also
-to set <code>honesty = TRUE</code>, although in principle we could
-estimate standard errors also for adaptive forests. The point of
-implementing honesty is that it allows us to use the estimated standard
-errors to construct valid confidence intervals for the conditional
-probabilities. We again stress that if we care only about prediction
-performance we should set <code>honesty = FALSE</code> (this is the
-default). As a final remark, notice that the weights extraction
-considerably slows down the routine. However, we can increase the number
-of threads used to construct the forests to speed up the routine.</p>
+to set <code>honesty = TRUE</code>: the formula for the variance is
+valid only for honest predictions. We again stress that if we care only
+about prediction performance we should set <code>honesty = FALSE</code>
+(this is the default). As a final remark, notice that the weights
+extraction considerably slows down the routine. However, we can increase
+the number of threads used to construct the forests to speed up the
+routine.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Zero corresponds to the number of CPUs available.</span></span>
@@ -247,7 +245,7 @@ more stable results.</p>
 standard errors. Again, this requires the use of honest forests and
 considerably slows down the routine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##Honest forests.</span></span>
+<code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
 <span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
 <span></span>
 <span><span class="co">## Compute standard errors.</span></span>

@@ -56,6 +56,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">marginal_effects</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  which_covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  eval <span class="op">=</span> <span class="st">"atmean"</span>,</span>
 <span>  bandwitdh <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  inference <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -70,6 +71,10 @@
 
 <dt>data</dt>
 <dd><p>Data set of class <code>data.frame</code> to estimate marginal effects. It must contain at least the same covariates used to train the forests. If <code>NULL</code>, marginal effects are estimated on <code>object$full_data</code>.</p></dd>
+
+
+<dt>which_covariates</dt>
+<dd><p>Character vector storing the names of the covariates for which marginal effect estimation is desired. If empty (the default), marginal effects are estimated for all covariates.</p></dd>
 
 
 <dt>eval</dt>
