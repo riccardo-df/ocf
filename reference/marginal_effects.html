@@ -123,7 +123,7 @@ be discrete.<br></p>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Fit ocf . Use large number of trees.</span></span></span>
+<span class="r-in"><span><span class="co">## Fit ocf. Use large number of trees.</span></span></span>
 <span class="r-in"><span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Marginal effects at the mean.</span></span></span>
@@ -198,7 +198,6 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:ocf.marginal.effects}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>

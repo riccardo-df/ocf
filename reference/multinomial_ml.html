@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multinomial_ml</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multinomial_ml</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,6 +69,10 @@
 <dt>learner</dt>
 <dd><p>String, either <code>"forest"</code> or <code>"l1"</code>. Selects the base learner to estimate each expectation.</p></dd>
 
+
+<dt>scale</dt>
+<dd><p>Logical, whether to scale the covariates. Ignored if <code>learner</code> is not <code>"l1"</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -83,9 +87,9 @@
 <p>This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional 
 probabilities.<br></p>
 <p><code>multinomial_ml</code> combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
-according to the user-specified parameter <code>learner</code>. If <code>learner == "l1"</code>, the covariates are scaled to have zero mean
-and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is
-used to handle non-numeric covariates.<br></p>
+according to the user-specified parameter <code>learner</code>. If <code>learner == "l1"</code>, the penalty parameters are chosen via 10-fold cross-validation 
+and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. Additionally, if <code>scale == TRUE</code>, the covariates are scaled to 
+have zero mean and unit variance, and <br></p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

@@ -125,44 +125,13 @@ highest-probability class).</p>
 <span></span>
 <span><span class="co">## Summary of data and tuning parameters.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">forests</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Call: </span></span>
-<span><span class="co">#&gt; ocf(y_tr, X_tr) </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Full sample size:   500 </span></span>
-<span><span class="co">#&gt; N. covariates:      5 </span></span>
-<span><span class="co">#&gt; Classes:            1 2 3 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Relative variable importance: </span></span>
-<span><span class="co">#&gt;    X1    X2    X3    X4 </span></span>
-<span><span class="co">#&gt; 0.410 0.190 0.104 0.295 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Tuning parameters: </span></span>
-<span><span class="co">#&gt; N. trees:           2000 </span></span>
-<span><span class="co">#&gt; mtry:               2 </span></span>
-<span><span class="co">#&gt; min.node.size       5 </span></span>
-<span><span class="co">#&gt; Subsampling scheme: No replacement </span></span>
-<span><span class="co">#&gt; Honesty:            FALSE </span></span>
-<span><span class="co">#&gt; Honest fraction:    0</span></span>
 <span></span>
 <span><span class="co">## Out-of-sample predictions.</span></span>
 <span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          P(Y=1)    P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.85140961 0.1185089 0.03008149</span></span>
-<span><span class="co">#&gt; [2,] 0.70315449 0.2661564 0.03068916</span></span>
-<span><span class="co">#&gt; [3,] 0.36277830 0.2800366 0.35718506</span></span>
-<span><span class="co">#&gt; [4,] 0.01424455 0.1056402 0.88011530</span></span>
-<span><span class="co">#&gt; [5,] 0.11414762 0.4527127 0.43313970</span></span>
-<span><span class="co">#&gt; [6,] 0.03066153 0.2633758 0.70596271</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       </span></span>
-<span><span class="co">#&gt; y_test   1   2   3</span></span>
-<span><span class="co">#&gt;      1 104  41  20</span></span>
-<span><span class="co">#&gt;      2  61  59  46</span></span>
-<span><span class="co">#&gt;      3  38  45  86</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></code></pre></div>
 <p>We can also implement honesty, which is a necessary condition to get
 asymptotically normal and consistent predictions. However, honesty
 generally comes at the expense of a larger mean squared error. Thus, if
@@ -175,14 +144,7 @@ forests.</p>
 <span><span class="va">honest_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">honest_forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Compare predictions with adaptive fit.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          P(Y=1)    P(Y=2)     P(Y=3)     P(Y=1)    P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.85140961 0.1185089 0.03008149 0.70950736 0.2211598 0.06933279</span></span>
-<span><span class="co">#&gt; [2,] 0.70315449 0.2661564 0.03068916 0.57201597 0.2958081 0.13217592</span></span>
-<span><span class="co">#&gt; [3,] 0.36277830 0.2800366 0.35718506 0.45993504 0.2434703 0.29659463</span></span>
-<span><span class="co">#&gt; [4,] 0.01424455 0.1056402 0.88011530 0.09120661 0.2322893 0.67650412</span></span>
-<span><span class="co">#&gt; [5,] 0.11414762 0.4527127 0.43313970 0.13720794 0.4634872 0.39930481</span></span>
-<span><span class="co">#&gt; [6,] 0.03066153 0.2633758 0.70596271 0.07797359 0.3204103 0.60161614</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To extract the weights induced by each forest and estimate the
 standard errors we set <code>inference = TRUE</code>. This requires also
 to set <code>honesty = TRUE</code>: the formula for the variance is
@@ -195,14 +157,7 @@ routine.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Zero corresponds to the number of CPUs available.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          P(Y=1)     P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.06114787 0.09194353 0.10702135</span></span>
-<span><span class="co">#&gt; [2,] 0.13360556 0.07127975 0.06315303</span></span>
-<span><span class="co">#&gt; [3,] 0.05675549 0.07449825 0.15692682</span></span>
-<span><span class="co">#&gt; [4,] 0.15461445 0.13627816 0.08301800</span></span>
-<span><span class="co">#&gt; [5,] 0.18850488 0.11299775 0.01976499</span></span>
-<span><span class="co">#&gt; [6,] 0.15261776 0.07227305 0.01801186</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="estimation-and-inference-about-marginal-effects">Estimation and Inference about Marginal Effects<a class="anchor" aria-label="anchor" href="#estimation-and-inference-about-marginal-effects"></a>
@@ -221,26 +176,7 @@ more stable results.</p>
 <span></span>
 <span><span class="co">## Marginal effects at the mean on test sample.</span></span>
 <span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, data <span class="op">=</span> <span class="va">X_test</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ocf marginal effects results </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Number of classes:    3 </span></span>
-<span><span class="co">#&gt; Sample size:          500 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Tuning parameters: </span></span>
-<span><span class="co">#&gt; Evaluation:           atmean </span></span>
-<span><span class="co">#&gt; Bandwidth:            0.1 </span></span>
-<span><span class="co">#&gt; Number of trees:      4000 </span></span>
-<span><span class="co">#&gt; Honest forests:       FALSE </span></span>
-<span><span class="co">#&gt; Honesty fraction:     0 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal Effects: </span></span>
-<span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1  -1.368   0.629   0.738</span></span>
-<span><span class="co">#&gt; X2  -0.256  -0.269   0.524</span></span>
-<span><span class="co">#&gt; X3  -0.169   0.137   0.032</span></span>
-<span><span class="co">#&gt; X4  -0.018  -0.020   0.037</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span></span></code></pre></div>
 <p>As before, we can set <code>inference = TRUE</code> to estimate the
 standard errors. Again, this requires the use of honest forests and
 considerably slows down the routine.</p>
@@ -251,52 +187,11 @@ considerably slows down the routine.</p>
 <span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, data <span class="op">=</span> <span class="va">X_test</span> , eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">standard.errors</span></span>
-<span><span class="co">#&gt;       P'(Y=1)    P'(Y=2)    P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1 0.42920102 0.53224407 0.30596737</span></span>
-<span><span class="co">#&gt; X2 0.09380819 0.09905628 0.12177454</span></span>
-<span><span class="co">#&gt; X3 0.08948220 0.08735010 0.05325740</span></span>
-<span><span class="co">#&gt; X4 0.01458993 0.02611771 0.01772279</span></span>
 <span></span>
 <span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">p.values</span> <span class="co"># These are not corrected for multiple hypotheses testing!</span></span>
-<span><span class="co">#&gt;       P'(Y=1)   P'(Y=2)    P'(Y=3)</span></span>
-<span><span class="co">#&gt; X1 0.03471781 0.5902843 0.04281412</span></span>
-<span><span class="co">#&gt; X2 0.31687969 0.1510814 0.05251313</span></span>
-<span><span class="co">#&gt; X3 0.32114951 0.6472054 0.35951141</span></span>
-<span><span class="co">#&gt; X4 0.48137927 0.2521354 0.26786145</span></span>
 <span></span>
 <span><span class="co">## LATEX.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; \begingroup</span></span>
-<span><span class="co">#&gt;     \setlength{\tabcolsep}{8pt}</span></span>
-<span><span class="co">#&gt;     \renewcommand{\arraystretch}{1.1}</span></span>
-<span><span class="co">#&gt;     \begin{table}[H]</span></span>
-<span><span class="co">#&gt;         \centering</span></span>
-<span><span class="co">#&gt;         \begin{adjustbox}{width = 0.75\textwidth}</span></span>
-<span><span class="co">#&gt;         \begin{tabular}{@{\extracolsep{5pt}}l c c c}</span></span>
-<span><span class="co">#&gt;         \\[-1.8ex]\hline</span></span>
-<span><span class="co">#&gt;         \hline \\[-1.8ex]</span></span>
-<span><span class="co">#&gt;         &amp; Class 1 &amp; Class 2 &amp; Class 3 \\</span></span>
-<span><span class="co">#&gt;         \addlinespace[2pt]</span></span>
-<span><span class="co">#&gt;         \hline \\[-1.8ex] </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;         \texttt{X1} &amp; -0.906 &amp; 0.287 &amp; 0.62 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.429) &amp; (0.532) &amp; (0.306) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X2} &amp; -0.094 &amp; -0.142 &amp; 0.236 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.094) &amp; (0.099) &amp; (0.122) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X3} &amp; -0.089 &amp; 0.04 &amp; 0.049 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.089) &amp; (0.087) &amp; (0.053) \\ </span></span>
-<span><span class="co">#&gt;         \texttt{X4} &amp; 0.01 &amp; -0.03 &amp; 0.02 \\ </span></span>
-<span><span class="co">#&gt;                      &amp; (0.015) &amp; (0.026) &amp; (0.018) \\ </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;         \addlinespace[3pt]</span></span>
-<span><span class="co">#&gt;         \\[-1.8ex]\hline</span></span>
-<span><span class="co">#&gt;         \hline \\[-1.8ex]</span></span>
-<span><span class="co">#&gt;         \end{tabular}</span></span>
-<span><span class="co">#&gt;         \end{adjustbox}</span></span>
-<span><span class="co">#&gt;         \caption{Marginal effects.}</span></span>
-<span><span class="co">#&gt;         \label{table:ocf.marginal.effects}</span></span>
-<span><span class="co">#&gt;     \end{table}</span></span>
-<span><span class="co">#&gt; \endgroup</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
