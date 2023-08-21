@@ -4,7 +4,7 @@
 \alias{multinomial_ml}
 \title{Multinomial Machine Learning}
 \usage{
-multinomial_ml(y = NULL, X = NULL, learner = "forest")
+multinomial_ml(y = NULL, X = NULL, learner = "forest", scale = TRUE)
 }
 \arguments{
 \item{y}{Outcome vector.}
@@ -12,6 +12,8 @@ multinomial_ml(y = NULL, X = NULL, learner = "forest")
 \item{X}{Covariate matrix (no intercept).}
 
 \item{learner}{String, either \code{"forest"} or \code{"l1"}. Selects the base learner to estimate each expectation.}
+
+\item{scale}{Logical, whether to scale the covariates. Ignored if \code{learner} is not \code{"l1"}.}
 }
 \value{
 Object of class \code{mml}.
@@ -28,9 +30,9 @@ This allows us to estimate each expectation separately using any regression algo
 probabilities.\cr
 
 \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
-according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the covariates are scaled to have zero mean
-and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is
-used to handle non-numeric covariates.\cr
+according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
+and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. Additionally, if \code{scale == TRUE}, the covariates are scaled to 
+have zero mean and unit variance, and \cr
 }
 \examples{
 ## Load data from orf package.

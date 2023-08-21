@@ -50,7 +50,7 @@ odata <- odata[1:200, ] # Subset to reduce elapsed time.
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
 
-## Fit ocf . Use large number of trees.
+## Fit ocf. Use large number of trees.
 forests <- ocf(y, X, n.trees = 4000)
 
 ## Marginal effects at the mean.
@@ -60,7 +60,6 @@ summary(me)
 
 ## LATEX.
 print(me, latex = TRUE)
-
 \donttest{
 ## Compute standard errors. This requires honest forests.
 honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)

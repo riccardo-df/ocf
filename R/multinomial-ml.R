@@ -5,6 +5,7 @@
 #' @param y Outcome vector.
 #' @param X Covariate matrix (no intercept).
 #' @param learner String, either \code{"forest"} or \code{"l1"}. Selects the base learner to estimate each expectation.
+#' @param scale Logical, whether to scale the covariates. Ignored if \code{learner} is not \code{"l1"}.
 #' 
 #' @return 
 #' Object of class \code{mml}.
@@ -49,9 +50,9 @@
 #' probabilities.\cr
 #' 
 #' \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
-#' according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the covariates are scaled to have zero mean
-#' and unit variance, and the penalty parameters are chosen via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is
-#' used to handle non-numeric covariates.\cr
+#' according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
+#' and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. Additionally, if \code{scale == TRUE}, the covariates are scaled to 
+#' have zero mean and unit variance, and \cr
 #' 
 #' @import ranger glmnet
 #'  
@@ -61,10 +62,12 @@
 #' 
 #' @export
 multinomial_ml <- function(y = NULL, X = NULL,
-                           learner = "forest") {
+                           learner = "forest", scale = TRUE) {
   ## 0.) Handling inputs and checks.
   check_x_y(X, y)
   if (!(learner %in% c("forest", "l1"))) stop("Invalid 'learner'. This must be either 'forest' or 'l1'.", call. = FALSE)
+  if (!is.logical(scale)) stop("Invalid 'scale'. This must be logical.", call. = FALSE)
+  
   n_categories <- length(unique(y))
   y_classes <- sort(unique(y))
   
@@ -81,13 +84,13 @@ multinomial_ml <- function(y = NULL, X = NULL,
     estimators <- lapply(train_outcomes, function(outcome) {ranger::ranger(y = outcome, x = X, num.trees = 2000)})
     predictions <- lapply(estimators, function(x) {predict(x, X)$predictions}) 
   } else if (learner == "l1") {
-    # Construct design matrix and scale.
+    # Construct design matrix and scale if necessary.
     X_design <- stats::model.matrix(y ~ ., data = data.frame(y, X))[, -1]
-    X_scaled <- scale(as.matrix(X_design))
+    if (scale) X_design <- scale(as.matrix(X_design))
     
     # 10-fold CV to find best penalization parameters.
-    estimators <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_scaled, y = outcome, alpha = 1, family = "binomial")})
-    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, X_scaled, s = "lambda.min", type = "response"))}) 
+    estimators <- lapply(train_outcomes, function(outcome) {glmnet::cv.glmnet(x = X_design, y = outcome, alpha = 1, family = "binomial")})
+    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, X_design, s = "lambda.min", type = "response"))}) 
   }
   
   ## 3.) Put into matrix and normalize.

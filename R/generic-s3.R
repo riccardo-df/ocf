@@ -253,7 +253,7 @@ summary.ocf <- function(object, ...) {
   
   cat("Data info: \n")
   cat("Full sample size:  ", dim(object$full_data)[1], "\n")
-  cat("N. covariates:     ", dim(object$full_data)[2], "\n")
+  cat("N. covariates:     ", dim(object$full_data)[2] - 1, "\n")
   cat("Classes:           ", sort(unique(object$full_data[, 1])), "\n\n")
   
   cat("Relative variable importance: \n")

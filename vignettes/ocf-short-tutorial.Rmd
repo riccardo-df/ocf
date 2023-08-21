@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include = FALSE, eval = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,7 +19,7 @@ library(ocf)
 ### Introduction
 In this tutorial, we show how to use `ocf` to estimate conditional choice probabilities and marginal effects, and conduct inference about these statistical targets. For illustration purposes, we use the synthetic data set provided in the `orf` package:
 
-```{r data-generation}
+```{r data-generation, eval = FALSE}
 ## Load data from orf package.
 set.seed(1986)
 
@@ -33,7 +33,7 @@ X <- as.matrix(odata[, -1])
 ### Estimation and Inference about Conditional Probabilities
 The `ocf` function constructs a collection of forests, one for each category of `y` (three in this case). We can then use the forests to predict out-of-sample conditional probabilities using the `predict` method. By default, `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
 
-```{r adaptive-ocf}
+```{r adaptive-ocf, eval = FALSE}
 ## Training-test split.
 train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
 
@@ -59,7 +59,7 @@ table(y_test, predictions$classification)
 
 We can also implement honesty, which is a necessary condition to get asymptotically normal and consistent predictions. However, honesty generally comes at the expense of a larger mean squared error. Thus, if inference is not of interest we recommend adaptive forests. In the following, we set `honesty = TRUE` to construct honest forests.
 
-```{r honest-ocf}
+```{r honest-ocf, eval = FALSE}
 ## Honest forests.
 honest_forests <- ocf(y_tr, X_tr, honesty = TRUE)
 honest_predictions <- predict(honest_forests, X_test)
@@ -70,7 +70,7 @@ cbind(head(predictions$probabilities), head(honest_predictions$probabilities))
 
 To extract the weights induced by each forest and estimate the standard errors we set `inference = TRUE`. This requires also to set `honesty = TRUE`: the formula for the variance is valid only for honest predictions. We again stress that if we care only about prediction performance we should set `honesty = FALSE` (this is the default). As a final remark, notice that the weights extraction considerably slows down the routine. However, we can increase the number of threads used to construct the forests to speed up the routine.
 
-```{r honest-ocf-inference}
+```{r honest-ocf-inference, eval = FALSE}
 ## Compute standard errors.
 honest_forests <- ocf(y_tr, X_tr, honesty = TRUE, inference = TRUE, n.threads = 0) # Zero corresponds to the number of CPUs available.
 head(honest_forests$predictions$standard.errors)
@@ -79,7 +79,7 @@ head(honest_forests$predictions$standard.errors)
 ### Estimation and Inference about Marginal Effects
 The package implements a nonparametric estimator of marginal effects. This can be used by calling the `marginal_effects` function, which allows the estimation of mean marginal effects, marginal effects at the mean, or marginal effects at the median, according to the `eval` argument. In the following, we construct our forests in the training sample and use them to estimate the marginal effects at the mean in the test sample. We use a larger number of trees here to get more stable results.
 
-```{r adaptive-me}
+```{r adaptive-me, eval = FALSE}
 ## Fit ocf on training sample. Use large number of trees.
 forests <- ocf(y_tr, X_tr, n.trees = 4000)
 
@@ -90,7 +90,7 @@ summary(me_atmean)
 
 As before, we can set `inference = TRUE` to estimate the standard errors. Again, this requires the use of honest forests and considerably slows down the routine.
 
-```{r honest-me}
+```{r honest-me, eval = FALSE}
 ## Honest forests.
 honest_forests <- ocf(y_tr, X_tr, n.trees = 4000, honesty = TRUE) # Notice we do not need inference here!
 

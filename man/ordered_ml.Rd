@@ -4,7 +4,7 @@
 \alias{ordered_ml}
 \title{Ordered Machine Learning}
 \usage{
-ordered_ml(y = NULL, X = NULL, learner = "forest")
+ordered_ml(y = NULL, X = NULL, learner = "forest", scale = TRUE)
 }
 \arguments{
 \item{y}{Outcome vector.}
@@ -12,6 +12,8 @@ ordered_ml(y = NULL, X = NULL, learner = "forest")
 \item{X}{Covariate matrix (no intercept).}
 
 \item{learner}{String, either \code{"forest"} or \code{"l1"}. Selects the base learner to estimate each expectation.}
+
+\item{scale}{Logical, whether to scale the covariates. Ignored if \code{learner} is not \code{"l1"}.}
 }
 \value{
 Object of class \code{oml}.
@@ -30,9 +32,9 @@ Then we can separately estimate each expectation using any regression algorithm 
 
 \code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 according to the user-specified parameter \code{learner}. If \code{learner == "forest"}, then the \code{\link[orf]{orf}}
-function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019). If 
-\code{learner == "l1"}, the covariates are scaled to have zero mean and unit variance, and the penalty parameters are chosen 
-via 10-fold cross-validation. Also, \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
+function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019). If \code{learner == "l1"}, 
+the penalty parameters are chosen via 10-fold cross-validation  and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. 
+Additionally, if \code{scale == TRUE}, the covariates are scaled to have zero mean and unit variance, and \cr
 }
 \examples{
 ## Load data from orf package.

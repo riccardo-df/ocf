@@ -23,7 +23,7 @@
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
 #' 
-#' ## Fit ocf . Use large number of trees.
+#' ## Fit ocf. Use large number of trees.
 #' forests <- ocf(y, X, n.trees = 4000)
 #' 
 #' ## Marginal effects at the mean.
@@ -33,7 +33,6 @@
 #' 
 #' ## LATEX.
 #' print(me, latex = TRUE)
-#' 
 #' \donttest{
 #' ## Compute standard errors. This requires honest forests.
 #' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
@@ -62,6 +61,7 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
   ## 1.) Handling inputs and checks.
   if (!inherits(object, "ocf")) stop("Invalid 'object'.", call. = FALSE) 
   if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a ocf object estimated with 'honesty = TRUE'.", call. = FALSE)
+  
   n_honest <- dim(object$honest_data)[1]
   y.classes <- sort(unique(object$full_data[, 1]))
   n.classes <- length(y.classes)
@@ -74,6 +74,7 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
   
   X <- data
   if (length(colnames(X)) < 1) stop("No covariates found. Maybe 'X' is missing colnames?", call. = FALSE)
+  if (!is.null(which_covariates) & !(any(which_covariates %in% colnames(X)))) stop("One or more of 'which_covariates' has not been found in 'data'.", call. = FALSE)
 
   # 2b.) Save the covariates' types.
   X_unique <- apply(data, 2, function(x) length(unique(x)))
