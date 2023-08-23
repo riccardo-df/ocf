@@ -83,9 +83,6 @@
 
     
     
-<div class="section level3">
-<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h3>
 <p>In this tutorial, we show how to use <code>ocf</code> to estimate
 conditional choice probabilities and marginal effects, and conduct
 inference about these statistical targets. For illustration purposes, we
@@ -99,7 +96,6 @@ use the synthetic data set provided in the <code>orf</code> package:</p>
 <span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-</div>
 <div class="section level3">
 <h3 id="estimation-and-inference-about-conditional-probabilities">Estimation and Inference about Conditional Probabilities<a class="anchor" aria-label="anchor" href="#estimation-and-inference-about-conditional-probabilities"></a>
 </h3>
@@ -130,7 +126,6 @@ highest-probability class).</p>
 <span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></code></pre></div>
 <p>We can also implement honesty, which is a necessary condition to get
 asymptotically normal and consistent predictions. However, honesty
@@ -168,11 +163,10 @@ which allows the estimation of mean marginal effects, marginal effects
 at the mean, or marginal effects at the median, according to the
 <code>eval</code> argument. In the following, we construct our forests
 in the training sample and use them to estimate the marginal effects at
-the mean in the test sample. We use a larger number of trees here to get
-more stable results.</p>
+the mean in the test sample.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Fit ocf on training sample. Use large number of trees.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, n.trees <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co">## Fit ocf on training sample.</span></span>
+<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Marginal effects at the mean on test sample.</span></span>
 <span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, data <span class="op">=</span> <span class="va">X_test</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span>
@@ -182,13 +176,10 @@ standard errors. Again, this requires the use of honest forests and
 considerably slows down the routine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
 <span></span>
 <span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, data <span class="op">=</span> <span class="va">X_test</span> , eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">standard.errors</span></span>
-<span></span>
-<span><span class="va">honest_me_atmean</span><span class="op">$</span><span class="va">p.values</span> <span class="co"># These are not corrected for multiple hypotheses testing!</span></span>
 <span></span>
 <span><span class="co">## LATEX.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
