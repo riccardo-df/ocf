@@ -2,7 +2,7 @@
  
 R package to implement ordered correlation forests (OCF), a nonparametric estimator for ordered non-numeric outcomes. Additionally, the package implements a nonparametric estimator of the covariates' marginal effects.
 
-OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. The estimator inherits the asymptotic properties of random forests. Thus, under an honesty condition (i.e., that different observations are used to place the splits and compute leaf predictions) the predicted conditional probabilities are asymptotically normal and consistent. The particular honesty implementation used by OCF allows for a weight-based estimation of the variance of both predicted probabilities and marginal effects.
+OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Under an \open honesty" condition, the estimator inherits the asymptotic properties of random forests, namely the consistency and asymptotic normality of their predictions. The particular honesty implementation used by OCF allows us to obtain standard errors for the covariates' marginal effects. The estimated standard errors can then be used to construct conventional confidence intervals.
 
 To get started, please check the online [vignette](https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html) for a short tutorial.
 
