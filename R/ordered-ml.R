@@ -48,13 +48,13 @@
 #' \deqn{p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i \leq m \right) | X_i \right] - \mathbb{E} \left[ 1 \left( Y_i \leq m - 1 \right) | X_i \right]}
 #' 
 #' Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
-#' (m-1)-th estimated surfaces to estimate conditional probabilities.
+#' (m-1)-th estimated surfaces to estimate conditional probabilities.\cr
 #' 
 #' \code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 #' according to the user-specified parameter \code{learner}. If \code{learner == "forest"}, then the \code{\link[orf]{orf}}
 #' function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019). If \code{learner == "l1"}, 
-#' the penalty parameters are chosen via 10-fold cross-validation  and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. 
-#' Additionally, if \code{scale == TRUE}, the covariates are scaled to have zero mean and unit variance, and \cr
+#' the penalty parameters are chosen via 10-fold cross-validation and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. 
+#' Additionally, if \code{scale == TRUE}, the covariates are scaled to have zero mean and unit variance.
 #' 
 #' @import ranger glmnet orf
 #'  
@@ -109,6 +109,7 @@ ordered_ml <- function(y = NULL, X = NULL,
   ## 4.) Output.
   output <- list("estimators" = estimators,
                  "predictions" = predictions_final,
+                 "scaling" = scale,
                  "learner" = learner,
                  "X" = X,
                  "y" = y)

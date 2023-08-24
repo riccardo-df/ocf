@@ -505,8 +505,8 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' cbind(head(predictions_forest), head(predictions_l1))
 #' 
 #' @details
-#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance. Also, 
-#' \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
+#' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also
+#' have \code{object$scaling == TRUE}, then \code{data} is scaled to have zero mean and unit variance.
 #' 
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
@@ -520,6 +520,7 @@ predict.mml <- function(object, data = NULL, ...) {
   if (is.null(data)) data <- object$X
   learner <- object$learner
   estimators <- object$estimators
+  scale <- object$scaling
   n_categories <- length(unique(object$y))
   
   ## 1.) Get predictions.
@@ -527,8 +528,8 @@ predict.mml <- function(object, data = NULL, ...) {
     predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
   } else if (learner == "l1") {
     data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = 1, data))[, -1]
-    data_scaled <- as.matrix(scale(data_design))
-    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, data_scaled, s = "lambda.min", type = "response"))}) 
+    if (scale) data_design <- as.matrix(scale(data_design))
+    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, data_design, s = "lambda.min", type = "response"))}) 
   }
   
   ## 2.) Put into matrix and normalize.
@@ -584,8 +585,8 @@ predict.mml <- function(object, data = NULL, ...) {
 #' cbind(head(predictions_forest), head(predictions_l1))
 #' 
 #' @details
-#' If \code{object$learner == "l1"}, then \code{data} is scaled to have zero mean and unit variance. Also, 
-#' \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates.\cr
+#' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also
+#' have \code{object$scaling == TRUE}, then \code{data} is scaled to have zero mean and unit variance.
 #' 
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
@@ -599,6 +600,7 @@ predict.oml <- function(object, data = NULL, ...) {
   if (is.null(data)) data <- object$X
   learner <- object$learner
   estimators <- object$estimators
+  scale <- object$scaling
   n_categories <- length(unique(object$y))
   n <- dim(data)[1]
   
@@ -607,8 +609,8 @@ predict.oml <- function(object, data = NULL, ...) {
     predictions <- lapply(estimators, function(x) {predict(x, data)$predictions}) 
   } else if (learner == "l1") {
     data_design <- stats::model.matrix(y ~ ., data = data.frame("y" = 1, data))[, -1]
-    data_scaled <- as.matrix(scale(data_design))
-    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, data_scaled, s = "lambda.min", type = "response"))}) 
+    if (scale) data_design <- as.matrix(scale(data_design))
+    predictions <- lapply(estimators, function(x) {as.numeric(predict(x, data_design, s = "lambda.min", type = "response"))}) 
   }
   
   ## 2.) Pick differences.
