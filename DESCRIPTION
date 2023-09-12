@@ -1,7 +1,7 @@
 Package: ocf
 Type: Package
 Title: Ordered Correlation Forest
-Version: 1.0.1
+Version: 1.0.0
 Authors@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com", role = c("aut", "cre", "cph"))
 Description: Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies a
     standard random forest splitting criterion to build a collection of forests, each estimating the conditional 
