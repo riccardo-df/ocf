@@ -2,7 +2,7 @@
  
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/riccardo-df/ocf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/riccardo-df/ocf/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
+<!-- badges: end --> 
  
 R package to implement ordered correlation forests (OCF), a nonparametric estimator for ordered non-numeric outcomes. Additionally, the package implements a nonparametric estimator of the covariates' marginal effects.
 
