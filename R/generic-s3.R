@@ -16,7 +16,7 @@
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -231,7 +231,7 @@ predict.ocf.forest <- function(object, data, type = "response", ...) {
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -324,7 +324,7 @@ print.ocf <- function(x, ...) {
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -429,7 +429,7 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -479,7 +479,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
@@ -559,7 +559,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' 
 #' library(orf)
 #' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
+#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
 #' 
 #' y <- as.numeric(odata[, 1])
 #' X <- as.matrix(odata[, -1])
