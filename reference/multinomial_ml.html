@@ -84,12 +84,11 @@
     <h2>Details</h2>
     <p>Multinomial machine learning expresses conditional choice probabilities as expectations of binary variables:</p>
 <p>$$p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i = m \right) | X_i \right]$$</p>
-<p>This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional 
-probabilities.<br></p>
+<p>This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.<br></p>
 <p><code>multinomial_ml</code> combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 according to the user-specified parameter <code>learner</code>. If <code>learner == "l1"</code>, the penalty parameters are chosen via 10-fold cross-validation 
 and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. Additionally, if <code>scale == TRUE</code>, the covariates are scaled to 
-have zero mean and unit variance, and <br></p>
+have zero mean and unit variance.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

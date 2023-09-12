@@ -78,6 +78,8 @@
 <div class="page-header"><h1 id="ordered-correlation-forest-">Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
 <a class="anchor" aria-label="anchor" href="#ordered-correlation-forest-"></a>
 </h1></div>
+<!-- badges: start -->
+
 <p>R package to implement ordered correlation forests (OCF), a nonparametric estimator for ordered non-numeric outcomes. Additionally, the package implements a nonparametric estimator of the covariates’ marginal effects.</p>
 <p>OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Under an honesty” condition, the estimator inherits the asymptotic properties of random forests, namely the consistency and asymptotic normality of their predictions. The particular honesty implementation used by OCF allows us to obtain standard errors for the covariates’ marginal effects. The estimated standard errors can then be used to construct conventional confidence intervals.</p>
 <p>To get started, please check the online <a href="https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html">vignette</a> for a short tutorial.</p>
@@ -125,7 +127,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/riccardo-df/ocf/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/riccardo-df/ocf/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
 
   </div>
 </div>

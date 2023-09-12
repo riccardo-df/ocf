@@ -86,12 +86,12 @@
 of two adjacent classes, which in turn can be expressed as conditional expectations of binary variables:</p>
 <p>$$p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i \leq m \right) | X_i \right] - \mathbb{E} \left[ 1 \left( Y_i \leq m - 1 \right) | X_i \right]$$</p>
 <p>Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
-(m-1)-th estimated surfaces to estimate conditional probabilities.</p>
+(m-1)-th estimated surfaces to estimate conditional probabilities.<br></p>
 <p><code>ordered_ml</code> combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 according to the user-specified parameter <code>learner</code>. If <code>learner == "forest"</code>, then the <code><a href="https://rdrr.io/pkg/orf/man/orf.html" class="external-link">orf</a></code>
 function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019). If <code>learner == "l1"</code>, 
-the penalty parameters are chosen via 10-fold cross-validation  and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. 
-Additionally, if <code>scale == TRUE</code>, the covariates are scaled to have zero mean and unit variance, and <br></p>
+the penalty parameters are chosen via 10-fold cross-validation and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. 
+Additionally, if <code>scale == TRUE</code>, the covariates are scaled to have zero mean and unit variance.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
