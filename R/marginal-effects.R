@@ -1,4 +1,4 @@
-#' Marginal Effects for Modified Ordered Random Forests
+#' Marginal Effects for Ordered Correlation Forest
 #'
 #' Nonparametric estimation of marginal effects using an \code{\link{ocf}} object.
 #'

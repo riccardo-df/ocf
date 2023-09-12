@@ -26,13 +26,12 @@ Multinomial machine learning expresses conditional choice probabilities as expec
 
 \deqn{p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i = m \right) | X_i \right]}
 
-This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional 
-probabilities.\cr
+This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.\cr
 
 \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
 according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
 and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. Additionally, if \code{scale == TRUE}, the covariates are scaled to 
-have zero mean and unit variance, and \cr
+have zero mean and unit variance.
 }
 \examples{
 ## Load data from orf package.

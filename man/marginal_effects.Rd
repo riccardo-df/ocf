@@ -2,7 +2,7 @@
 % Please edit documentation in R/marginal-effects.R
 \name{marginal_effects}
 \alias{marginal_effects}
-\title{Marginal Effects for Modified Ordered Random Forests}
+\title{Marginal Effects for Ordered Correlation Forest}
 \usage{
 marginal_effects(
   object,
