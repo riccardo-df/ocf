@@ -83,10 +83,11 @@
 
     
     
-<p>In this tutorial, we show how to use <code>ocf</code> to estimate
-conditional choice probabilities and marginal effects, and conduct
-inference about these statistical targets. For illustration purposes, we
-use the synthetic data set provided in the <code>orf</code> package:</p>
+<p>In this tutorial, we show how to use <code>ocf</code> to estimate the
+conditional choice probabilities and the covariates’ marginal effects,
+and conduct inference about these statistical targets. For illustration
+purposes, we use the synthetic data set provided in the <code>orf</code>
+package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load data from orf package.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span>
@@ -97,7 +98,7 @@ use the synthetic data set provided in the <code>orf</code> package:</p>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="estimation-and-inference-about-conditional-probabilities">Estimation and Inference about Conditional Probabilities<a class="anchor" aria-label="anchor" href="#estimation-and-inference-about-conditional-probabilities"></a>
+<h3 id="conditional-probabilities">Conditional Probabilities<a class="anchor" aria-label="anchor" href="#conditional-probabilities"></a>
 </h3>
 <p>The <code>ocf</code> function constructs a collection of forests, one
 for each category of <code>y</code> (three in this case). We can then
@@ -127,10 +128,8 @@ highest-probability class).</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></code></pre></div>
-<p>We can also implement honesty, which is a necessary condition to get
-asymptotically normal and consistent predictions. However, honesty
-generally comes at the expense of a larger mean squared error. Thus, if
-inference is not of interest we recommend adaptive forests. In the
+<p>We can also implement honesty, which is a necessary condition to
+produce asymptotically normal and consistent predictions. In the
 following, we set <code>honesty = TRUE</code> to construct honest
 forests.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -140,27 +139,23 @@ forests.</p>
 <span></span>
 <span><span class="co">## Compare predictions with adaptive fit.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>To extract the weights induced by each forest and estimate the
-standard errors we set <code>inference = TRUE</code>. This requires also
-to set <code>honesty = TRUE</code>: the formula for the variance is
-valid only for honest predictions. We again stress that if we care only
-about prediction performance we should set <code>honesty = FALSE</code>
-(this is the default). As a final remark, notice that the weights
-extraction considerably slows down the routine. However, we can increase
-the number of threads used to construct the forests to speed up the
-routine.</p>
+<p>To estimate standard errors for the predicted probabilities, we set
+<code>inference = TRUE</code>. This requires also to set
+<code>honesty = TRUE</code>: the formula for the variance is valid only
+for honest predictions. The estimation of standard errors considerably
+slows down the routine. However, we can increase the number of threads
+used to construct the forests to speed up the routine.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Zero corresponds to the number of CPUs available.</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Use all CPUs.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="estimation-and-inference-about-marginal-effects">Estimation and Inference about Marginal Effects<a class="anchor" aria-label="anchor" href="#estimation-and-inference-about-marginal-effects"></a>
+<h3 id="covariates-marginal-effects">Covariates’ Marginal Effects<a class="anchor" aria-label="anchor" href="#covariates-marginal-effects"></a>
 </h3>
-<p>The package implements a nonparametric estimator of marginal effects.
-This can be used by calling the <code>marginal_effects</code> function,
-which allows the estimation of mean marginal effects, marginal effects
-at the mean, or marginal effects at the median, according to the
+<p>The <code>marginal_effects</code> function post-processes the
+predictions to estimate mean marginal effects, marginal effects at the
+mean, or marginal effects at the median, according to the
 <code>eval</code> argument. In the following, we construct our forests
 in the training sample and use them to estimate the marginal effects at
 the mean in the test sample.</p>
