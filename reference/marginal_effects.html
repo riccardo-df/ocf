@@ -118,7 +118,7 @@ be discrete.<br></p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">odata</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
+<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
@@ -133,7 +133,7 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes:    3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          200 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          100 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
@@ -144,16 +144,16 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   0.166  -0.227   0.061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.133   0.049   0.084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.247   0.038   0.209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.068  -0.037   0.105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1  -0.762  -1.263   2.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.007  -0.079   0.086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.254  -0.059   0.312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4   0.020  -0.022   0.001</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ocf marginal effects results </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes:    3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          200 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          100 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
@@ -164,10 +164,10 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   0.166  -0.227   0.061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.133   0.049   0.084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.247   0.038   0.209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.068  -0.037   0.105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1  -0.762  -1.263   2.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2  -0.007  -0.079   0.086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.254  -0.059   0.312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4   0.020  -0.022   0.001</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## LATEX.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -184,10 +184,10 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; 0.166 &amp; -0.227 &amp; 0.061 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.133 &amp; 0.049 &amp; 0.084 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.247 &amp; 0.038 &amp; 0.209 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; -0.068 &amp; -0.037 &amp; 0.105 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.762 &amp; -1.263 &amp; 2.025 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.007 &amp; -0.079 &amp; 0.086 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.254 &amp; -0.059 &amp; 0.312 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0.02 &amp; -0.022 &amp; 0.001 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -203,17 +203,17 @@ be discrete.<br></p>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span><span class="op">$</span><span class="va">standard.errors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       P'(Y=1)   P'(Y=2)    P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.13331712 0.2970824 0.10669172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.03562630 0.0886940 0.11742068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.07885076 0.1603431 0.09108637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.02204342 0.0340271 0.03019113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        P'(Y=1)     P'(Y=2)     P'(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.316004606 0.603577491 0.559105798</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.013357031 0.038924825 0.075256435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.097837992 0.140897283 0.092410434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.005560274 0.007669458 0.005491939</span>
 <span class="r-in"><span><span class="va">honest_me</span><span class="op">$</span><span class="va">p.values</span> <span class="co"># These are not corrected for multiple hypotheses testing!</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       P'(Y=1)   P'(Y=2)    P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.09063116 0.8892607 0.08423394</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.02433044 0.3057805 0.14517085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.17073321 0.7040726 0.60500832</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.98492753 0.7354067 0.71355450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         P'(Y=1)   P'(Y=2)   P'(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1 0.0220741210 0.6603608 0.0770355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 0.0002872651 0.7755392 0.4288616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 0.9995080477 0.5486998 0.3608647</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 0.1987069765 0.1996022 0.6241151</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="co"># }</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
@@ -229,14 +229,14 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.226 &amp; 0.041 &amp; 0.184 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.133) &amp; (0.297) &amp; (0.107) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.08 &amp; -0.091 &amp; 0.171 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.036) &amp; (0.089) &amp; (0.117) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; -0.108 &amp; 0.061 &amp; 0.047 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.079) &amp; (0.16) &amp; (0.091) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0 &amp; -0.011 &amp; 0.011 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.022) &amp; (0.034) &amp; (0.03) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X1} &amp; -0.723 &amp; -0.265 &amp; 0.989 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.316) &amp; (0.604) &amp; (0.559) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X2} &amp; -0.048 &amp; -0.011 &amp; 0.06 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.013) &amp; (0.039) &amp; (0.075) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X3} &amp; 0 &amp; -0.084 &amp; 0.084 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.098) &amp; (0.141) &amp; (0.092) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{X4} &amp; 0.007 &amp; -0.01 &amp; 0.003 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.006) &amp; (0.008) &amp; (0.005) \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>

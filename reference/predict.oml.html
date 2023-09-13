@@ -93,12 +93,13 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">odata</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
+<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
@@ -121,14 +122,14 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 <span class="r-in"><span><span class="va">predictions_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_l1</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)      P(Y=3)    P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.58398819 0.17484670 0.241165115 0.6671699 0.1046750 0.22815508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.68664820 0.02510394 0.288247854 0.4820125 0.2126107 0.30537685</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.51207274 0.17918358 0.308743683 0.3821736 0.1853964 0.43243006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.11919545 0.09320309 0.787601467 0.1328671 0.1369472 0.73018576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.88592777 0.10567994 0.008392298 0.8192114 0.1451348 0.03565377</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03816846 0.27487683 0.686954704 0.2967165 0.2170562 0.48622728</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)    P(Y=3)    P(Y=1)     P(Y=2)    P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.63777798 0.06328869 0.2989333 0.4816499 0.33553367 0.1828165</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.39965159 0.23857565 0.3617728 0.3472362 0.03627627 0.6164875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.36380000 0.49740833 0.1387917 0.5333257 0.34712671 0.1195476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.07859206 0.08192803 0.8394799 0.2908335 0.01578794 0.6933786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.68640686 0.00000000 0.3135931 0.6125883 0.06152259 0.3258891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03893333 0.04396429 0.9171024 0.1039395 0.00000000 0.8960605</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

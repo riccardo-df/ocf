@@ -148,7 +148,7 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">odata</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
+<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
@@ -171,13 +171,13 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> ocf(y_tr, X_tr) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   50 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. covariates:      4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes:            1 2 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative variable importance: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1    X2    X3    X4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.389 0.189 0.119 0.303 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.337 0.200 0.229 0.235 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. trees:           2000 </span>
@@ -191,13 +191,13 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> ocf(y_tr, X_tr) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   50 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. covariates:      4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes:            1 2 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative variable importance: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1    X2    X3    X4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.389 0.189 0.119 0.303 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.337 0.200 0.229 0.235 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. trees:           2000 </span>
@@ -208,30 +208,30 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> Honest fraction:    0</span>
 <span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.56460761 0.2045307 0.23086167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.64811163 0.0881887 0.26369967</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.51968342 0.1830659 0.29725071</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.11728951 0.1026781 0.78003242</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.87126267 0.1187196 0.01001771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.04049916 0.2181384 0.74136244</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)    P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.59190041 0.13764553 0.2704541</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.42069010 0.22790412 0.3514058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.42839600 0.41069055 0.1609134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.07611347 0.11463118 0.8092554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.64690455 0.05028682 0.3028086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03891663 0.04529306 0.9157903</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> y_test  1  2  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1 19  7  9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2 10  9 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3  4  8 22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1  9  2  4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2 12  1  7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3  6  1  8</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu">ocf</span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span><span class="co"># }</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.18937003 0.05430549 0.05165712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.11949968 0.11396508 0.12233112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.06554873 0.14034786 0.13720837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.13154348 0.09536406 0.15407074</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.14887836 0.08353098 0.07754520</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.05265695 0.06664488 0.19766062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.21438591 0.07961989 0.05530840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.16824573 0.02340631 0.13388405</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.06860219 0.06752076 0.18186159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.24962186 0.08694462 0.04222332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.18997163 0.03711980 0.09160440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.11321269 0.06634357 0.15687580</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
