@@ -19,7 +19,7 @@ multinomial_ml(y = NULL, X = NULL, learner = "forest", scale = TRUE)
 Object of class \code{mml}.
 }
 \description{
-Estimation strategy to estimate conditional choice probabilities for discrete outcomes.
+Estimation strategy to estimate conditional choice probabilities for ordered non-numeric outcomes.
 }
 \details{
 Multinomial machine learning expresses conditional choice probabilities as expectations of binary variables:
@@ -29,17 +29,20 @@ Multinomial machine learning expresses conditional choice probabilities as expec
 This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.\cr
 
 \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
-according to the user-specified parameter \code{learner}. If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
+according to the user-specified parameter \code{learner}.\cr
+
+If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
 and \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. Additionally, if \code{scale == TRUE}, the covariates are scaled to 
 have zero mean and unit variance.
 }
 \examples{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
 library(orf)
 data(odata)
-odata <- odata[1:200, ] # Subset to reduce elapsed time.
+odata <- odata[1:100, ] # Subset to reduce elapsed time.
 
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
@@ -62,7 +65,7 @@ predictions_forest <- predict(multinomial_forest, X_test)
 predictions_l1 <- predict(multinomial_l1, X_test)
 
 ## Compare predictions.
-cbind(head(predictions_forest), head(predictions_l1))
+cbind(head(predictions_forest), head(predictions_l1))}
 
 }
 \seealso{

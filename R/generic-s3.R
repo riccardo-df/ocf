@@ -474,6 +474,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' Matrix of predictions.
 #' 
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -502,7 +503,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' predictions_l1 <- predict(multinomial_l1, X_test)
 #' 
 #' ## Compare predictions.
-#' cbind(head(predictions_forest), head(predictions_l1))
+#' cbind(head(predictions_forest), head(predictions_l1))}
 #' 
 #' @details
 #' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also
@@ -554,6 +555,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' Matrix of predictions.
 #' 
 #' @examples 
+#' \donttest{
 #' ## Load data from orf package.
 #' set.seed(1986)
 #' 
@@ -582,7 +584,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' predictions_l1 <- predict(ordered_l1, X_test)
 #' 
 #' ## Compare predictions.
-#' cbind(head(predictions_forest), head(predictions_l1))
+#' cbind(head(predictions_forest), head(predictions_l1))}
 #' 
 #' @details
 #' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also

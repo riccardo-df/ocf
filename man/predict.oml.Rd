@@ -24,12 +24,13 @@ If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used
 have \code{object$scaling == TRUE}, then \code{data} is scaled to have zero mean and unit variance.
 }
 \examples{
+\donttest{
 ## Load data from orf package.
 set.seed(1986)
 
 library(orf)
 data(odata)
-odata <- odata[1:200, ] # Subset to reduce elapsed time.
+odata <- odata[1:100, ] # Subset to reduce elapsed time.
 
 y <- as.numeric(odata[, 1])
 X <- as.matrix(odata[, -1])
@@ -52,7 +53,7 @@ predictions_forest <- predict(ordered_forest, X_test)
 predictions_l1 <- predict(ordered_l1, X_test)
 
 ## Compare predictions.
-cbind(head(predictions_forest), head(predictions_l1))
+cbind(head(predictions_forest), head(predictions_l1))}
 
 }
 \seealso{
