@@ -78,6 +78,8 @@
 <div class="page-header"><h1 id="ordered-correlation-forest-">Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
 <a class="anchor" aria-label="anchor" href="#ordered-correlation-forest-"></a>
 </h1></div>
+<!-- badges: start -->
+
 <p>R package to implement ordered correlation forests (OCF), a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes.</p>
 <p>OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Under an honesty” condition, the estimator inherits the asymptotic properties of random forests, namely the consistency and asymptotic normality of their predictions. The particular honesty implementation used by OCF allows us to obtain standard errors for the covariates’ marginal effects. The estimated standard errors can then be used to construct conventional confidence intervals.</p>
 <p>To get started, please check the online <a href="https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html">vignette</a> for a short tutorial.</p>
@@ -102,7 +104,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=ocf" class="external-link">View on CRAN</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -125,7 +134,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=ocf" class="external-link"><img src="https://www.r-pkg.org/badges/version/ocf" alt="CRAN status"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
