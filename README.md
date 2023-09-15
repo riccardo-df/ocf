@@ -12,7 +12,13 @@ OCF modifies a standard random forest splitting criterion to build a collection 
 To get started, please check the online [vignette](https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html) for a short tutorial.
 
 ## Installation  
-The current development version of the package can be installed using the `devtools` package:
+The package can be downloaded from CRAN:
+
+```
+install.packages("ocf")
+```
+
+Alternatively, the current development version of the package can be installed using the `devtools` package:
 
 ```
 devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") if needed.
