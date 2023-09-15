@@ -1,4 +1,9 @@
 # Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="man/figures/logo.svg" align="right" height="130" /></a>
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/ocf)](https://CRAN.R-project.org/package=ocf)
+![CRAN Downloads overall](http://cranlogs.r-pkg.org/badges/grand-total/ocf)
+<!-- badges: end -->
  
 R package to implement ordered correlation forests (OCF), a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes. 
 
