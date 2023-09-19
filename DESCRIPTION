@@ -3,9 +3,12 @@ Type: Package
 Title: Ordered Correlation Forest
 Version: 1.0.0
 Authors@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com", role = c("aut", "cre", "cph"))
-Description: Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies a
-    standard random forest splitting criterion to build a collection of forests, each estimating the conditional 
-    probability of a single class. The package also implements a nonparametric estimator of the covariates’ marginal effects.
+Description: Machine learning estimator specifically optimized for handling ordered non-numeric outcomes. 
+    OCF provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects.
+    Under an "honesty" condition, the estimates are consistent and asymptotically normal, and standard errors can be obtained 
+    by leveraging the weight-based representation of the random forest predictions. 
+    Please reference the use as Di Francesco (2023) <arXiv:2309.08755>.
+    
 License: GPL-3
 Encoding: UTF-8
 Depends: 
