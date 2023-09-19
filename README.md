@@ -30,6 +30,11 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 <b>Generalized Random Forests.</b> <i>Annals of Statistics</i>, 47(2).
 [<a href="https://projecteuclid.org/euclid.aos/1547197251">paper</a>]
 
+- Di Francescp. R. (2023). 
+<b>Ordered Correlation Forest.</b>
+<i>arXiv preprint arXiv:2309.08755</i>.
+[<a href="https://arxiv.org/abs/2309.08755">paper</a>]
+
 - Lechner, M., & Mareckova, J. (2022). 
 <b>Modified Causal Forest.</b>
 <i>arXiv preprint arXiv:2209.03744</i>.
