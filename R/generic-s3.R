@@ -11,27 +11,25 @@
 #' Desired predictions.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 #' 
-#' y_tr <- y[train_idx]
+#' Y_tr <- Y[train_idx]
 #' X_tr <- X[train_idx, ]
 #' 
-#' y_test <- y[-train_idx]
+#' Y_test <- Y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
 #' ## Fit ocf on training sample.
-#' forests <- ocf(y_tr, X_tr)
+#' forests <- ocf(Y_tr, X_tr)
 #' 
 #' ## Predict on test sample.
 #' predictions <- predict(forests, X_test)
@@ -40,19 +38,24 @@
 #' 
 #' ## Get terminal nodes.
 #' predictions <- predict(forests, X_test, type = "terminalNodes")
-#' predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.
+#' predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
 #'
 #' @details 
 #' If \code{type == "response"}, the routine returns the predicted conditional class probabilities and the predicted class 
 #' labels. If forests are honest, the predicted probabilities are honest.\cr
 #' 
 #' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
-#'   
-#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @importFrom stats predict
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @export
 predict.ocf <- function(object, data = NULL, type = "response", ...) {
@@ -120,9 +123,14 @@ predict.ocf <- function(object, data = NULL, type = "response", ...) {
 #' 
 #' If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.
 #'   
-#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
-#' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#' 
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 predict.ocf.forest <- function(object, data, type = "response", ...) {
   ## 0.) Default for variables not needed.
   predict.all <- FALSE; n.trees <- object$num.trees; n.threads <- 0; verbose <- TRUE; inbag.counts <- NULL; treetype <- 3; mtry <- 0;
@@ -226,25 +234,28 @@ predict.ocf.forest <- function(object, data, type = "response", ...) {
 #' Summarizes an \code{\link{ocf}} object.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Fit ocf.
-#' forests <- ocf(y, X)
+#' forests <- ocf(Y, X)
 #' 
 #' ## Summary.
-#' summary(forests)
-#' 
-#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
+#' summary(forests)}
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
 #' 
 #' @export
 summary.ocf <- function(object, ...) {
@@ -280,26 +291,28 @@ summary.ocf <- function(object, ...) {
 #' Prints an \code{\link{ocf}} object.
 #' 
 #' @examples 
-#' \donttest{
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:200, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Fit ocf.
-#' forests <- ocf(y, X)
+#' forests <- ocf(Y, X)
 #' 
 #' ## Print.
 #' print(forests)}
 #' 
-#' @seealso \code{\link{ocf}}
-#' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}
 #' 
 #' @export
 print.ocf <- function(x, ...) {
@@ -319,27 +332,24 @@ print.ocf <- function(x, ...) {
 #' Summarizes an \code{ocf.marginal} object.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
-#' 
-#' ## Fit ocf. Use large number of trees.
-#' forests <- ocf(y, X, n.trees = 4000)
+#' ## Fit ocf.
+#' forests <- ocf(Y, X)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
 #' summary(me)
 #' summary(me, latex = TRUE)
 #' 
-#' \donttest{
 #' ## Add standard errors.
-#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(Y, X, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' summary(honest_me, latex = TRUE)}
 #' 
@@ -347,9 +357,14 @@ print.ocf <- function(x, ...) {
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 #' standard errors have been estimated, they are printed in parenthesis below each point estimate.
 #' 
-#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
-#' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @export
 summary.ocf.marginal <- function(object, latex = FALSE, ...) {
@@ -424,27 +439,24 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' Prints an \code{ocf.marginal} object.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
-#' 
-#' ## Fit ocf. Use large number of trees.
-#' forests <- ocf(y, X, n.trees = 4000)
+#' ## Fit ocf.
+#' forests <- ocf(Y, X)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
 #' print(me)
 #' print(me, latex = TRUE)
 #' 
-#' \donttest{
 #' ## Add standard errors.
-#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(Y, X, n.trees = 4000, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' print(honest_me, latex = TRUE)}
 #' 
@@ -452,9 +464,14 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' Compilation of the LATEX code requires the following packages: \code{booktabs}, \code{float}, \code{adjustbox}. If
 #' standard errors have been estimated, they are printed in parenthesis below each point estimate.
 #' 
-#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
-#' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @export
 print.ocf.marginal <- function(x, latex = FALSE, ...) {
@@ -474,29 +491,26 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' Matrix of predictions.
 #' 
 #' @examples 
-#' \donttest{
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 #' 
-#' y_tr <- y[train_idx]
+#' Y_tr <- Y[train_idx]
 #' X_tr <- X[train_idx, ]
 #' 
-#' y_test <- y[-train_idx]
+#' Y_test <- Y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
 #' ## Fit multinomial machine learning on training sample using two different learners.
-#' multinomial_forest <- multinomial_ml(y_tr, X_tr, learner = "forest")
-#' multinomial_l1 <- multinomial_ml(y_tr, X_tr, learner = "l1")
+#' multinomial_forest <- multinomial_ml(Y_tr, X_tr, learner = "forest")
+#' multinomial_l1 <- multinomial_ml(Y_tr, X_tr, learner = "l1")
 #' 
 #' ## Predict out of sample.
 #' predictions_forest <- predict(multinomial_forest, X_test)
@@ -509,11 +523,16 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also
 #' have \code{object$scaling == TRUE}, then \code{data} is scaled to have zero mean and unit variance.
 #' 
-#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
-#' 
 #' @importFrom stats predict
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
 #' @export
 predict.mml <- function(object, data = NULL, ...) {
@@ -555,29 +574,26 @@ predict.mml <- function(object, data = NULL, ...) {
 #' Matrix of predictions.
 #' 
 #' @examples 
-#' \donttest{
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 #' 
-#' y_tr <- y[train_idx]
+#' Y_tr <- Y[train_idx]
 #' X_tr <- X[train_idx, ]
 #' 
-#' y_test <- y[-train_idx]
+#' Y_test <- Y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
 #' ## Fit ordered machine learning on training sample using two different learners.
-#' ordered_forest <- ordered_ml(y_tr, X_tr, learner = "forest")
-#' ordered_l1 <- ordered_ml(y_tr, X_tr, learner = "l1")
+#' ordered_forest <- ordered_ml(Y_tr, X_tr, learner = "forest")
+#' ordered_l1 <- ordered_ml(Y_tr, X_tr, learner = "l1")
 #' 
 #' ## Predict out of sample.
 #' predictions_forest <- predict(ordered_forest, X_test)
@@ -590,11 +606,16 @@ predict.mml <- function(object, data = NULL, ...) {
 #' If \code{object$learner == "l1"}, then \code{\link[stats]{model.matrix}} is used to handle non-numeric covariates. If we also
 #' have \code{object$scaling == TRUE}, then \code{data} is scaled to have zero mean and unit variance.
 #' 
-#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
-#' 
 #' @importFrom stats predict
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
 #' 
 #' @export
 predict.oml <- function(object, data = NULL, ...) {

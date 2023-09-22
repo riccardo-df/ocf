@@ -55,39 +55,52 @@ Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies
 splitting criterion to build a collection of forests, each estimating the conditional probability of a single class.
 }
 \examples{
-## Load data from orf package.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
-library(orf)
-data(odata)
-odata <- odata[1:100, ] # Subset to reduce elapsed time.
-
-y <- as.numeric(odata[, 1])
-X <- as.matrix(odata[, -1])
+data <- generate_ordered_data(1000)
+sample <- data$sample
+Y <- sample$Y
+X <- sample[, -1]
 
 ## Training-test split.
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 
-y_tr <- y[train_idx]
+Y_tr <- Y[train_idx]
 X_tr <- X[train_idx, ]
 
-y_test <- y[-train_idx]
+Y_test <- Y[-train_idx]
 X_test <- X[-train_idx, ]
 
 ## Fit ocf on training sample.
-forests <- ocf(y_tr, X_tr)
+forests <- ocf(Y_tr, X_tr)
 
 ## We have compatibility with generic S3-methods.
 print(forests)
 summary(forests)
 predictions <- predict(forests, X_test)
 head(predictions$probabilities)
-table(y_test, predictions$classification)
-\donttest{
-## Compute standard errors. This requires honest forests.
-honest_forests <- ocf(y_tr, X_tr, honesty = TRUE, inference = TRUE)
-head(honest_forests$predictions$standard.errors)}
+table(Y_test, predictions$classification)
 
+## Compute standard errors. This requires honest forests.
+honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE, inference = TRUE)
+head(honest_forests$predictions$standard.errors)
+
+## Marginal effects.
+me <- marginal_effects(forests, eval = "atmean")
+print(me)
+print(me, latex = TRUE)
+
+## Compute standard errors. This requires honest forests.
+honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
+honest_me$standard.errors
+print(honest_me, latex = TRUE)}
+
+}
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
 }
 \seealso{
 \code{\link{marginal_effects}}

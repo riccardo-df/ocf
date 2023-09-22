@@ -41,29 +41,26 @@ the penalty parameters are chosen via 10-fold cross-validation and \code{\link[s
 Additionally, if \code{scale == TRUE}, the covariates are scaled to have zero mean and unit variance.
 }
 \examples{
-\donttest{
-## Load data from orf package.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
-library(orf)
-data(odata)
-odata <- odata[1:100, ] # Subset to reduce elapsed time.
-
-y <- as.numeric(odata[, 1])
-X <- as.matrix(odata[, -1])
+data <- generate_ordered_data(1000)
+sample <- data$sample
+Y <- sample$Y
+X <- sample[, -1]
 
 ## Training-test split.
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 
-y_tr <- y[train_idx]
+Y_tr <- Y[train_idx]
 X_tr <- X[train_idx, ]
 
-y_test <- y[-train_idx]
+Y_test <- Y[-train_idx]
 X_test <- X[-train_idx, ]
 
 ## Fit ordered machine learning on training sample using two different learners.
-ordered_forest <- ordered_ml(y_tr, X_tr, learner = "forest")
-ordered_l1 <- ordered_ml(y_tr, X_tr, learner = "l1")
+ordered_forest <- ordered_ml(Y_tr, X_tr, learner = "forest")
+ordered_l1 <- ordered_ml(Y_tr, X_tr, learner = "l1")
 
 ## Predict out of sample.
 predictions_forest <- predict(ordered_forest, X_test)
@@ -72,6 +69,11 @@ predictions_l1 <- predict(ordered_l1, X_test)
 ## Compare predictions.
 cbind(head(predictions_forest), head(predictions_l1))}
 
+}
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
 }
 \seealso{
 \code{\link{multinomial_ml}}, \code{\link{ocf}}

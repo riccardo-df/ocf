@@ -24,30 +24,32 @@ Compilation of the LATEX code requires the following packages: \code{booktabs}, 
 standard errors have been estimated, they are printed in parenthesis below each point estimate.
 }
 \examples{
-## Load data from orf package.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
-library(orf)
-data(odata)
-odata <- odata[1:100, ] # Subset to reduce elapsed time.
+data <- generate_ordered_data(1000)
+sample <- data$sample
+Y <- sample$Y
+X <- sample[, -1]
 
-y <- as.numeric(odata[, 1])
-X <- as.matrix(odata[, -1])
-
-## Fit ocf. Use large number of trees.
-forests <- ocf(y, X, n.trees = 4000)
+## Fit ocf.
+forests <- ocf(Y, X)
 
 ## Marginal effects at the mean.
 me <- marginal_effects(forests, eval = "atmean")
 summary(me)
 summary(me, latex = TRUE)
 
-\donttest{
 ## Add standard errors.
-honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
+honest_forests <- ocf(Y, X, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 summary(honest_me, latex = TRUE)}
 
+}
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
 }
 \seealso{
 \code{\link{ocf}}, \code{\link{marginal_effects}}.

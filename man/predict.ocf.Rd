@@ -28,27 +28,25 @@ labels. If forests are honest, the predicted probabilities are honest.\cr
 If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.\cr
 }
 \examples{
-## Load data from orf package.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
-library(orf)
-data(odata)
-odata <- odata[1:100, ] # Subset to reduce elapsed time.
-
-y <- as.numeric(odata[, 1])
-X <- as.matrix(odata[, -1])
+data <- generate_ordered_data(1000)
+sample <- data$sample
+Y <- sample$Y
+X <- sample[, -1]
 
 ## Training-test split.
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 
-y_tr <- y[train_idx]
+Y_tr <- Y[train_idx]
 X_tr <- X[train_idx, ]
 
-y_test <- y[-train_idx]
+Y_test <- Y[-train_idx]
 X_test <- X[-train_idx, ]
 
 ## Fit ocf on training sample.
-forests <- ocf(y_tr, X_tr)
+forests <- ocf(Y_tr, X_tr)
 
 ## Predict on test sample.
 predictions <- predict(forests, X_test)
@@ -57,8 +55,13 @@ predictions$classification
 
 ## Get terminal nodes.
 predictions <- predict(forests, X_test, type = "terminalNodes")
-predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.
+predictions$forest.1[1:10, 1:20] # Rows are observations, columns are forests.}
 
+}
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
 }
 \seealso{
 \code{\link{ocf}}, \code{\link{marginal_effects}}

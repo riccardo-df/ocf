@@ -18,23 +18,25 @@ Prints an \code{\link{ocf}} object.
 Prints an \code{\link{ocf}} object.
 }
 \examples{
-\donttest{
-## Load data from orf package.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
-library(orf)
-data(odata)
-odata <- odata[1:200, ] # Subset to reduce elapsed time.
-
-y <- as.numeric(odata[, 1])
-X <- as.matrix(odata[, -1])
+data <- generate_ordered_data(1000)
+sample <- data$sample
+Y <- sample$Y
+X <- sample[, -1]
 
 ## Fit ocf.
-forests <- ocf(y, X)
+forests <- ocf(Y, X)
 
 ## Print.
 print(forests)}
 
+}
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
 }
 \seealso{
 \code{\link{ocf}}

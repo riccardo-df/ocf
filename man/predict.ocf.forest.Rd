@@ -27,6 +27,11 @@ honest, these predictions are honest.\cr
 
 If \code{type == "terminalNodes"}, the IDs of the terminal node in each tree for each observation in \code{data} are returned.
 }
+\references{
+\itemize{
+  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+}
+}
 \seealso{
 \code{\link{ocf}}, \code{\link{marginal_effects}}
 }

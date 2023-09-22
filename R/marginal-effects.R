@@ -13,32 +13,27 @@
 #' Object of class \code{ocf.marginal}.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \dontest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
-#' 
-#' ## Fit ocf. Use large number of trees.
-#' forests <- ocf(y, X, n.trees = 4000)
+#' ## Fit ocf.
+#' forests <- ocf(Y, X)
 #' 
 #' ## Marginal effects at the mean.
 #' me <- marginal_effects(forests, eval = "atmean")
-#' print(me)
-#' summary(me)
 #' 
-#' ## LATEX.
+#' print(me)
 #' print(me, latex = TRUE)
-#' \donttest{
+#' 
 #' ## Compute standard errors. This requires honest forests.
-#' honest_forests <- ocf(y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(Y, X, honesty = TRUE)
+#' 
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
-#' honest_me$standard.errors
-#' honest_me$p.values # These are not corrected for multiple hypotheses testing!
 #' 
 #' print(honest_me, latex = TRUE)}
 #' 
@@ -50,10 +45,15 @@
 #' be discrete.\cr  
 #'
 #' @importFrom stats median sd pnorm
-#'
-#' @seealso \code{\link{ocf}}
 #' 
 #' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}
 #'
 #' @export
 marginal_effects <- function(object, data = NULL, which_covariates = c(), 

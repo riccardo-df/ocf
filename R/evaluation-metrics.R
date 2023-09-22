@@ -9,34 +9,32 @@
 #' @return The MSE, the MAE, the RPS, or the CE of the method.
 #' 
 #' @examples 
-#' ## Load data from orf package.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' library(orf)
-#' data(odata)
-#' odata <- odata[1:100, ] # Subset to reduce elapsed time.
-#' 
-#' y <- as.numeric(odata[, 1])
-#' X <- as.matrix(odata[, -1])
+#' data <- generate_ordered_data(1000)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
 #' 
 #' ## Training-test split.
-#' train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+#' train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 #' 
-#' y_tr <- y[train_idx]
+#' Y_tr <- Y[train_idx]
 #' X_tr <- X[train_idx, ]
 #' 
-#' y_test <- y[-train_idx]
+#' Y_test <- Y[-train_idx]
 #' X_test <- X[-train_idx, ]
 #' 
 #' ## Fit ocf on training sample.
-#' forests <- ocf(y_tr, X_tr)
+#' forests <- ocf(Y_tr, X_tr)
 #' 
 #' ## Accuracy measures on test sample.
 #' predictions <- predict(forests, X_test)
 #' 
-#' mean_squared_error(y_test, predictions$probabilities)
-#' mean_ranked_score(y_test, predictions$probabilities)
-#' classification_error(y_test, predictions$classification)
+#' mean_squared_error(Y_test, predictions$probabilities)
+#' mean_ranked_score(Y_test, predictions$probabilities)
+#' classification_error(Y_test, predictions$classification)}
 #' 
 #' @md
 #' @details 
