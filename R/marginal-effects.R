@@ -13,7 +13,7 @@
 #' Object of class \code{ocf.marginal}.
 #' 
 #' @examples 
-#' \dontest{## Generate synthetic data.
+#' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
 #' data <- generate_ordered_data(1000)

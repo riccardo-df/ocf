@@ -27,7 +27,8 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 ## References
 
 - Athey, S., Tibshirani, J., & Wager, S. (2019).
-<b>Generalized Random Forests.</b> <i>Annals of Statistics</i>, 47(2).
+<b>Generalized Random Forests.</b> 
+<i>Annals of Statistics</i>, 47(2).
 [<a href="https://projecteuclid.org/euclid.aos/1547197251">paper</a>]
 
 - Di Francesco, R. (2023). 
@@ -40,10 +41,10 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 <i>arXiv preprint arXiv:2209.03744</i>.
 [<a href="https://arxiv.org/abs/2209.03744">paper</a>]
 
-- Lechner, M., & Okasa, G. (2019). 
-<b>Random Forest Estimation of the Ordered Choice Model.</b>
-<i>arXiv preprint arXiv:1907.02436</i>.
-[<a href="https://arxiv.org/abs/1907.02436">paper</a>]
+- Peracchi, F. (2014). 
+<b>Econometric methods for ordered responses: Some recent developments.</b>
+<i>In Econometric methods and their applications in finance, macro and related fields(pp. 133–165). World Scientific</i>.
+[<a href="https://www.worldscientific.com/doi/abs/10.1142/9789814513470_0006">paper</a>]
 
 - Wager, S., & Athey, S. (2018).
 <b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b>
