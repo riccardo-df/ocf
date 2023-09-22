@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE, eval = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,6 +19,7 @@ library(ocf)
 In this tutorial, we show how to use the `ocf` package to estimate and make inference about the conditional choice probabilities and the covariates' marginal effects. 
 
 Before diving in the coding, we provide an overview of the statistical problem at hand.
+
 ## Ordered Choice Models
 We postulate the existence of a latent and continuous outcome variable $Y_i^*$, assumed to obey the following regression model:
 
@@ -64,20 +65,20 @@ head(X)
 ```
 
 ### Conditional Probabilities
-The `ocf` function constructs a collection of forests, one for each category of `y` (three in this case). We can then use the forests to predict out-of-sample conditional probabilities using the `predict` method. By default, `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
+To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
 
-```{r adaptive-ocf, eval = FALSE}
+```{r adaptive-ocf, eval = TRUE}
 ## Training-test split.
-train_idx <- sample(seq_len(length(y)), floor(length(y) * 0.5))
+train_idx <- sample(seq_len(length(Y)), floor(length(Y) * 0.5))
 
-y_tr <- y[train_idx]
+Y_tr <- Y[train_idx]
 X_tr <- X[train_idx, ]
 
-y_test <- y[-train_idx]
+Y_test <- Y[-train_idx]
 X_test <- X[-train_idx, ]
 
 ## Fit ocf on training sample. Use default settings.
-forests <- ocf(y_tr, X_tr)
+forests <- ocf(Y_tr, X_tr)
 
 ## Summary of data and tuning parameters.
 summary(forests)
@@ -86,49 +87,51 @@ summary(forests)
 predictions <- predict(forests, X_test)
 
 head(predictions$probabilities)
-table(y_test, predictions$classification)
+
+table(Y_test, predictions$classification)
 ```
 
-We can also implement honesty, which is a necessary condition to produce asymptotically normal and consistent predictions. In the following, we set `honesty = TRUE` to construct honest forests.
+To produce consistent and asymptotically normal predictions, we need to set the `honesty` argument to TRUE. This makes the `ocf` function using different parts of the training sample to construct the forests and compute the predictions.
 
-```{r honest-ocf, eval = FALSE}
+```{r honest-ocf, eval = TRUE}
 ## Honest forests.
-honest_forests <- ocf(y_tr, X_tr, honesty = TRUE)
-honest_predictions <- predict(honest_forests, X_test)
+honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE)
 
-## Compare predictions with adaptive fit.
-cbind(head(predictions$probabilities), head(honest_predictions$probabilities))
+honest_predictions <- predict(honest_forests, X_test)
+head(honest_predictions$probabilities)
 ```
 
-To estimate standard errors for the predicted probabilities, we set `inference = TRUE`. This requires also to set `honesty = TRUE`: the formula for the variance is valid only for honest predictions. The estimation of standard errors considerably slows down the routine. However, we can increase the number of threads used to construct the forests to speed up the routine.
+To estimate standard errors for the predicted probabilities, we need set the `inference` argument to TRUE. However, this works only if `honesty` is TRUE, as the formula for the variance is valid only for honest predictions. Notice that the estimation of the standard errors can considerably slow down the routine. However, we can increase the number of threads used to construct the forests by using the `n.threads` argument.
 
-```{r honest-ocf-inference, eval = FALSE}
+```{r honest-ocf-inference, eval = TRUE}
 ## Compute standard errors.
-honest_forests <- ocf(y_tr, X_tr, honesty = TRUE, inference = TRUE, n.threads = 0) # Use all CPUs.
+honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE, inference = TRUE, n.threads = 0) # Use all CPUs.
+
 head(honest_forests$predictions$standard.errors)
 ```
 
 ### Covariates' Marginal Effects
-The `marginal_effects` function post-processes the predictions to estimate mean marginal effects, marginal effects at the mean, or marginal effects at the median, according to the `eval` argument. In the following, we construct our forests in the training sample and use them to estimate the marginal effects at the mean in the test sample.
+To estimate the covariates' marginal effects, we can post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
 
-```{r adaptive-me, eval = FALSE}
+```{r adaptive-me, eval = TRUE}
 ## Fit ocf on training sample.
-forests <- ocf(y_tr, X_tr)
+forests <- ocf(Y_tr, X_tr)
 
-## Marginal effects at the mean on test sample.
-me_atmean <- marginal_effects(forests, data = X_test, eval = "atmean")
-summary(me_atmean)
+## Marginal effects at the mean.
+me_atmean <- marginal_effects(forests, eval = "atmean") # Try also 'eval = "atmean"' and 'eval = "mean"'.
+
+print(me_atmean) # Try also 'latex = TRUE'.
 ```
 
-As before, we can set `inference = TRUE` to estimate the standard errors. Again, this requires the use of honest forests and considerably slows down the routine.
+As before, we can set the `inference` argument to TRUE to estimate the standard errors. Again, this requires the use of honest forests and can considerably slow down the routine.
 
-```{r honest-me, eval = FALSE}
+```{r honest-me, eval = TRUE}
 ## Honest forests.
-honest_forests <- ocf(y_tr, X_tr, honesty = TRUE) # Notice we do not need inference here!
+honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE) # Notice we do not need inference here!
 
 ## Compute standard errors.
-honest_me_atmean <- marginal_effects(honest_forests, data = X_test , eval = "atmean", inference = TRUE)
+honest_me_atmean <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 
 ## LATEX.
-print(honest_me_atmean, latex = TRUE)
+print(honest_me_atmean) # Try also 'latex = TRUE'.
 ```

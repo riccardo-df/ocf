@@ -38,4 +38,5 @@ reference:
     - mean_absolute_error
     - mean_ranked_score
     - classification_error
+    - generate_ordered_data
     - tree_info
