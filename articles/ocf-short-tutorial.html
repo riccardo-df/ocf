@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -83,107 +83,258 @@
 
     
     
-<p>In this tutorial, we show how to use <code>ocf</code> to estimate the
-conditional choice probabilities and the covariates’ marginal effects,
-and conduct inference about these statistical targets. For illustration
-purposes, we use the synthetic data set provided in the <code>orf</code>
-package:</p>
+<p>In this tutorial, we show how to use the <code>ocf</code> package to
+estimate and make inference about the conditional choice probabilities
+and the covariates’ marginal effects.</p>
+<p>Before diving in the coding, we provide an overview of the
+statistical problem at hand.</p>
+<div class="section level2">
+<h2 id="ordered-choice-models">Ordered Choice Models<a class="anchor" aria-label="anchor" href="#ordered-choice-models"></a>
+</h2>
+<p>We postulate the existence of a latent and continuous outcome
+variable <span class="math inline">\(Y_i^*\)</span>, assumed to obey the
+following regression model:</p>
+<p><span class="math display">\[ Y_i^* = g \left( W_i \right) +
+\epsilon_i  \]</span> where <span class="math inline">\(W_i\)</span>
+consists of a set of raw covariates, <span class="math inline">\(g
+\left( \cdot \right)\)</span> is a potentially non-linear regression
+function, and <span class="math inline">\(\epsilon_i\)</span> is
+independent of <span class="math inline">\(W_i\)</span>.</p>
+<p>Then, an observational rule links the observed outcome <span class="math inline">\(Y_i\)</span> to the latent outcome <span class="math inline">\(Y_{i}^*\)</span> using unknown threshold
+parameters <span class="math inline">\(- \infty = \zeta_0 &lt; \zeta_1
+&lt; \dots &lt; \zeta_{M - 1} &lt; \zeta_M = \infty\)</span> that define
+intervals on the support of <span class="math inline">\(Y_i^*\)</span>,
+with each interval corresponding to one of the <span class="math inline">\(M\)</span> categories or classes of <span class="math inline">\(Y_i\)</span>:</p>
+<p><span class="math display">\[ \zeta_{m - 1} &lt; Y_i^* \leq \zeta_{m}
+\implies Y_i = m, \quad m = 1, \dots, M \]</span></p>
+<p>The statistical targets of interest are the conditional choice
+probabilities:</p>
+<p><span class="math display">\[ p_m \left( W_i \right) := \mathbb{P}
+\left( Y_i = m | W_i \right) \]</span></p>
+<p>and the marginal effect of the <span class="math inline">\(j\)</span>-th covariate on <span class="math inline">\(p_m \left( \cdot \right)\)</span>:</p>
+<p><span class="math display">\[
+\nabla^j p_m \left( w \right) :=
+  \begin{cases}
+    \frac{\partial p_m \left( w \right)}{\partial w_j}, &amp; \text{if }
+w_j \text{ is continuous}  \\
+    p_m \left( \lceil w_j \rceil \right) - p_m \left( \lfloor w_j
+\rfloor \right), &amp; \text{if } w_j \text{ is discrete}
+  \end{cases}
+\]</span> where <span class="math inline">\(w_j\)</span> is the <span class="math inline">\(j\)</span>-th element of the vector <span class="math inline">\(w\)</span> and <span class="math inline">\(\lceil
+w_j \rceil\)</span> and <span class="math inline">\(\lfloor w_j
+\rfloor\)</span> correspond to <span class="math inline">\(w\)</span>
+with its <span class="math inline">\(j\)</span>-th element rounded up
+and down to the closest integer.</p>
+</div>
+<div class="section level2">
+<h2 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
+</h2>
+<p>For illustration purposes, we generate a synthetic data set. Details
+about the employed DGP can be retrieved by running
+<code><a href="../reference/generate_ordered_data.html">help(generate_ordered_data)</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Load data from orf package.</span></span>
+<code class="sourceCode R"><span><span class="co">## Generate synthetic data.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">odata</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">Y</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Y</span></span>
+<span><span class="co">#&gt;   1   2   3 </span></span>
+<span><span class="co">#&gt; 361 296 343</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x1 x2          x3 x4         x5 x6</span></span>
+<span><span class="co">#&gt; 1 -0.04625141  0  1.54395982  1  0.8871545  1</span></span>
+<span><span class="co">#&gt; 2  0.28000082  0 -0.56514824  0 -0.2853152  0</span></span>
+<span><span class="co">#&gt; 3  0.25317063  0  0.07254085  0  2.9951778  1</span></span>
+<span><span class="co">#&gt; 4 -0.96411077  1  0.89457168  0  0.7660870  0</span></span>
+<span><span class="co">#&gt; 5  0.49222664  1 -2.27801497  0  0.4388097  0</span></span>
+<span><span class="co">#&gt; 6 -0.69874551  0 -0.03860101  1  0.7422111  0</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="conditional-probabilities">Conditional Probabilities<a class="anchor" aria-label="anchor" href="#conditional-probabilities"></a>
 </h3>
-<p>The <code>ocf</code> function constructs a collection of forests, one
-for each category of <code>y</code> (three in this case). We can then
-use the forests to predict out-of-sample conditional probabilities using
-the <code>predict</code> method. By default, <code>predict</code>
-returns a matrix with the predicted probabilities and a vector of
-predicted class labels (each observation is labelled to the
-highest-probability class).</p>
+<p>To estimate the conditional probabilities, the <code>ocf</code>
+function constructs a collection of forests, one for each category of
+<code>y</code> (three in this case). We can then use the forests to
+predict out-of-sample using the <code>predict</code> method.
+<code>predict</code> returns a matrix with the predicted probabilities
+and a vector of predicted class labels (each observation is labelled to
+the highest-probability class).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Training-test split.</span></span>
-<span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">y_tr</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span>
+<span><span class="va">Y_tr</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span>
 <span><span class="va">X_tr</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">train_idx</span>, <span class="op">]</span></span>
 <span></span>
-<span><span class="va">y_test</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span>
+<span><span class="va">Y_test</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span>
 <span><span class="va">X_test</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="co">## Fit ocf on training sample. Use default settings.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
+<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Summary of data and tuning parameters.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">forests</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Call: </span></span>
+<span><span class="co">#&gt; ocf(Y_tr, X_tr) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Data info: </span></span>
+<span><span class="co">#&gt; Full sample size:   500 </span></span>
+<span><span class="co">#&gt; N. covariates:      6 </span></span>
+<span><span class="co">#&gt; Classes:            1 2 3 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Relative variable importance: </span></span>
+<span><span class="co">#&gt;    x1    x2    x3    x4    x5    x6 </span></span>
+<span><span class="co">#&gt; 0.339 0.099 0.251 0.064 0.213 0.035 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Tuning parameters: </span></span>
+<span><span class="co">#&gt; N. trees:           2000 </span></span>
+<span><span class="co">#&gt; mtry:               3 </span></span>
+<span><span class="co">#&gt; min.node.size       5 </span></span>
+<span><span class="co">#&gt; Subsampling scheme: No replacement </span></span>
+<span><span class="co">#&gt; Honesty:            FALSE </span></span>
+<span><span class="co">#&gt; Honest fraction:    0</span></span>
 <span></span>
 <span><span class="co">## Out-of-sample predictions.</span></span>
 <span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></code></pre></div>
-<p>We can also implement honesty, which is a necessary condition to
-produce asymptotically normal and consistent predictions. In the
-following, we set <code>honesty = TRUE</code> to construct honest
-forests.</p>
+<span><span class="co">#&gt;         P(Y=1)    P(Y=2)     P(Y=3)</span></span>
+<span><span class="co">#&gt; [1,] 0.3215795 0.4732135 0.20520702</span></span>
+<span><span class="co">#&gt; [2,] 0.3136190 0.4936867 0.19269430</span></span>
+<span><span class="co">#&gt; [3,] 0.3624392 0.2213801 0.41618073</span></span>
+<span><span class="co">#&gt; [4,] 0.3627696 0.4386894 0.19854103</span></span>
+<span><span class="co">#&gt; [5,] 0.7408662 0.1769811 0.08215271</span></span>
+<span><span class="co">#&gt; [6,] 0.3670253 0.4038256 0.22914902</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       </span></span>
+<span><span class="co">#&gt; Y_test   1   2   3</span></span>
+<span><span class="co">#&gt;      1 118  35  32</span></span>
+<span><span class="co">#&gt;      2  48  40  61</span></span>
+<span><span class="co">#&gt;      3  32  34 100</span></span></code></pre></div>
+<p>To produce consistent and asymptotically normal predictions, we need
+to set the <code>honesty</code> argument to TRUE. This makes the
+<code>ocf</code> function using different parts of the training sample
+to construct the forests and compute the predictions.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">honest_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">honest_forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Compare predictions with adaptive fit.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>To estimate standard errors for the predicted probabilities, we set
-<code>inference = TRUE</code>. This requires also to set
-<code>honesty = TRUE</code>: the formula for the variance is valid only
-for honest predictions. The estimation of standard errors considerably
-slows down the routine. However, we can increase the number of threads
-used to construct the forests to speed up the routine.</p>
+<span><span class="va">honest_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">honest_forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         P(Y=1)    P(Y=2)    P(Y=3)</span></span>
+<span><span class="co">#&gt; [1,] 0.4058651 0.3979374 0.1961975</span></span>
+<span><span class="co">#&gt; [2,] 0.3933585 0.4458331 0.1608085</span></span>
+<span><span class="co">#&gt; [3,] 0.3186119 0.2610821 0.4203060</span></span>
+<span><span class="co">#&gt; [4,] 0.3723412 0.4319394 0.1957194</span></span>
+<span><span class="co">#&gt; [5,] 0.6120843 0.2502868 0.1376289</span></span>
+<span><span class="co">#&gt; [6,] 0.4831496 0.2666777 0.2501727</span></span></code></pre></div>
+<p>To estimate standard errors for the predicted probabilities, we need
+set the <code>inference</code> argument to TRUE. However, this works
+only if <code>honesty</code> is TRUE, as the formula for the variance is
+valid only for honest predictions. Notice that the estimation of the
+standard errors can considerably slow down the routine. However, we can
+increase the number of threads used to construct the forests by using
+the <code>n.threads</code> argument.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Use all CPUs.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>, n.threads <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Use all CPUs.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          P(Y=1)     P(Y=2)     P(Y=3)</span></span>
+<span><span class="co">#&gt; [1,] 0.04407476 0.08192900 0.06337627</span></span>
+<span><span class="co">#&gt; [2,] 0.09331785 0.11346017 0.03140943</span></span>
+<span><span class="co">#&gt; [3,] 0.06818327 0.09355095 0.06689751</span></span>
+<span><span class="co">#&gt; [4,] 0.11118139 0.14927426 0.07616356</span></span>
+<span><span class="co">#&gt; [5,] 0.03853504 0.06580477 0.12416180</span></span>
+<span><span class="co">#&gt; [6,] 0.11411914 0.08089688 0.05264190</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="covariates-marginal-effects">Covariates’ Marginal Effects<a class="anchor" aria-label="anchor" href="#covariates-marginal-effects"></a>
 </h3>
-<p>The <code>marginal_effects</code> function post-processes the
-predictions to estimate mean marginal effects, marginal effects at the
-mean, or marginal effects at the median, according to the
-<code>eval</code> argument. In the following, we construct our forests
-in the training sample and use them to estimate the marginal effects at
-the mean in the test sample.</p>
+<p>To estimate the covariates’ marginal effects, we can post-process the
+conditional probability predictions. This is performed by the
+<code>marginal_effects</code> function that can estimate mean marginal
+effects, marginal effects at the mean, and marginal effects at the
+median, according to the <code>eval</code> argument.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Fit ocf on training sample.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
+<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Marginal effects at the mean on test sample.</span></span>
-<span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, data <span class="op">=</span> <span class="va">X_test</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span></span></code></pre></div>
-<p>As before, we can set <code>inference = TRUE</code> to estimate the
-standard errors. Again, this requires the use of honest forests and
-considerably slows down the routine.</p>
+<span><span class="co">## Marginal effects at the mean.</span></span>
+<span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span> <span class="co"># Try also 'eval = "atmean"' and 'eval = "mean"'.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span> <span class="co"># Try also 'latex = TRUE'.</span></span>
+<span><span class="co">#&gt; ocf marginal effects results </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Data info: </span></span>
+<span><span class="co">#&gt; Number of classes:    3 </span></span>
+<span><span class="co">#&gt; Sample size:          500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Tuning parameters: </span></span>
+<span><span class="co">#&gt; Evaluation:           atmean </span></span>
+<span><span class="co">#&gt; Bandwidth:            0.1 </span></span>
+<span><span class="co">#&gt; Number of trees:      2000 </span></span>
+<span><span class="co">#&gt; Honest forests:       FALSE </span></span>
+<span><span class="co">#&gt; Honesty fraction:     0 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Marginal Effects: </span></span>
+<span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
+<span><span class="co">#&gt; x1   0.202  -0.462   0.260</span></span>
+<span><span class="co">#&gt; x2  -0.356  -0.023   0.379</span></span>
+<span><span class="co">#&gt; x3   0.385  -0.107  -0.278</span></span>
+<span><span class="co">#&gt; x4  -0.290   0.115   0.176</span></span>
+<span><span class="co">#&gt; x5   0.019  -0.088   0.069</span></span>
+<span><span class="co">#&gt; x6  -0.081   0.043   0.038</span></span></code></pre></div>
+<p>As before, we can set the <code>inference</code> argument to TRUE to
+estimate the standard errors. Again, this requires the use of honest
+forests and can considerably slow down the routine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
+<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
 <span></span>
 <span><span class="co">## Compute standard errors.</span></span>
-<span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, data <span class="op">=</span> <span class="va">X_test</span> , eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## LATEX.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span><span class="op">)</span> <span class="co"># Try also 'latex = TRUE'.</span></span>
+<span><span class="co">#&gt; ocf marginal effects results </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Data info: </span></span>
+<span><span class="co">#&gt; Number of classes:    3 </span></span>
+<span><span class="co">#&gt; Sample size:          500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Tuning parameters: </span></span>
+<span><span class="co">#&gt; Evaluation:           atmean </span></span>
+<span><span class="co">#&gt; Bandwidth:            0.1 </span></span>
+<span><span class="co">#&gt; Number of trees:      2000 </span></span>
+<span><span class="co">#&gt; Honest forests:       TRUE </span></span>
+<span><span class="co">#&gt; Honesty fraction:     0.5 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Marginal Effects: </span></span>
+<span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
+<span><span class="co">#&gt; x1  -0.086  -0.120   0.206</span></span>
+<span><span class="co">#&gt; x2  -0.119   0.043   0.076</span></span>
+<span><span class="co">#&gt; x3   0.051  -0.050  -0.002</span></span>
+<span><span class="co">#&gt; x4  -0.146   0.081   0.065</span></span>
+<span><span class="co">#&gt; x5   0.009   0.027  -0.035</span></span>
+<span><span class="co">#&gt; x6  -0.048   0.049  -0.001</span></span></code></pre></div>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

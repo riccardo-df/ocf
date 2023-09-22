@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -82,6 +82,11 @@
     <p>If <code>object$learner == "l1"</code>, then <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. If we also
 have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to have zero mean and unit variance.</p>
     </div>
+    <div id="references">
+    <h2>References</h2>
+    
+<ul><li><p>Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint <a href="https://arxiv.org/abs/2309.08755" class="external-link">arXiv:2309.08755</a>.</p></li>
+</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="multinomial_ml.html">multinomial_ml</a></code>, <code><a href="ordered_ml.html">ordered_ml</a></code></p></div>
@@ -93,43 +98,40 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co">## Load data from orf package.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Generate synthetic data.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/okasag/orf" class="external-link">orf</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">odata</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">odata</span> <span class="op">&lt;-</span> <span class="va">odata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="co"># Subset to reduce elapsed time.</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">odata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span></span>
+<span class="r-in"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">Y</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Training-test split.</span></span></span>
-<span class="r-in"><span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">y_tr</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">Y_tr</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">X_tr</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">train_idx</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">y_test</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">Y_test</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">X_test</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Fit ordered machine learning on training sample using two different learners.</span></span></span>
-<span class="r-in"><span><span class="va">ordered_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="ordered_ml.html">ordered_ml</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, learner <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ordered_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="ordered_ml.html">ordered_ml</a></span><span class="op">(</span><span class="va">y_tr</span>, <span class="va">X_tr</span>, learner <span class="op">=</span> <span class="st">"l1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ordered_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="ordered_ml.html">ordered_ml</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, learner <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ordered_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="ordered_ml.html">ordered_ml</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, learner <span class="op">=</span> <span class="st">"l1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Predict out of sample.</span></span></span>
 <span class="r-in"><span><span class="va">predictions_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_forest</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">predictions_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_l1</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span><span class="co"># }</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)    P(Y=3)    P(Y=1)     P(Y=2)    P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.63777798 0.06328869 0.2989333 0.4816499 0.33553367 0.1828165</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.39965159 0.23857565 0.3617728 0.3472362 0.03627627 0.6164875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.36380000 0.49740833 0.1387917 0.5333257 0.34712671 0.1195476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.07859206 0.08192803 0.8394799 0.2908335 0.01578794 0.6933786</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.68640686 0.00000000 0.3135931 0.6125883 0.06152259 0.3258891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.03893333 0.04396429 0.9171024 0.1039395 0.00000000 0.8960605</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)    P(Y=3)    P(Y=1)    P(Y=2)     P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3337402 0.4650026 0.2012572 0.4173778 0.4087395 0.17388278</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3294692 0.4718803 0.1986504 0.4341177 0.3734635 0.19241881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3554081 0.2298746 0.4147173 0.2804669 0.3210895 0.39844365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.3677436 0.4505409 0.1817154 0.3869144 0.3724686 0.24061702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.7936945 0.1060669 0.1002386 0.6275362 0.2935954 0.07886838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.3674553 0.4153492 0.2171955 0.4521795 0.3543731 0.19344746</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
