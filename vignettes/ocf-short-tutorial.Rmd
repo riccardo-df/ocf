@@ -101,7 +101,7 @@ honest_predictions <- predict(honest_forests, X_test)
 head(honest_predictions$probabilities)
 ```
 
-To estimate standard errors for the predicted probabilities, we need set the `inference` argument to TRUE. However, this works only if `honesty` is TRUE, as the formula for the variance is valid only for honest predictions. Notice that the estimation of the standard errors can considerably slow down the routine. However, we can increase the number of threads used to construct the forests by using the `n.threads` argument.
+To estimate standard errors for the predicted probabilities, we need to set the `inference` argument to TRUE. However, this works only if `honesty` is TRUE, as the formula for the variance is valid only for honest predictions. Notice that the estimation of the standard errors can considerably slow down the routine. However, we can increase the number of threads used to construct the forests by using the `n.threads` argument.
 
 ```{r honest-ocf-inference, eval = TRUE}
 ## Compute standard errors.
