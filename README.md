@@ -5,9 +5,9 @@
 ![CRAN Downloads overall](http://cranlogs.r-pkg.org/badges/grand-total/ocf)
 <!-- badges: end -->
  
-R package to implement ordered correlation forests (OCF), a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes. 
+R package to implement ordered correlation forest, a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes. 
 
-OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Under an \open honesty" condition, the estimator inherits the asymptotic properties of random forests, namely the consistency and asymptotic normality of their predictions. The particular honesty implementation used by OCF allows us to obtain standard errors for the covariates' marginal effects. The estimated standard errors can then be used to construct conventional confidence intervals.
+`ocf` provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as [Di Francesco (2023)](https://arxiv.org/abs/2309.08755).
 
 To get started, please check the online [vignette](https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html) for a short tutorial.
 
