@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Ordered Correlation Forest">
 <meta property="og:description" content='Machine learning estimator specifically optimized for handling ordered non-numeric outcomes. ocf provides forest-based estimation of the 
-    conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal, 
+    conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal 
     and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as Di Francesco (2023)
     &lt;arXiv:2309.08755&gt;.'>
 <meta property="og:image" content="https://riccardo-df.github.io/ocf/logo.svg">
@@ -81,8 +81,8 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>R package to implement ordered correlation forests (OCF), a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes.</p>
-<p>OCF modifies a standard random forest splitting criterion to build a collection of forests, each estimating the conditional probabilities of a single class. Under an honesty” condition, the estimator inherits the asymptotic properties of random forests, namely the consistency and asymptotic normality of their predictions. The particular honesty implementation used by OCF allows us to obtain standard errors for the covariates’ marginal effects. The estimated standard errors can then be used to construct conventional confidence intervals.</p>
+<p>R package to implement ordered correlation forest, a nonparametric estimator specifically optimized for handling ordered non-numeric outcomes.</p>
+<p><code>ocf</code> provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects. Under an “honesty” condition, the estimates are consistent and asymptotically normal and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as <a href="https://arxiv.org/abs/2309.08755" class="external-link">Di Francesco (2023)</a>.</p>
 <p>To get started, please check the online <a href="https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html">vignette</a> for a short tutorial.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
