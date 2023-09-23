@@ -23,8 +23,8 @@ Before diving in the coding, we provide an overview of the statistical problem a
 ## Ordered Choice Models
 We postulate the existence of a latent and continuous outcome variable $Y_i^*$, assumed to obey the following regression model:
 
-$$ Y_i^* = g \left( W_i \right) + \epsilon_i  $$
-where $W_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $W_i$. 
+$$ Y_i^* = g \left( X_i \right) + \epsilon_i  $$
+where $X_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $W_i$. 
 
 Then, an observational rule links the observed outcome $Y_i$ to the latent outcome $Y_{i}^*$ using unknown threshold parameters $- \infty = \zeta_0 < \zeta_1 < \dots < \zeta_{M - 1} < \zeta_M = \infty$ that define intervals on the support of $Y_i^*$, with each interval corresponding to one of the $M$ categories or classes of $Y_i$:
 
@@ -32,18 +32,18 @@ $$ \zeta_{m - 1} < Y_i^* \leq \zeta_{m} \implies Y_i = m, \quad m = 1, \dots, M 
 
 The statistical targets of interest are the conditional choice probabilities:
 
-$$ p_m \left( W_i \right) := \mathbb{P} \left( Y_i = m | W_i \right) $$
+$$ p_m \left( X_i \right) := \mathbb{P} \left( Y_i = m | X_i \right) $$
 
 and the marginal effect of the $j$-th covariate on $p_m \left( \cdot \right)$:
 
 $$
-\nabla^j p_m \left( w \right) := 
+\nabla^j p_m \left( x \right) := 
   \begin{cases}
-    \frac{\partial p_m \left( w \right)}{\partial w_j}, & \text{if } w_j \text{ is continuous}  \\
-    p_m \left( \lceil w_j \rceil \right) - p_m \left( \lfloor w_j \rfloor \right), & \text{if } w_j \text{ is discrete}
+    \frac{\partial p_m \left( x \right)}{\partial x_j}, & \text{if } x_j \text{ is continuous}  \\
+    p_m \left( \lceil x_j \rceil \right) - p_m \left( \lfloor x_j \rfloor \right), & \text{if } x_j \text{ is discrete}
   \end{cases}
 $$
-where $w_j$ is the $j$-th element of the vector $w$ and $\lceil w_j \rceil$ and $\lfloor w_j \rfloor$ correspond to $w$ with its $j$-th element rounded up and down to the closest integer.
+where $x_j$ is the $j$-th element of the vector $x$ and $\lceil x_j \rceil$ and $\lfloor x_j \rfloor$ correspond to $x$ with its $j$-th element rounded up and down to the closest integer.
 
 ## Code
 For illustration purposes, we generate a synthetic data set. Details about the employed DGP can be retrieved by running `help(generate_ordered_data)`.
