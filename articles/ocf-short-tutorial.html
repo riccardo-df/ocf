@@ -94,8 +94,8 @@ statistical problem at hand.</p>
 <p>We postulate the existence of a latent and continuous outcome
 variable <span class="math inline">\(Y_i^*\)</span>, assumed to obey the
 following regression model:</p>
-<p><span class="math display">\[ Y_i^* = g \left( W_i \right) +
-\epsilon_i  \]</span> where <span class="math inline">\(W_i\)</span>
+<p><span class="math display">\[ Y_i^* = g \left( X_i \right) +
+\epsilon_i  \]</span> where <span class="math inline">\(X_i\)</span>
 consists of a set of raw covariates, <span class="math inline">\(g
 \left( \cdot \right)\)</span> is a potentially non-linear regression
 function, and <span class="math inline">\(\epsilon_i\)</span> is
@@ -109,20 +109,20 @@ with each interval corresponding to one of the <span class="math inline">\(M\)</
 \implies Y_i = m, \quad m = 1, \dots, M \]</span></p>
 <p>The statistical targets of interest are the conditional choice
 probabilities:</p>
-<p><span class="math display">\[ p_m \left( W_i \right) := \mathbb{P}
-\left( Y_i = m | W_i \right) \]</span></p>
+<p><span class="math display">\[ p_m \left( X_i \right) := \mathbb{P}
+\left( Y_i = m | X_i \right) \]</span></p>
 <p>and the marginal effect of the <span class="math inline">\(j\)</span>-th covariate on <span class="math inline">\(p_m \left( \cdot \right)\)</span>:</p>
 <p><span class="math display">\[
-\nabla^j p_m \left( w \right) :=
+\nabla^j p_m \left( x \right) :=
   \begin{cases}
-    \frac{\partial p_m \left( w \right)}{\partial w_j}, &amp; \text{if }
-w_j \text{ is continuous}  \\
-    p_m \left( \lceil w_j \rceil \right) - p_m \left( \lfloor w_j
-\rfloor \right), &amp; \text{if } w_j \text{ is discrete}
+    \frac{\partial p_m \left( x \right)}{\partial x_j}, &amp; \text{if }
+x_j \text{ is continuous}  \\
+    p_m \left( \lceil x_j \rceil \right) - p_m \left( \lfloor x_j
+\rfloor \right), &amp; \text{if } x_j \text{ is discrete}
   \end{cases}
-\]</span> where <span class="math inline">\(w_j\)</span> is the <span class="math inline">\(j\)</span>-th element of the vector <span class="math inline">\(w\)</span> and <span class="math inline">\(\lceil
-w_j \rceil\)</span> and <span class="math inline">\(\lfloor w_j
-\rfloor\)</span> correspond to <span class="math inline">\(w\)</span>
+\]</span> where <span class="math inline">\(x_j\)</span> is the <span class="math inline">\(j\)</span>-th element of the vector <span class="math inline">\(x\)</span> and <span class="math inline">\(\lceil
+x_j \rceil\)</span> and <span class="math inline">\(\lfloor x_j
+\rfloor\)</span> correspond to <span class="math inline">\(x\)</span>
 with its <span class="math inline">\(j\)</span>-th element rounded up
 and down to the closest integer.</p>
 </div>
