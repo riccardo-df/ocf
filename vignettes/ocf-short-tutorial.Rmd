@@ -24,7 +24,7 @@ Before diving in the coding, we provide an overview of the statistical problem a
 We postulate the existence of a latent and continuous outcome variable $Y_i^*$, assumed to obey the following regression model:
 
 $$ Y_i^* = g \left( X_i \right) + \epsilon_i  $$
-where $X_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $W_i$. 
+where $X_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $X_i$. 
 
 Then, an observational rule links the observed outcome $Y_i$ to the latent outcome $Y_{i}^*$ using unknown threshold parameters $- \infty = \zeta_0 < \zeta_1 < \dots < \zeta_{M - 1} < \zeta_M = \infty$ that define intervals on the support of $Y_i^*$, with each interval corresponding to one of the $M$ categories or classes of $Y_i$:
 
