@@ -1,126 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/404.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/index.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_alpha.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_honesty_inference.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_maxdepth.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_minnodesize.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_mtry.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_ntrees.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_samplefraction.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/check_x_y.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/class_honest_split.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/forest_weights_fitted.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/forest_weights_fitted_cpp.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/forest_weights_predicted_cpp.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/generate_ordered_data.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/honest_fitted.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/honest_fitted_cpp.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/honest_predictions.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/honest_predictions_cpp.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/marginal_effects.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/mean_squared_error.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/multinomial_ml.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/ocf.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/ordered_ml.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/predict.mml.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.forest.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/predict.oml.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/predict_forest_weights.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/print.ocf.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/print.ocf.marginal.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/rename_latex.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/summary.ocf.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/summary.ocf.marginal.html</loc>
-  </url>
-  <url>
-    <loc>https://riccardo-df.github.io/ocf/reference/tree_info.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://riccardo-df.github.io/ocf/404.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/LICENSE.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/articles/index.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/authors.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/index.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/news/index.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_alpha.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_honesty_inference.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_maxdepth.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_minnodesize.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_mtry.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_ntrees.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_samplefraction.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/check_x_y.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/class_honest_split.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/forest_weights_fitted.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/forest_weights_fitted_cpp.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/forest_weights_predicted_cpp.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/generate_ordered_data.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/honest_fitted.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/honest_fitted_cpp.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/honest_predictions.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/honest_predictions_cpp.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/index.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/marginal_effects.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/mean_squared_error.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/multinomial_ml.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/ocf.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/ordered_ml.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/predict.mml.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.forest.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/predict.ocf.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/predict.oml.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/predict_forest_weights.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/print.ocf.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/print.ocf.marginal.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/rename_latex.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/summary.ocf.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/summary.ocf.marginal.html</loc></url>
+<url><loc>https://riccardo-df.github.io/ocf/reference/tree_info.html</loc></url>
 </urlset>
+
