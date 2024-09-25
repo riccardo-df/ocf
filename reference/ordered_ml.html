@@ -53,14 +53,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ordered_ml</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ordered_ml</span><span class="op">(</span>Y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dl><dt id="arg-y">Y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>Outcome vector.</p></dd>
 
 
@@ -87,7 +87,7 @@ of two adjacent classes, which in turn can be expressed as conditional expectati
 <p>$$p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i \leq m \right) | X_i \right] - \mathbb{E} \left[ 1 \left( Y_i \leq m - 1 \right) | X_i \right]$$</p>
 <p>Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
 (m-1)-th estimated surfaces to estimate conditional probabilities.<br></p>
-<p><code>ordered_ml</code> combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+<p><code>ordered_ml</code> combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 according to the user-specified parameter <code>learner</code>.<br></p>
 <p>If <code>learner == "forest"</code>, then the <code><a href="https://rdrr.io/pkg/orf/man/orf.html" class="external-link">orf</a></code>
 function is called from an external package, as this estimator has already been proposed by Lechner and Okasa (2019).<br></p>
@@ -134,17 +134,13 @@ Additionally, if <code>scale == TRUE</code>, the covariates are scaled to have z
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Predict out of sample.</span></span></span>
 <span class="r-in"><span><span class="va">predictions_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_forest</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span><span class="va">predictions_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_l1</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)     P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4208750 0.4629083 0.11621667 0.29341958 0.6154394 0.09114097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4666167 0.4243833 0.10900000 0.33450837 0.5539351 0.11155656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1424000 0.3843583 0.47324167 0.07811249 0.3029698 0.61891769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6361333 0.3146500 0.04921667 0.63353157 0.3260411 0.04042733</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4543667 0.3177833 0.22785000 0.29489112 0.4336047 0.27150420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6192250 0.3248750 0.05590000 0.37336853 0.5365585 0.09007298</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'predictions_forest' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -53,14 +53,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multinomial_ml</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multinomial_ml</span><span class="op">(</span>Y <span class="op">=</span> <span class="cn">NULL</span>, X <span class="op">=</span> <span class="cn">NULL</span>, learner <span class="op">=</span> <span class="st">"forest"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dl><dt id="arg-y">Y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>Outcome vector.</p></dd>
 
 
@@ -85,7 +85,7 @@
     <p>Multinomial machine learning expresses conditional choice probabilities as expectations of binary variables:</p>
 <p>$$p_m \left( X_i \right) = \mathbb{E} \left[ 1 \left( Y_i = m \right) | X_i \right]$$</p>
 <p>This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.<br></p>
-<p><code>multinomial_ml</code> combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+<p><code>multinomial_ml</code> combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 according to the user-specified parameter <code>learner</code>.<br></p>
 <p>If <code>learner == "l1"</code>, the penalty parameters are chosen via 10-fold cross-validation
 and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></code> is used to handle non-numeric covariates. Additionally, if <code>scale == TRUE</code>, the covariates are scaled to
@@ -130,17 +130,13 @@ have zero mean and unit variance.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Predict out of sample.</span></span></span>
 <span class="r-in"><span><span class="va">predictions_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">multinomial_forest</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span><span class="va">predictions_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">multinomial_l1</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)     P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3537709 0.4865778 0.15965128 0.37483081 0.4934319 0.13173734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.6324324 0.2491552 0.11841243 0.39553675 0.4512993 0.15316400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1416059 0.4282620 0.43013203 0.06737991 0.3712126 0.56140745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6299436 0.2814432 0.08861318 0.59561559 0.3571572 0.04722723</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4841232 0.2875252 0.22835164 0.32814211 0.3535764 0.31828152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6875407 0.2334853 0.07897406 0.43330267 0.4505802 0.11611709</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'predictions_forest' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
