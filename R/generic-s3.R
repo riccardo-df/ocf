@@ -541,7 +541,7 @@ predict.mml <- function(object, data = NULL, ...) {
   learner <- object$learner
   estimators <- object$estimators
   scale <- object$scaling
-  n_categories <- length(unique(object$y))
+  n_categories <- length(unique(object$Y))
   
   ## 1.) Get predictions.
   if (learner == "forest") {
@@ -624,7 +624,7 @@ predict.oml <- function(object, data = NULL, ...) {
   learner <- object$learner
   estimators <- object$estimators
   scale <- object$scaling
-  n_categories <- length(unique(object$y))
+  n_categories <- length(unique(object$Y))
   n <- dim(data)[1]
   
   ## 1.) Get predictions.
