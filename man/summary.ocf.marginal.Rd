@@ -27,7 +27,7 @@ standard errors have been estimated, they are printed in parenthesis below each 
 \donttest{## Generate synthetic data.
 set.seed(1986)
 
-data <- generate_ordered_data(1000)
+data <- generate_ordered_data(100)
 sample <- data$sample
 Y <- sample$Y
 X <- sample[, -1]
