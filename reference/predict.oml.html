@@ -121,13 +121,17 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Predict out of sample.</span></span></span>
 <span class="r-in"><span><span class="va">predictions_forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_forest</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span><span class="va">predictions_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ordered_l1</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in matrix(apply(predictions_final, 1, function(x) (x)/(sum(x))),     ncol = n_categories, byrow = T):</span> data is too long</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'predictions_forest' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)     P(Y=1)    P(Y=2)     P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4208750 0.4629083 0.11621667 0.29341958 0.6154394 0.09114097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4666167 0.4243833 0.10900000 0.33450837 0.5539351 0.11155656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1424000 0.3843583 0.47324167 0.07811249 0.3029698 0.61891769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6361333 0.3146500 0.04921667 0.63353157 0.3260411 0.04042733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4543667 0.3177833 0.22785000 0.29489112 0.4336047 0.27150420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6192250 0.3248750 0.05590000 0.37336853 0.5365585 0.09007298</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
