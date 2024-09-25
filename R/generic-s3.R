@@ -74,7 +74,7 @@ predict.ocf <- function(object, data = NULL, type = "response", ...) {
       honest_outcomes <- list()
       counter <- 1
       for (m in y.classes) {
-        honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$y <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$y <= m -1, 1, 0))
+        honest_outcomes[[counter]] <- data.frame("y_m_honest" = ifelse(object$honest_data$Y <= m, 1, 0), "y_m_1_honest" = ifelse(object$honest_data$Y <= m -1, 1, 0))
         counter <- counter + 1
       }
       
