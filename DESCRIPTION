@@ -28,5 +28,6 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://riccardo-df.github.io/ocf/
+URL: https://riccardo-df.github.io/ocf/, https://github.com/riccardo-df/ocf
+BugReports: https://github.com/riccardo-df/ocf/issues
 Biarch: TRUE

@@ -48,7 +48,7 @@
 #' Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
 #' (m-1)-th estimated surfaces to estimate conditional probabilities.\cr
 #' 
-#' \code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+#' \code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 #' according to the user-specified parameter \code{learner}.\cr
 #' 
 #' If \code{learner == "forest"}, then the \code{\link[orf]{orf}}

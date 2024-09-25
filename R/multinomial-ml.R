@@ -46,7 +46,7 @@
 #' 
 #' This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.\cr
 #' 
-#' \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+#' \code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 #' according to the user-specified parameter \code{learner}.\cr
 #' 
 #' If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 
