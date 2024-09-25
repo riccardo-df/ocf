@@ -40,7 +40,7 @@ The routine assumes that covariates with more than ten unique values are continu
 be discrete.\cr
 }
 \examples{
-\dontest{## Generate synthetic data.
+\donttest{## Generate synthetic data.
 set.seed(1986)
 
 data <- generate_ordered_data(1000)

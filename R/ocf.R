@@ -3,7 +3,7 @@
 #' Nonparametric estimator for ordered non-numeric outcomes. The estimator modifies a standard random forest
 #' splitting criterion to build a collection of forests, each estimating the conditional probability of a single class.
 #'
-#' @param y Outcome vector.
+#' @param Y Outcome vector.
 #' @param X Covariate matrix (no intercept).
 #' @param n.trees Number of trees.
 #' @param alpha Controls the balance of each split. Each split leaves at least a fraction \code{alpha} of observations in the parent node on each side of the split.
@@ -24,7 +24,7 @@
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -76,11 +76,12 @@
 #' @seealso \code{\link{marginal_effects}}
 #' 
 #' @export
-ocf <- function(y = NULL, X = NULL,
-                 honesty = FALSE, honesty.fraction = 0.5, inference = FALSE, alpha = 0,
-                 n.trees = 2000, mtry = ceiling(sqrt(ncol(X))), min.node.size = 5, max.depth = 0, 
-                 replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), n.threads = 1) {
+ocf <- function(Y = NULL, X = NULL,
+                honesty = FALSE, honesty.fraction = 0.5, inference = FALSE, alpha = 0,
+                n.trees = 2000, mtry = ceiling(sqrt(ncol(X))), min.node.size = 5, max.depth = 0, 
+                replace = FALSE, sample.fraction = ifelse(replace, 1, 0.5), n.threads = 1) {
   ## 0.) Defaults for variables not needed.
+  y <- Y
   splitrule.num <- 1; treetype <- 3; probability <- FALSE
   importance.mode <- 1; scale.permutation.importance <- FALSE; local.importance <- FALSE
   respect.unordered.factors <- "ignore"; unordered.factor.variables <- c("0", "0"); use.unordered.factor.variables <- FALSE

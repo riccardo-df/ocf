@@ -52,7 +52,7 @@ For illustration purposes, we generate a synthetic data set. Details about the e
 ## Generate synthetic data.
 set.seed(1986)
 
-n <- 1000
+n <- 100
 data <- generate_ordered_data(n)
 
 sample <- data$sample
@@ -65,7 +65,7 @@ head(X)
 ```
 
 ### Conditional Probabilities
-To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
+To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `Y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
 
 ```{r adaptive-ocf, eval = TRUE}
 ## Training-test split.
@@ -114,9 +114,6 @@ head(honest_forests$predictions$standard.errors)
 To estimate the covariates' marginal effects, we can post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
 
 ```{r adaptive-me, eval = TRUE}
-## Fit ocf on training sample.
-forests <- ocf(Y_tr, X_tr)
-
 ## Marginal effects at the mean.
 me_atmean <- marginal_effects(forests, eval = "atmean") # Try also 'eval = "atmean"' and 'eval = "mean"'.
 
@@ -126,9 +123,6 @@ print(me_atmean) # Try also 'latex = TRUE'.
 As before, we can set the `inference` argument to TRUE to estimate the standard errors. Again, this requires the use of honest forests and can considerably slow down the routine.
 
 ```{r honest-me, eval = TRUE}
-## Honest forests.
-honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE) # Notice we do not need inference here!
-
 ## Compute standard errors.
 honest_me_atmean <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 

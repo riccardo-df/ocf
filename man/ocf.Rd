@@ -5,7 +5,7 @@
 \title{Ordered Correlation Forest}
 \usage{
 ocf(
-  y = NULL,
+  Y = NULL,
   X = NULL,
   honesty = FALSE,
   honesty.fraction = 0.5,
@@ -21,7 +21,7 @@ ocf(
 )
 }
 \arguments{
-\item{y}{Outcome vector.}
+\item{Y}{Outcome vector.}
 
 \item{X}{Covariate matrix (no intercept).}
 

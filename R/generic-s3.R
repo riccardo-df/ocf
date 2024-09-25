@@ -14,7 +14,7 @@
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -237,7 +237,7 @@ predict.ocf.forest <- function(object, data, type = "response", ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -294,7 +294,7 @@ summary.ocf <- function(object, ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -335,7 +335,7 @@ print.ocf <- function(x, ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -442,7 +442,7 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -494,7 +494,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
@@ -577,7 +577,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' \donttest{## Generate synthetic data.
 #' set.seed(1986)
 #' 
-#' data <- generate_ordered_data(1000)
+#' data <- generate_ordered_data(100)
 #' sample <- data$sample
 #' Y <- sample$Y
 #' X <- sample[, -1]
