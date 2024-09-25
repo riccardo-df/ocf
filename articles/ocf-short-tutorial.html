@@ -148,7 +148,7 @@ about the employed DGP can be retrieved by running
 <code class="sourceCode R"><span><span class="co">## Generate synthetic data.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span>
@@ -157,23 +157,23 @@ about the employed DGP can be retrieved by running
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Y</span></span>
-<span><span class="co">#&gt;   1   2   3 </span></span>
-<span><span class="co">#&gt; 361 296 343</span></span>
+<span><span class="co">#&gt;  1  2  3 </span></span>
+<span><span class="co">#&gt; 31 37 32</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            x1 x2          x3 x4         x5 x6</span></span>
-<span><span class="co">#&gt; 1 -0.04625141  0  1.54395982  1  0.8871545  1</span></span>
-<span><span class="co">#&gt; 2  0.28000082  0 -0.56514824  0 -0.2853152  0</span></span>
-<span><span class="co">#&gt; 3  0.25317063  0  0.07254085  0  2.9951778  1</span></span>
-<span><span class="co">#&gt; 4 -0.96411077  1  0.89457168  0  0.7660870  0</span></span>
-<span><span class="co">#&gt; 5  0.49222664  1 -2.27801497  0  0.4388097  0</span></span>
-<span><span class="co">#&gt; 6 -0.69874551  0 -0.03860101  1  0.7422111  0</span></span></code></pre></div>
+<span><span class="co">#&gt;            x1 x2         x3 x4            x5 x6</span></span>
+<span><span class="co">#&gt; 1 -0.04625141  1 -1.7879732  0 -1.0515868012  1</span></span>
+<span><span class="co">#&gt; 2  0.28000082  0 -1.1553030  0 -0.4285613418  0</span></span>
+<span><span class="co">#&gt; 3  0.25317063  1  1.6677330  0  0.1621459072  0</span></span>
+<span><span class="co">#&gt; 4 -0.96411077  0 -0.1587051  0  0.3587438820  0</span></span>
+<span><span class="co">#&gt; 5  0.49222664  0 -1.4020533  1  0.0004035277  0</span></span>
+<span><span class="co">#&gt; 6 -0.69874551  1 -0.4450061  0 -0.3183447897  0</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="conditional-probabilities">Conditional Probabilities<a class="anchor" aria-label="anchor" href="#conditional-probabilities"></a>
 </h3>
 <p>To estimate the conditional probabilities, the <code>ocf</code>
 function constructs a collection of forests, one for each category of
-<code>y</code> (three in this case). We can then use the forests to
+<code>Y</code> (three in this case). We can then use the forests to
 predict out-of-sample using the <code>predict</code> method.
 <code>predict</code> returns a matrix with the predicted probabilities
 and a vector of predicted class labels (each observation is labelled to
@@ -197,13 +197,13 @@ the highest-probability class).</p>
 <span><span class="co">#&gt; ocf(Y_tr, X_tr) </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Full sample size:   500 </span></span>
+<span><span class="co">#&gt; Full sample size:   50 </span></span>
 <span><span class="co">#&gt; N. covariates:      6 </span></span>
 <span><span class="co">#&gt; Classes:            1 2 3 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Relative variable importance: </span></span>
 <span><span class="co">#&gt;    x1    x2    x3    x4    x5    x6 </span></span>
-<span><span class="co">#&gt; 0.339 0.099 0.251 0.064 0.213 0.035 </span></span>
+<span><span class="co">#&gt; 0.353 0.059 0.266 0.092 0.206 0.024 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tuning parameters: </span></span>
 <span><span class="co">#&gt; N. trees:           2000 </span></span>
@@ -218,19 +218,19 @@ the highest-probability class).</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         P(Y=1)    P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.3215795 0.4732135 0.20520702</span></span>
-<span><span class="co">#&gt; [2,] 0.3136190 0.4936867 0.19269430</span></span>
-<span><span class="co">#&gt; [3,] 0.3624392 0.2213801 0.41618073</span></span>
-<span><span class="co">#&gt; [4,] 0.3627696 0.4386894 0.19854103</span></span>
-<span><span class="co">#&gt; [5,] 0.7408662 0.1769811 0.08215271</span></span>
-<span><span class="co">#&gt; [6,] 0.3670253 0.4038256 0.22914902</span></span>
+<span><span class="co">#&gt; [1,] 0.4224274 0.4548215 0.12275111</span></span>
+<span><span class="co">#&gt; [2,] 0.4786262 0.4133636 0.10801015</span></span>
+<span><span class="co">#&gt; [3,] 0.1446138 0.4064470 0.44893918</span></span>
+<span><span class="co">#&gt; [4,] 0.6215123 0.3249310 0.05355674</span></span>
+<span><span class="co">#&gt; [5,] 0.4359897 0.3503095 0.21370084</span></span>
+<span><span class="co">#&gt; [6,] 0.6224514 0.3216924 0.05585619</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       </span></span>
-<span><span class="co">#&gt; Y_test   1   2   3</span></span>
-<span><span class="co">#&gt;      1 118  35  32</span></span>
-<span><span class="co">#&gt;      2  48  40  61</span></span>
-<span><span class="co">#&gt;      3  32  34 100</span></span></code></pre></div>
+<span><span class="co">#&gt; Y_test  1  2  3</span></span>
+<span><span class="co">#&gt;      1 11  4  1</span></span>
+<span><span class="co">#&gt;      2  7  4  8</span></span>
+<span><span class="co">#&gt;      3  3  1 11</span></span></code></pre></div>
 <p>To produce consistent and asymptotically normal predictions, we need
 to set the <code>honesty</code> argument to TRUE. This makes the
 <code>ocf</code> function using different parts of the training sample
@@ -242,12 +242,12 @@ to construct the forests and compute the predictions.</p>
 <span><span class="va">honest_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">honest_forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         P(Y=1)    P(Y=2)    P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.4058651 0.3979374 0.1961975</span></span>
-<span><span class="co">#&gt; [2,] 0.3933585 0.4458331 0.1608085</span></span>
-<span><span class="co">#&gt; [3,] 0.3186119 0.2610821 0.4203060</span></span>
-<span><span class="co">#&gt; [4,] 0.3723412 0.4319394 0.1957194</span></span>
-<span><span class="co">#&gt; [5,] 0.6120843 0.2502868 0.1376289</span></span>
-<span><span class="co">#&gt; [6,] 0.4831496 0.2666777 0.2501727</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 0.3780979 0.3260178 0.2958843</span></span>
+<span><span class="co">#&gt; [2,] 0.3907848 0.3341460 0.2750692</span></span>
+<span><span class="co">#&gt; [3,] 0.2350265 0.4046100 0.3603635</span></span>
+<span><span class="co">#&gt; [4,] 0.4247656 0.3567507 0.2184836</span></span>
+<span><span class="co">#&gt; [5,] 0.3556529 0.3095442 0.3348028</span></span>
+<span><span class="co">#&gt; [6,] 0.4039818 0.3383057 0.2577125</span></span></code></pre></div>
 <p>To estimate standard errors for the predicted probabilities, we need
 to set the <code>inference</code> argument to TRUE. However, this works
 only if <code>honesty</code> is TRUE, as the formula for the variance is
@@ -261,12 +261,12 @@ the <code>n.threads</code> argument.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          P(Y=1)     P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.04407476 0.08192900 0.06337627</span></span>
-<span><span class="co">#&gt; [2,] 0.09331785 0.11346017 0.03140943</span></span>
-<span><span class="co">#&gt; [3,] 0.06818327 0.09355095 0.06689751</span></span>
-<span><span class="co">#&gt; [4,] 0.11118139 0.14927426 0.07616356</span></span>
-<span><span class="co">#&gt; [5,] 0.03853504 0.06580477 0.12416180</span></span>
-<span><span class="co">#&gt; [6,] 0.11411914 0.08089688 0.05264190</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 0.13908683 0.07880574 0.16764821</span></span>
+<span><span class="co">#&gt; [2,] 0.17022532 0.10792753 0.07259638</span></span>
+<span><span class="co">#&gt; [3,] 0.06398080 0.07825399 0.16827135</span></span>
+<span><span class="co">#&gt; [4,] 0.09059761 0.09935294 0.17314365</span></span>
+<span><span class="co">#&gt; [5,] 0.05501137 0.06106961 0.21880195</span></span>
+<span><span class="co">#&gt; [6,] 0.05685871 0.08044073 0.16076261</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="covariates-marginal-effects">Covariates’ Marginal Effects<a class="anchor" aria-label="anchor" href="#covariates-marginal-effects"></a>
@@ -277,10 +277,7 @@ conditional probability predictions. This is performed by the
 effects, marginal effects at the mean, and marginal effects at the
 median, according to the <code>eval</code> argument.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Fit ocf on training sample.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Marginal effects at the mean.</span></span>
+<code class="sourceCode R"><span><span class="co">## Marginal effects at the mean.</span></span>
 <span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span> <span class="co"># Try also 'eval = "atmean"' and 'eval = "mean"'.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span> <span class="co"># Try also 'latex = TRUE'.</span></span>
@@ -288,7 +285,7 @@ median, according to the <code>eval</code> argument.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Data info: </span></span>
 <span><span class="co">#&gt; Number of classes:    3 </span></span>
-<span><span class="co">#&gt; Sample size:          500 </span></span>
+<span><span class="co">#&gt; Sample size:          50 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tuning parameters: </span></span>
 <span><span class="co">#&gt; Evaluation:           atmean </span></span>
@@ -299,20 +296,17 @@ median, according to the <code>eval</code> argument.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Marginal Effects: </span></span>
 <span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; x1   0.202  -0.462   0.260</span></span>
-<span><span class="co">#&gt; x2  -0.356  -0.023   0.379</span></span>
-<span><span class="co">#&gt; x3   0.385  -0.107  -0.278</span></span>
-<span><span class="co">#&gt; x4  -0.290   0.115   0.176</span></span>
-<span><span class="co">#&gt; x5   0.019  -0.088   0.069</span></span>
-<span><span class="co">#&gt; x6  -0.081   0.043   0.038</span></span></code></pre></div>
+<span><span class="co">#&gt; x1  -0.100  -0.311   0.411</span></span>
+<span><span class="co">#&gt; x2  -0.078   0.065   0.013</span></span>
+<span><span class="co">#&gt; x3  -0.048  -0.013   0.060</span></span>
+<span><span class="co">#&gt; x4  -0.024  -0.175   0.198</span></span>
+<span><span class="co">#&gt; x5   0.033   0.049  -0.082</span></span>
+<span><span class="co">#&gt; x6  -0.006   0.010  -0.004</span></span></code></pre></div>
 <p>As before, we can set the <code>inference</code> argument to TRUE to
 estimate the standard errors. Again, this requires the use of honest
 forests and can considerably slow down the routine.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Notice we do not need inference here!</span></span>
-<span></span>
-<span><span class="co">## Compute standard errors.</span></span>
+<code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
 <span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## LATEX.</span></span>
@@ -321,7 +315,7 @@ forests and can considerably slow down the routine.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Data info: </span></span>
 <span><span class="co">#&gt; Number of classes:    3 </span></span>
-<span><span class="co">#&gt; Sample size:          500 </span></span>
+<span><span class="co">#&gt; Sample size:          50 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tuning parameters: </span></span>
 <span><span class="co">#&gt; Evaluation:           atmean </span></span>
@@ -332,12 +326,12 @@ forests and can considerably slow down the routine.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Marginal Effects: </span></span>
 <span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; x1  -0.086  -0.120   0.206</span></span>
-<span><span class="co">#&gt; x2  -0.119   0.043   0.076</span></span>
-<span><span class="co">#&gt; x3   0.051  -0.050  -0.002</span></span>
-<span><span class="co">#&gt; x4  -0.146   0.081   0.065</span></span>
-<span><span class="co">#&gt; x5   0.009   0.027  -0.035</span></span>
-<span><span class="co">#&gt; x6  -0.048   0.049  -0.001</span></span></code></pre></div>
+<span><span class="co">#&gt; x1  -0.011  -0.004   0.016</span></span>
+<span><span class="co">#&gt; x2  -0.032   0.013   0.019</span></span>
+<span><span class="co">#&gt; x3  -0.003   0.001   0.002</span></span>
+<span><span class="co">#&gt; x4   0.013  -0.114   0.101</span></span>
+<span><span class="co">#&gt; x5   0.000   0.032  -0.032</span></span>
+<span><span class="co">#&gt; x6   0.001   0.001  -0.002</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -357,7 +351,7 @@ forests and can considerably slow down the routine.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

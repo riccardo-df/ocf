@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   ocf-short-tutorial: ocf-short-tutorial.html
-last_built: 2024-08-06T14:54Z
+last_built: 2024-09-25T09:03Z
 urls:
   reference: https://riccardo-df.github.io/ocf/reference
   article: https://riccardo-df.github.io/ocf/articles

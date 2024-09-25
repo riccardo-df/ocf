@@ -92,7 +92,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Generate synthetic data.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span></span>
 <span class="r-in"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">Y</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
@@ -106,13 +106,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> ocf(Y, X) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   1000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Full sample size:   100 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. covariates:      6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes:            1 2 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative variable importance: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x1    x2    x3    x4    x5    x6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.345 0.089 0.270 0.058 0.205 0.034 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.345 0.045 0.278 0.071 0.224 0.037 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. trees:           2000 </span>
@@ -136,7 +136,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

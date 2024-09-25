@@ -101,7 +101,7 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Generate synthetic data.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span></span>
 <span class="r-in"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">Y</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
@@ -125,13 +125,13 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compare predictions.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_forest</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions_l1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)    P(Y=3)    P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2750897 0.5810172 0.1438932 0.4743307 0.3381195 0.18754984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3326762 0.4868678 0.1804560 0.4722287 0.3206559 0.20711540</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2855366 0.3379332 0.3765303 0.2912424 0.3013192 0.40743847</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.4088999 0.4011857 0.1899144 0.4187626 0.3195804 0.26165697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.6617388 0.2228519 0.1154092 0.6312130 0.2924961 0.07629089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.4125682 0.3427655 0.2446663 0.4852413 0.3126977 0.20206096</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)     P(Y=1)    P(Y=2)     P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3537709 0.4865778 0.15965128 0.37483081 0.4934319 0.13173734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.6324324 0.2491552 0.11841243 0.39553675 0.4512993 0.15316400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1416059 0.4282620 0.43013203 0.06737991 0.3712126 0.56140745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6299436 0.2814432 0.08861318 0.59561559 0.3571572 0.04722723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4841232 0.2875252 0.22835164 0.32814211 0.3535764 0.31828152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6875407 0.2334853 0.07897406 0.43330267 0.4505802 0.11611709</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -147,7 +147,7 @@ have <code>object$scaling == TRUE</code>, then <code>data</code> is scaled to ha
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
