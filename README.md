@@ -29,29 +29,34 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 - Athey, S., Tibshirani, J., & Wager, S. (2019).
 <b>Generalized Random Forests.</b> 
 <i>Annals of Statistics</i>, 47(2).
-[<a href="https://projecteuclid.org/euclid.aos/1547197251">paper</a>]
+[<a href="https://doi.org/10.1214/18-AOS1709">paper</a>]
 
 - Di Francesco, R. (2023). 
 <b>Ordered Correlation Forest.</b>
 <i>arXiv preprint arXiv:2309.08755</i>.
-[<a href="https://arxiv.org/abs/2309.08755">paper</a>]
+[<a href="https://doi.org/10.48550/arXiv.2309.08755">paper</a>]
+
+- Lechner, M., & Okasa, G. (2019). 
+<b>Random Forest Estimation of the Ordered Choice Model.</b>
+<i>arXiv preprint arXiv:1907.02436</i>.
+[<a href="https://doi.org/10.48550/arXiv.1907.02436">paper</a>]
 
 - Lechner, M., & Mareckova, J. (2022). 
 <b>Modified Causal Forest.</b>
 <i>arXiv preprint arXiv:2209.03744</i>.
-[<a href="https://arxiv.org/abs/2209.03744">paper</a>]
+[<a href="https://doi.org/10.48550/arXiv.2209.03744">paper</a>]
 
 - Peracchi, F. (2014). 
 <b>Econometric methods for ordered responses: Some recent developments.</b>
 <i>In Econometric methods and their applications in finance, macro and related fields(pp. 133–165). World Scientific</i>.
-[<a href="https://www.worldscientific.com/doi/abs/10.1142/9789814513470_0006">paper</a>]
+[<a href="https://doi.org/10.1142/9789814513470_0006">paper</a>]
 
 - Wager, S., & Athey, S. (2018).
 <b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b>
 <i>Journal of the American Statistical Association</i>, 113(523).
-[<a href="https://www.tandfonline.com/eprint/v7p66PsDhHCYiPafTJwC/full">paper</a>]
+[<a href="https://doi.org/10.1080/01621459.2017.1319839">paper</a>]
 
 - Wright, M. N. & Ziegler, A. (2017).
 <b>ranger: A fast implementation of random forests for high dimensional data in C++ and R.</b>
 <i>Journal of Statistical Software</i>, 77(1).
-[<a href="https://www.jstatsoft.org/article/view/v077i01">paper</a>]
+[<a href="https://doi.org/10.18637/jss.v077.i01">paper</a>]

@@ -4,10 +4,10 @@
 \alias{ordered_ml}
 \title{Ordered Machine Learning}
 \usage{
-ordered_ml(y = NULL, X = NULL, learner = "forest", scale = TRUE)
+ordered_ml(Y = NULL, X = NULL, learner = "forest", scale = TRUE)
 }
 \arguments{
-\item{y}{Outcome vector.}
+\item{Y}{Outcome vector.}
 
 \item{X}{Covariate matrix (no intercept).}
 
@@ -30,7 +30,7 @@ of two adjacent classes, which in turn can be expressed as conditional expectati
 Then we can separately estimate each expectation using any regression algorithm and pick the difference between the m-th and the
 (m-1)-th estimated surfaces to estimate conditional probabilities.\cr
 
-\code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+\code{\link{ordered_ml}} combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 according to the user-specified parameter \code{learner}.\cr
 
 If \code{learner == "forest"}, then the \code{\link[orf]{orf}}

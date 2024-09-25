@@ -2,7 +2,7 @@
 #' 
 #' Estimation strategy to estimate conditional choice probabilities for ordered non-numeric outcomes.
 #'
-#' @param y Outcome vector.
+#' @param Y Outcome vector.
 #' @param X Covariate matrix (no intercept).
 #' @param learner String, either \code{"forest"} or \code{"l1"}. Selects the base learner to estimate each expectation.
 #' @param scale Logical, whether to scale the covariates. Ignored if \code{learner} is not \code{"l1"}.
@@ -70,9 +70,10 @@
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ocf}}
 #' 
 #' @export
-ordered_ml <- function(y = NULL, X = NULL,
+ordered_ml <- function(Y = NULL, X = NULL,
                            learner = "forest", scale = TRUE) {
   ## 0.) Handling inputs and checks.
+  y <- Y
   check_x_y(X, y)
   if (!(learner %in% c("forest", "l1"))) stop("Invalid 'learner'. This must be either 'forest' or 'l1'.", call. = FALSE)
   y <- as.numeric(y)
@@ -119,7 +120,7 @@ ordered_ml <- function(y = NULL, X = NULL,
                  "scaling" = scale,
                  "learner" = learner,
                  "X" = X,
-                 "y" = y)
+                 "Y" = y)
   class(output) <- "oml"
   
   ## 8.) Output.

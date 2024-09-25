@@ -4,10 +4,10 @@
 \alias{multinomial_ml}
 \title{Multinomial Machine Learning}
 \usage{
-multinomial_ml(y = NULL, X = NULL, learner = "forest", scale = TRUE)
+multinomial_ml(Y = NULL, X = NULL, learner = "forest", scale = TRUE)
 }
 \arguments{
-\item{y}{Outcome vector.}
+\item{Y}{Outcome vector.}
 
 \item{X}{Covariate matrix (no intercept).}
 
@@ -28,7 +28,7 @@ Multinomial machine learning expresses conditional choice probabilities as expec
 
 This allows us to estimate each expectation separately using any regression algorithm to get an estimate of conditional probabilities.\cr
 
-\code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regression with an L1 penalty,
+\code{\link{multinomial_ml}} combines this strategy with either regression forests or penalized logistic regressions with an L1 penalty,
 according to the user-specified parameter \code{learner}.\cr
 
 If \code{learner == "l1"}, the penalty parameters are chosen via 10-fold cross-validation 

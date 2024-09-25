@@ -134,8 +134,8 @@ ocf <- function(Y = NULL, X = NULL,
     
     train_sample <- honest_split$train_sample
     honest_sample <- honest_split$honest_sample
-    colnames(train_sample) <- c("y", independent.variable.names)
-    colnames(honest_sample) <- c("y", independent.variable.names)
+    colnames(train_sample) <- c("Y", independent.variable.names)
+    colnames(honest_sample) <- c("Y", independent.variable.names)
     
     y_train <- train_sample[, 1]
     x_train <- as.data.frame(train_sample[, -1])
@@ -147,7 +147,7 @@ ocf <- function(Y = NULL, X = NULL,
   } else { 
     train_sample <- data.frame(y, X)
     honest_sample <- list()
-    colnames(train_sample) <- c("y", independent.variable.names)
+    colnames(train_sample) <- c("Y", independent.variable.names)
     
     y_train <- train_sample[, 1]
     x_train <- as.data.frame(train_sample[, -1])
