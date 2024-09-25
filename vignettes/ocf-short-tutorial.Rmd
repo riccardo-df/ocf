@@ -104,10 +104,9 @@ head(honest_predictions$probabilities)
 To estimate standard errors for the predicted probabilities, we need to set the `inference` argument to TRUE. However, this works only if `honesty` is TRUE, as the formula for the variance is valid only for honest predictions. Notice that the estimation of the standard errors can considerably slow down the routine. However, we can increase the number of threads used to construct the forests by using the `n.threads` argument.
 
 ```{r honest-ocf-inference, eval = TRUE}
-## Compute standard errors.
-honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE, inference = TRUE, n.threads = 0) # Use all CPUs.
-
-head(honest_forests$predictions$standard.errors)
+## Compute standard errors. Do not run.
+# honest_forests <- ocf(Y_tr, X_tr, honesty = TRUE, inference = TRUE, n.threads = 0) # Use all CPUs.
+# head(honest_forests$predictions$standard.errors)
 ```
 
 ### Covariates' Marginal Effects
@@ -116,7 +115,6 @@ To estimate the covariates' marginal effects, we can post-process the conditiona
 ```{r adaptive-me, eval = TRUE}
 ## Marginal effects at the mean.
 me_atmean <- marginal_effects(forests, eval = "atmean") # Try also 'eval = "atmean"' and 'eval = "mean"'.
-
 print(me_atmean) # Try also 'latex = TRUE'.
 ```
 
@@ -125,7 +123,5 @@ As before, we can set the `inference` argument to TRUE to estimate the standard 
 ```{r honest-me, eval = TRUE}
 ## Compute standard errors.
 honest_me_atmean <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
-
-## LATEX.
 print(honest_me_atmean) # Try also 'latex = TRUE'.
 ```
