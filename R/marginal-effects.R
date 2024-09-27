@@ -69,8 +69,8 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
   ## 2.) Data.
   # 2a.) Handle and check.
   if (is.null(data)) data <- object$full_data
-  if (sum(!(object$forests.info$forest.1$covariate.names %in% colnames(data))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
-  if (length(colnames(data)) != length(object$forests.info$forest.1$covariate.names)) data <- data[, object$forests.info$forest.1$covariate.names, drop = FALSE]
+  if (sum(!(object$forests.info[[1]]$covariate.names %in% colnames(data))) > 0) stop("One or more covariates not found in 'data'.", call. = FALSE)
+  if (length(colnames(data)) != length(object$forests.info[[1]]$covariate.names)) data <- data[, object$forests.info[[1]]$covariate.names, drop = FALSE]
   
   X <- data
   if (length(colnames(X)) < 1) stop("No covariates found. Maybe 'X' is missing colnames?", call. = FALSE)

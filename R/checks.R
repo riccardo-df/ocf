@@ -21,11 +21,6 @@ check_x_y <- function(x, y) {
   if (inherits(x, "Matrix")) {
     if (!inherits(x, "dgCMatrix")) stop("Currently only sparse data of class 'dgCMatrix' supported.", call. = FALSE)
   }
-  
-  # Outcome coded as 1, ..., M.
-  if (!all(y == as.integer(y))) stop("'Y' should take only integer values 1, 2, ..., M.", call. = FALSE)
-  if (min(y) != 1) stop("The lowest class is not equal to 1. 'Y' should take values 1, 2, ..., M.", call. = FALSE)
-  
 }
 
 
