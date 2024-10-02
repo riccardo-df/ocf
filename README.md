@@ -31,9 +31,9 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 <i>Annals of Statistics</i>, 47(2).
 [<a href="https://doi.org/10.1214/18-AOS1709">paper</a>]
 
-- Di Francesco, R. (2023). 
+- Di Francesco, R. (forthcoming). 
 <b>Ordered Correlation Forest.</b>
-<i>arXiv preprint arXiv:2309.08755</i>.
+<i>Econometric Reviews</i>.
 [<a href="https://doi.org/10.48550/arXiv.2309.08755">paper</a>]
 
 - Lechner, M., & Mareckova, J. (2022). 
