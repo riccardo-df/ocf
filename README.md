@@ -41,10 +41,10 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 <i>arXiv preprint arXiv:2209.03744</i>.
 [<a href="https://doi.org/10.48550/arXiv.2209.03744">paper</a>]
 
-- Lechner, M., & Okasa, G. (2019). 
+- Lechner, M., & Okasa, G. (2024). 
 <b>Random Forest Estimation of the Ordered Choice Model.</b>
-<i>arXiv preprint arXiv:1907.02436</i>.
-[<a href="https://doi.org/10.48550/arXiv.1907.02436">paper</a>]
+<i>Empirical Economics</i>.
+[<a href="https://doi.org/10.1007/s00181-024-02646-4">paper</a>]
 
 - Peracchi, F. (2014). 
 <b>Econometric methods for ordered responses: Some recent developments.</b>
