@@ -7,7 +7,7 @@
  
 R package to implement *ordered correlation forest*, a machine learning estimator specifically optimized for predictive modeling of ordered non-numeric outcomes. 
 
-`ocf` provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as [Di Francesco (2023)](https://arxiv.org/abs/2309.08755).
+`ocf` provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as [Di Francesco (2025)](https://doi.org/10.1080/07474938.2024.2429596).
 
 To get started, please check the online [short tutorial](https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html).
 
