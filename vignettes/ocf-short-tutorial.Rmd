@@ -121,7 +121,7 @@ plot(me_atmean)
 
 Sometimes, we are only interested in the marginal effects of a subset of the available covariates. To spare some time, we can use the `these_covariates` argument to estimate marginal effects of only those covariates. This argument also allows the user to declare whether the covariates are to be treated as `"continuous"` of `"discrete"` (marginal effect estimation is handled differently according to the covariate's nature). `these_covariates` must be a named list, with entries' names specifying the target covariates and entries specifying the covariates' types. If not used, covariates' types are inferred by the routine using basic heuristics (as in the example above).
 
-```{r adaptive-me, eval = TRUE}
+```{r adaptive-me-target, eval = TRUE}
 ## Marginal effects at the mean.
 target_covariates <- list("x1" = "continuous", "x2" = "discrete", "x4" = "discrete")
 me_atmean <- marginal_effects(forests, eval = "atmean", these_covariates = target_covariates) 
