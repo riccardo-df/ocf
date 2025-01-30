@@ -40,7 +40,7 @@
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}
@@ -151,7 +151,7 @@ tree_info <- function(object, tree = 1) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #' 
 #' @seealso \code{\link{ocf}}

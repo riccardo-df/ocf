@@ -10,7 +10,7 @@ ocf(
   honesty = FALSE,
   honesty.fraction = 0.5,
   inference = FALSE,
-  alpha = 0,
+  alpha = 0.2,
   n.trees = 2000,
   mtry = ceiling(sqrt(ncol(X))),
   min.node.size = 5,
@@ -90,16 +90,17 @@ head(honest_forests$predictions$standard.errors)
 me <- marginal_effects(forests, eval = "atmean")
 print(me)
 print(me, latex = TRUE)
+plot(me)
 
 ## Compute standard errors. This requires honest forests.
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
-honest_me$standard.errors
-print(honest_me, latex = TRUE)}
+print(honest_me, latex = TRUE)
+plot(honest_me)}
 
 }
 \references{
 \itemize{
-  \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+  \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 }
 }
 \seealso{

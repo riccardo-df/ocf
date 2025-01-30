@@ -10,7 +10,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ""
 )
 
 library(ocf)
@@ -110,12 +110,22 @@ To estimate standard errors for the predicted probabilities, we need to set the 
 ```
 
 ### Covariates' Marginal Effects
-To estimate the covariates' marginal effects, we can post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
+To estimate the covariates' marginal effects, we post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
 
 ```{r adaptive-me, eval = TRUE}
 ## Marginal effects at the mean.
 me_atmean <- marginal_effects(forests, eval = "atmean") # Try also 'eval = "atmean"' and 'eval = "mean"'.
 print(me_atmean) # Try also 'latex = TRUE'.
+plot(me_atmean)
+```
+
+Sometimes, we are only interested in the marginal effects of a subset of the available covariates. To spare some time, we can use the `these_covariates` argument to estimate marginal effects of only those covariates. This argument also allows the user to declare whether the covariates are to be treated as `"continuous"` of `"discrete"` (marginal effect estimation is handled differently according to the covariate's nature). `these_covariates` must be a named list, with entries' names specifying the target covariates and entries specifying the covariates' types. If not used, covariates' types are inferred by the routine using basic heuristics (as in the example above).
+
+```{r adaptive-me, eval = TRUE}
+## Marginal effects at the mean.
+target_covariates <- list("x1" = "continuous", "x2" = "discrete", "x4" = "discrete")
+me_atmean <- marginal_effects(forests, eval = "atmean", these_covariates = target_covariates) 
+plot(me_atmean)
 ```
 
 As before, we can set the `inference` argument to TRUE to estimate the standard errors. Again, this requires the use of honest forests and can considerably slow down the routine.
@@ -124,4 +134,5 @@ As before, we can set the `inference` argument to TRUE to estimate the standard 
 ## Compute standard errors.
 honest_me_atmean <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 print(honest_me_atmean) # Try also 'latex = TRUE'.
+plot(me_atmean)
 ```

@@ -4,7 +4,7 @@
 #'
 #' @param object An \code{\link{ocf}} object.
 #' @param eval Evaluation point for marginal effects. Either \code{"mean"}, \code{"atmean"} or \code{"atmedian"}.
-#' @param which_covariates Character vector storing the names of the covariates for which marginal effect estimation is desired. If empty (the default), marginal effects are estimated for all covariates.
+#' @param these_covariates Named list with covariates' names as keys and strings denoting covariates' types as entries. Strings must be either \code{"continuous"} or \code{"discrete"}. The names of the list indicate the covariates for which marginal effect estimation is desired. If \code{NULL} (the default), marginal effects are estimated for all covariates and covariates' types are inferred by the routine.
 #' @param bandwitdh How many standard deviations \code{x_up} and \code{x_down} differ from \code{x}.
 #' @param data Data set of class \code{data.frame} to estimate marginal effects. It must contain at least the same covariates used to train the forests. If \code{NULL}, marginal effects are estimated on \code{object$full_data}.
 #' @param inference Whether to extract weights and compute standard errors. The weights extraction considerably slows down the program.
@@ -29,20 +29,27 @@
 #' 
 #' print(me)
 #' print(me, latex = TRUE)
+#' plot(me)
 #' 
 #' ## Compute standard errors. This requires honest forests.
 #' honest_forests <- ocf(Y, X, honesty = TRUE)
-#' 
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' 
-#' print(honest_me, latex = TRUE)}
+#' print(honest_me, latex = TRUE)
+#' plot(honest_me)
+#' 
+#' ## Subset covariates and select covariates' types.
+#' my_covariates <- list("x1" = "continuous", "x2" = "discrete", "x4" = "discrete")
+#' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE,
+#'                               these_covariates = my_covariates)
+#' print(honest_me)
+#' plot(honest_me)}
 #' 
 #' @details
 #' \code{\link{marginal_effects}} can estimate mean marginal effects, marginal effects at the mean, or marginal effects at the
 #' median, according to the \code{eval} argument.\cr 
 #' 
-#' The routine assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to 
-#' be discrete.\cr  
+#' If \code{these_covariates} is \code{NULL} (the default), the routine assumes that covariates with with at most ten unique values are categorical and treats the remaining covariates as continuous.\cr  
 #'
 #' @importFrom stats median sd pnorm
 #' 
@@ -50,17 +57,20 @@
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}
 #'
 #' @export
-marginal_effects <- function(object, data = NULL, which_covariates = c(), 
+marginal_effects <- function(object, data = NULL, these_covariates = NULL, 
                              eval = "atmean", bandwitdh = 0.1, inference = FALSE) { # Inspired by https://github.com/okasag/orf/blob/master/orf/R/margins.R
   ## 1.) Handling inputs and checks.
   if (!inherits(object, "ocf")) stop("Invalid 'object'.", call. = FALSE) 
   if (inference & !object$tuning.info$honesty) stop("Inference requires forests to be honest. Please feed in a ocf object estimated with 'honesty = TRUE'.", call. = FALSE)
+  if (!is.null(these_covariates) & is.null(names(these_covariates))) stop("If not empty, 'these_covariates' must be a named list. Names are currently missing.", call. = FALSE)
+  if (!is.null(these_covariates) & !is.list(these_covariates)) stop("If not empty 'these_covariates' must be a named list.", call. = FALSE)
+  if (!is.null(these_covariates) & (any(!(these_covariates %in% c("continuous", "discrete"))))) stop("If not empty, entries in 'these_covariates' must be either 'continuous' or 'discrete'.", call. = FALSE)
   
   n_honest <- dim(object$honest_data)[1]
   y.classes <- sort(unique(object$full_data[, 1]))
@@ -74,14 +84,20 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
   
   X <- data
   if (length(colnames(X)) < 1) stop("No covariates found. Maybe 'X' is missing colnames?", call. = FALSE)
-  if (!is.null(which_covariates) & !(any(which_covariates %in% colnames(X)))) stop("One or more of 'which_covariates' has not been found in 'data'.", call. = FALSE)
+  if (!is.null(these_covariates) & !(any(names(these_covariates) %in% colnames(X)))) stop("One or more of 'these_covariates' has not been found in 'data'.", call. = FALSE)
 
-  # 2b.) Save the covariates' types.
+  # 2b.) Check if some covariate is constant.
   X_unique <- apply(data, 2, function(x) length(unique(x)))
-  X_continuous <- which(X_unique > 10) 
-  X_dummy <- which(X_unique == 2) 
-  X_categorical <- which(X_unique > 2 & X_unique <= 10)
   if (any(X_unique == 1) | any(X_unique == 0)) stop("Some of the covariates are constant. This makes no sense for evaluating marginal effects.", call. = FALSE)
+  
+  # 2c.) Save covariates' types. If these_covariates is empty, infer it.
+  if (is.null(these_covariates)) {
+    X_continuous <- which(X_unique > 10) 
+    X_discrete <- which(X_unique > 2 & X_unique <= 10)
+  } else {
+    X_continuous <- which(colnames(X) %in% names(these_covariates)[these_covariates == "continuous"])
+    X_discrete <- which(colnames(X) %in% names(these_covariates)[these_covariates == "discrete"])
+  }
   
   ## 3.) Evaluation points.
   # 3a.) Extract evaluation points.
@@ -94,12 +110,18 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
     evaluation_points <- X 
   }
   
-  # 3b.) Shift each point a little bit up and down.
+  # 3b.) Shift each point a little bit up and down for continuous covariates. For discrete covariates, round up to closest integers. If not selected, leave untouched.
   standard_deviations <- apply(X, 2, sd)
-  X_up <- evaluation_points + bandwitdh * standard_deviations
-  X_down <- evaluation_points - bandwitdh * standard_deviations
+  X_up <- evaluation_points
+  X_down <- evaluation_points
   
-  # 3c.) Enforce X_up and X_down in the support of X.
+  X_up[X_continuous] <- evaluation_points[X_continuous] + bandwitdh * standard_deviations[X_continuous]
+  X_down[X_continuous] <- evaluation_points[X_continuous] - bandwitdh * standard_deviations[X_continuous]
+  
+  X_up[X_discrete] <- ceiling(evaluation_points[X_discrete])
+  X_down[X_discrete] <- floor(evaluation_points[X_discrete])
+  
+  # 3c.) Enforce X_up and X_down in the support of X. This affects also non-selected covariates.
   n_rows <- nrow(evaluation_points)
   X_max <- matrix(rep(apply(X, 2, max), times = 1, each = n_rows), nrow = n_rows)
   X_min <- matrix(rep(apply(X, 2, min), times = 1, each = n_rows), nrow = n_rows)
@@ -134,21 +156,11 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
     colnames(X_down_data[[j]])[1] <- names(X_down)[j]
     colnames(X_down_data[[j]])[-1] <- names(X_down)[-j]
   }
-  
-  # 4b.) Correct for discrete covariates. The shifted covariate is always in the first column.
-  for (j in X_categorical) {
-    X_up_data[[j]][1] <- ceiling(X_up_data[[j]][1])
-    X_down_data[[j]][1] <- ifelse(ceiling(X_down_data[[j]][1]) == ceiling(X_up_data[[j]][1]), floor(X_down_data[[j]][1]), ceiling(X_down_data[[j]][1]))[[1]]
-  }
-  
-  for (j in X_dummy) {
-    X_up_data[[j]][1] <- max(X[, j])
-    X_down_data[[j]][1] <- min(X[, j])
-  }
+
   
   # 4c.) Drop covariates not of interest.
-  if (!is.null(which_covariates)) {
-    idx_interest <- which(colnames(X) %in% which_covariates) 
+  if (!is.null(these_covariates)) {
+    idx_interest <- which(colnames(X) %in% names(these_covariates)) 
     X_up_data <- sapply(idx_interest, function(x) {X_up_data[[x]]}, simplify = FALSE)
     X_down_data <- sapply(idx_interest, function(x) {X_down_data[[x]]}, simplify = FALSE)
   } 
@@ -192,24 +204,24 @@ marginal_effects <- function(object, data = NULL, which_covariates = c(),
   
   ## 6.) Denominator: approximate the marginal change in the covariates, and enforce this to equal one for discrete covariates. Drop covariates not of interest.
   denominators <- 2 * bandwitdh * standard_deviations
-  for (i in (union(X_categorical, X_dummy))) {
+  for (i in X_discrete) {
     denominators[[i]] <- 1
   }
-  if (!is.null(which_covariates)) denominators <- denominators[idx_interest]
+  if (!is.null(these_covariates)) denominators <- denominators[idx_interest]
   
   ## 7.) Marginal effects. First, estimate them for each prediction point (we have only one if atmean/atmedian). Then, 
   ##     average for each class with colMeans (this does not affect results if atmean/atmedian).
   marginal_effects <- mapply(function(x, y) {x / y}, numerators, denominators, SIMPLIFY = FALSE)
   marginal_effects <- matrix(unlist(lapply(marginal_effects, function(x) {colMeans(x)}), use.names = FALSE), ncol = n.classes, byrow = TRUE)
   colnames(marginal_effects) <- paste0("P'(Y=", y.classes, ")")
-  if (!is.null(which_covariates)) rownames(marginal_effects) <- colnames(X)[idx_interest] else rownames(marginal_effects) <- colnames(X)
+  if (!is.null(these_covariates)) rownames(marginal_effects) <- colnames(X)[idx_interest] else rownames(marginal_effects) <- colnames(X)
   
   ## 8.) Variance of marginal effects, if necessary.
   if (inference) {
     # 8a.) Pre-allocating memory.
     variances <- matrix(NA, ncol = n.classes, nrow = length(denominators))
     colnames(variances) <- paste0("P'(Y=", y.classes, ")")
-    if (!is.null(which_covariates)) rownames(variances) <- colnames(X)[idx_interest] else rownames(variances) <- colnames(X)
+    if (!is.null(these_covariates)) rownames(variances) <- colnames(X)[idx_interest] else rownames(variances) <- colnames(X)
     
     # 8b.) Constants.
     denominators_squared <- 1 / denominators^2

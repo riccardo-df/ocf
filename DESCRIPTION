@@ -1,11 +1,11 @@
 Package: ocf
 Type: Package
 Title: Ordered Correlation Forest
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: person("Riccardo", "Di Francesco", email = "difrancesco.riccardo96@gmail.com", role = c("aut", "cre", "cph"))
 Description: Machine learning estimator specifically optimized for predictive modeling of ordered non-numeric outcomes. 'ocf' provides forest-based estimation of the 
     conditional choice probabilities and the covariates’ marginal effects. Under an "honesty" condition, the estimates are consistent and asymptotically normal 
-    and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as Di Francesco (2023)
+    and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as Di Francesco (2025)
     <doi:10.48550/arXiv.2309.08755>.
 License: GPL-3
 Encoding: UTF-8
@@ -19,7 +19,9 @@ Imports:
     stringr,
     orf,
     glmnet,
-    ranger
+    ranger,
+    dplyr,
+    tidyr
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.3.2
 Suggests: 

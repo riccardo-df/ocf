@@ -1,3 +1,8 @@
+## version 1.0.3
+Now the marginal effect estimation function allows the user to declare covariates' types.
+
+Implemented plot method for marginal effect objects.
+
 ## version 1.0.2
 
 Fixed an issue arising with check on outcome formatting. 

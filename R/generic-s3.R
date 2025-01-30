@@ -52,7 +52,7 @@
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -127,7 +127,7 @@ predict.ocf <- function(object, data = NULL, type = "response", ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #' 
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -252,7 +252,7 @@ predict.ocf.forest <- function(object, data, type = "response", ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -309,7 +309,7 @@ summary.ocf <- function(object, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}
@@ -361,7 +361,7 @@ print.ocf <- function(x, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
@@ -468,7 +468,7 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
@@ -476,6 +476,98 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' @export
 print.ocf.marginal <- function(x, latex = FALSE, ...) {
   summary.ocf.marginal(x, latex, ...)
+}
+
+
+#' Plot Method for ocf.marginal Objects
+#'
+#' Plots an \code{ocf.marginal} object.
+#'
+#' @param x An \code{ocf.marginal} object.
+#' @param ... Further arguments passed to or from other methods.
+#' 
+#' @return 
+#' Plots an \code{ocf.marginal} object.
+#' 
+#' @examples 
+#' \donttest{## Generate synthetic data.
+#' set.seed(1986)
+#' 
+#' data <- generate_ordered_data(100)
+#' sample <- data$sample
+#' Y <- sample$Y
+#' X <- sample[, -1]
+#' 
+#' ## Fit ocf.
+#' forests <- ocf(Y, X)
+#' 
+#' ## Marginal effects at the mean.
+#' me <- marginal_effects(forests, eval = "atmean")
+#' plot(me)
+#' 
+#' ## Add standard errors.
+#' honest_forests <- ocf(Y, X, n.trees = 4000, honesty = TRUE)
+#' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
+#' plot(honest_me)}
+#' 
+#' @details 
+#' If standard errors have been estimated, 95\% confidence intervals are shown.
+#' 
+#' @import dplyr tidyr ggplot2
+#' 
+#' @author Riccardo Di Francesco
+#' 
+#' @references
+#' \itemize{
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#' }
+#'
+#' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
+#' 
+#' @export
+plot.ocf.marginal <- function(x, ...) {
+  ## Pivot longer for marginal effects and standard errors (latter only if honesty is TRUE).
+  long_me <- x$marginal.effects %>%
+    as.data.frame() %>%
+    dplyr::mutate(covariate = rownames(x$marginal.effects)) %>%
+    tidyr::pivot_longer(cols = starts_with("P"), names_to = "class", values_to = "marginal_effect")
+  
+  if (x$honesty) {
+    long_se <- x$standard.errors %>%
+      as.data.frame() %>%
+      dplyr::mutate(covariate = rownames(x$standard.errors)) %>%
+      tidyr::pivot_longer(cols = starts_with("P"), names_to = "class", values_to = "standard_error")
+  }
+
+  ## Arrange plotting data. If honesty is FALSE, set standard errors to zero. Construct 95% CIs.
+  if (x$honesty) {
+    plot_dta <- long_me %>%
+      dplyr::left_join(long_se, by = c("covariate", "class"))
+  } else {
+    plot_dta <- long_me %>%
+      dplyr::mutate(standard_error = 0)
+  }
+  
+  plot_dta <- plot_dta %>%
+    dplyr::mutate(CI_upper = marginal_effect + 1.96 * standard_error,
+                  CI_lower = marginal_effect - 1.96 * standard_error)
+  
+  ## Rename classes.
+  n_classes <- x$n.classes
+
+  for (m in seq_len(n_classes)) {
+    plot_dta$class[grepl(m, plot_dta$class)] <- paste0("Class ", m)
+  }
+  
+  ## Generate plot.
+  plot_dta %>%
+    ggplot2::ggplot(ggplot2::aes(x = marginal_effect, y = covariate, color = class)) +
+    ggplot2::geom_point(size = 2, shape = 4, position = ggplot2::position_dodge(width = 0.7)) +
+    ggplot2::geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, position = ggplot2::position_dodge(width = 0.7)) + 
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::ggtitle("") +
+    ggplot2::theme_bw() + 
+    ggplot2::theme(legend.position = "right", legend.title = ggplot2::element_blank())
 }
 
 
@@ -529,7 +621,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
@@ -612,7 +704,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint \href{https://arxiv.org/abs/2309.08755}{arXiv:2309.08755}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
