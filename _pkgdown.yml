@@ -29,6 +29,7 @@ reference:
       - summary.ocf
       - print.ocf.marginal
       - summary.ocf.marginal
+      - plot.ocf.marginal
       - predict.mml
       - predict.oml
 
