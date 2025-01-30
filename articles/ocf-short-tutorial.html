@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
@@ -144,30 +144,29 @@ element rounded up and down to the closest integer.</p>
 <p>For illustration purposes, we generate a synthetic data set. Details
 about the employed DGP can be retrieved by running
 <code><a href="../reference/generate_ordered_data.html">help(generate_ordered_data)</a></code>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Generate synthetic data.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1986</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_ordered_data.html">generate_ordered_data</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">sample</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">Y</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Y</span></span>
-<span><span class="co">#&gt;  1  2  3 </span></span>
-<span><span class="co">#&gt; 31 37 32</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            x1 x2         x3 x4            x5 x6</span></span>
-<span><span class="co">#&gt; 1 -0.04625141  1 -1.7879732  0 -1.0515868012  1</span></span>
-<span><span class="co">#&gt; 2  0.28000082  0 -1.1553030  0 -0.4285613418  0</span></span>
-<span><span class="co">#&gt; 3  0.25317063  1  1.6677330  0  0.1621459072  0</span></span>
-<span><span class="co">#&gt; 4 -0.96411077  0 -0.1587051  0  0.3587438820  0</span></span>
-<span><span class="co">#&gt; 5  0.49222664  0 -1.4020533  1  0.0004035277  0</span></span>
-<span><span class="co">#&gt; 6 -0.69874551  1 -0.4450061  0 -0.3183447897  0</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="do">## Generate synthetic data.</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1986</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">generate_ordered_data</span>(n)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>sample <span class="ot">&lt;-</span> data<span class="sc">$</span>sample</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>Y <span class="ot">&lt;-</span> sample<span class="sc">$</span>Y</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>X <span class="ot">&lt;-</span> sample[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">table</span>(Y)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>Y</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a> <span class="dv">1</span>  <span class="dv">2</span>  <span class="dv">3</span> </span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="dv">31</span> <span class="dv">37</span> <span class="dv">32</span> </span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="fu">head</span>(X)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>           x1 x2         x3 x4            x5 x6</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span><span class="fl">0.04625141</span>  <span class="dv">1</span> <span class="sc">-</span><span class="fl">1.7879732</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">1.0515868012</span>  <span class="dv">1</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="dv">2</span>  <span class="fl">0.28000082</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">1.1553030</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">0.4285613418</span>  <span class="dv">0</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="dv">3</span>  <span class="fl">0.25317063</span>  <span class="dv">1</span>  <span class="fl">1.6677330</span>  <span class="dv">0</span>  <span class="fl">0.1621459072</span>  <span class="dv">0</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="dv">4</span> <span class="sc">-</span><span class="fl">0.96411077</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">0.1587051</span>  <span class="dv">0</span>  <span class="fl">0.3587438820</span>  <span class="dv">0</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="dv">5</span>  <span class="fl">0.49222664</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">1.4020533</span>  <span class="dv">1</span>  <span class="fl">0.0004035277</span>  <span class="dv">0</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="dv">6</span> <span class="sc">-</span><span class="fl">0.69874551</span>  <span class="dv">1</span> <span class="sc">-</span><span class="fl">0.4450061</span>  <span class="dv">0</span> <span class="sc">-</span><span class="fl">0.3183447897</span>  <span class="dv">0</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="conditional-probabilities">Conditional Probabilities<a class="anchor" aria-label="anchor" href="#conditional-probabilities"></a>
 </h3>
@@ -178,76 +177,74 @@ predict out-of-sample using the <code>predict</code> method.
 <code>predict</code> returns a matrix with the predicted probabilities
 and a vector of predicted class labels (each observation is labelled to
 the highest-probability class).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Training-test split.</span></span>
-<span><span class="va">train_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">Y_tr</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">train_idx</span><span class="op">]</span></span>
-<span><span class="va">X_tr</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">train_idx</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="va">Y_test</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span><span class="op">]</span></span>
-<span><span class="va">X_test</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">-</span><span class="va">train_idx</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="co">## Fit ocf on training sample. Use default settings.</span></span>
-<span><span class="va">forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Summary of data and tuning parameters.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">forests</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Call: </span></span>
-<span><span class="co">#&gt; ocf(Y_tr, X_tr) </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Full sample size:   50 </span></span>
-<span><span class="co">#&gt; N. covariates:      6 </span></span>
-<span><span class="co">#&gt; Classes:            1 2 3 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Relative variable importance: </span></span>
-<span><span class="co">#&gt;    x1    x2    x3    x4    x5    x6 </span></span>
-<span><span class="co">#&gt; 0.353 0.059 0.266 0.092 0.206 0.024 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Tuning parameters: </span></span>
-<span><span class="co">#&gt; N. trees:           2000 </span></span>
-<span><span class="co">#&gt; mtry:               3 </span></span>
-<span><span class="co">#&gt; min.node.size       5 </span></span>
-<span><span class="co">#&gt; Subsampling scheme: No replacement </span></span>
-<span><span class="co">#&gt; Honesty:            FALSE </span></span>
-<span><span class="co">#&gt; Honest fraction:    0</span></span>
-<span></span>
-<span><span class="co">## Out-of-sample predictions.</span></span>
-<span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         P(Y=1)    P(Y=2)     P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.4224274 0.4548215 0.12275111</span></span>
-<span><span class="co">#&gt; [2,] 0.4786262 0.4133636 0.10801015</span></span>
-<span><span class="co">#&gt; [3,] 0.1446138 0.4064470 0.44893918</span></span>
-<span><span class="co">#&gt; [4,] 0.6215123 0.3249310 0.05355674</span></span>
-<span><span class="co">#&gt; [5,] 0.4359897 0.3503095 0.21370084</span></span>
-<span><span class="co">#&gt; [6,] 0.6224514 0.3216924 0.05585619</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       </span></span>
-<span><span class="co">#&gt; Y_test  1  2  3</span></span>
-<span><span class="co">#&gt;      1 11  4  1</span></span>
-<span><span class="co">#&gt;      2  7  4  8</span></span>
-<span><span class="co">#&gt;      3  3  1 11</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Training-test split.</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq_len</span>(<span class="fu">length</span>(Y)), <span class="fu">floor</span>(<span class="fu">length</span>(Y) <span class="sc">*</span> <span class="fl">0.5</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>Y_tr <span class="ot">&lt;-</span> Y[train_idx]</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>X_tr <span class="ot">&lt;-</span> X[train_idx, ]</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>Y_test <span class="ot">&lt;-</span> Y[<span class="sc">-</span>train_idx]</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>X_test <span class="ot">&lt;-</span> X[<span class="sc">-</span>train_idx, ]</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="do">## Fit ocf on training sample. Use default settings.</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>forests <span class="ot">&lt;-</span> <span class="fu">ocf</span>(Y_tr, X_tr)</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="do">## Summary of data and tuning parameters.</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">summary</span>(forests)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>Call<span class="sc">:</span> </span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="fu">ocf</span>(Y_tr, X_tr) </span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>Data info<span class="sc">:</span> </span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>Full sample size<span class="sc">:</span>   <span class="dv">50</span> </span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>N. covariates<span class="sc">:</span>      <span class="dv">6</span> </span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>Classes<span class="sc">:</span>            <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> </span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>Relative variable importance<span class="sc">:</span> </span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>   x1    x2    x3    x4    x5    x6 </span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="fl">0.369</span> <span class="fl">0.075</span> <span class="fl">0.253</span> <span class="fl">0.101</span> <span class="fl">0.172</span> <span class="fl">0.030</span> </span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>Tuning parameters<span class="sc">:</span> </span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>N. trees<span class="sc">:</span>           <span class="dv">2000</span> </span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>mtry<span class="sc">:</span>               <span class="dv">3</span> </span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>min.node.size       <span class="dv">5</span> </span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>Subsampling scheme<span class="sc">:</span> No replacement </span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>Honesty<span class="sc">:</span>            <span class="cn">FALSE</span> </span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>Honest fraction<span class="sc">:</span>    <span class="dv">0</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="do">## Out-of-sample predictions.</span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(forests, X_test)</span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="fu">head</span>(predictions<span class="sc">$</span>probabilities)</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>        <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">1</span>)    <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">2</span>)     <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">3</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>[<span class="dv">1</span>,] <span class="fl">0.3543743</span> <span class="fl">0.5375517</span> <span class="fl">0.10807401</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>[<span class="dv">2</span>,] <span class="fl">0.4571570</span> <span class="fl">0.4057421</span> <span class="fl">0.13710091</span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a>[<span class="dv">3</span>,] <span class="fl">0.1173914</span> <span class="fl">0.4803692</span> <span class="fl">0.40223943</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a>[<span class="dv">4</span>,] <span class="fl">0.6342519</span> <span class="fl">0.3132168</span> <span class="fl">0.05253126</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a>[<span class="dv">5</span>,] <span class="fl">0.3482501</span> <span class="fl">0.3873043</span> <span class="fl">0.26444560</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a>[<span class="dv">6</span>,] <span class="fl">0.6284292</span> <span class="fl">0.2999011</span> <span class="fl">0.07166965</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="fu">table</span>(Y_test, predictions<span class="sc">$</span>classification)</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a>      </span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a>Y_test  <span class="dv">1</span>  <span class="dv">2</span>  <span class="dv">3</span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a>     <span class="dv">1</span> <span class="dv">12</span>  <span class="dv">3</span>  <span class="dv">1</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a>     <span class="dv">2</span>  <span class="dv">6</span>  <span class="dv">6</span>  <span class="dv">7</span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a>     <span class="dv">3</span>  <span class="dv">3</span>  <span class="dv">2</span> <span class="dv">10</span></span></code></pre></div>
 <p>To produce consistent and asymptotically normal predictions, we need
 to set the <code>honesty</code> argument to TRUE. This makes the
 <code>ocf</code> function using different parts of the training sample
 to construct the forests and compute the predictions.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Honest forests.</span></span>
-<span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">honest_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">honest_forests</span>, <span class="va">X_test</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         P(Y=1)    P(Y=2)    P(Y=3)</span></span>
-<span><span class="co">#&gt; [1,] 0.3780979 0.3260178 0.2958843</span></span>
-<span><span class="co">#&gt; [2,] 0.3907848 0.3341460 0.2750692</span></span>
-<span><span class="co">#&gt; [3,] 0.2350265 0.4046100 0.3603635</span></span>
-<span><span class="co">#&gt; [4,] 0.4247656 0.3567507 0.2184836</span></span>
-<span><span class="co">#&gt; [5,] 0.3556529 0.3095442 0.3348028</span></span>
-<span><span class="co">#&gt; [6,] 0.4039818 0.3383057 0.2577125</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="do">## Honest forests.</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>honest_forests <span class="ot">&lt;-</span> <span class="fu">ocf</span>(Y_tr, X_tr, <span class="at">honesty =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>honest_predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(honest_forests, X_test)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">head</span>(honest_predictions<span class="sc">$</span>probabilities)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>        <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">1</span>)    <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">2</span>)    <span class="fu">P</span>(<span class="at">Y=</span><span class="dv">3</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>[<span class="dv">1</span>,] <span class="fl">0.3476025</span> <span class="fl">0.3216374</span> <span class="fl">0.3307601</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>[<span class="dv">2</span>,] <span class="fl">0.3865934</span> <span class="fl">0.3244973</span> <span class="fl">0.2889093</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>[<span class="dv">3</span>,] <span class="fl">0.2351550</span> <span class="fl">0.4112832</span> <span class="fl">0.3535617</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>[<span class="dv">4</span>,] <span class="fl">0.4237396</span> <span class="fl">0.3527212</span> <span class="fl">0.2235392</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>[<span class="dv">5</span>,] <span class="fl">0.3394056</span> <span class="fl">0.3034435</span> <span class="fl">0.3571509</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>[<span class="dv">6</span>,] <span class="fl">0.4069484</span> <span class="fl">0.3231956</span> <span class="fl">0.2698560</span></span></code></pre></div>
 <p>To estimate standard errors for the predicted probabilities, we need
 to set the <code>inference</code> argument to TRUE. However, this works
 only if <code>honesty</code> is TRUE, as the formula for the variance is
@@ -263,64 +260,83 @@ the <code>n.threads</code> argument.</p>
 <div class="section level3">
 <h3 id="covariates-marginal-effects">Covariates’ Marginal Effects<a class="anchor" aria-label="anchor" href="#covariates-marginal-effects"></a>
 </h3>
-<p>To estimate the covariates’ marginal effects, we can post-process the
+<p>To estimate the covariates’ marginal effects, we post-process the
 conditional probability predictions. This is performed by the
 <code>marginal_effects</code> function that can estimate mean marginal
 effects, marginal effects at the mean, and marginal effects at the
 median, according to the <code>eval</code> argument.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## Marginal effects at the mean.</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>me_atmean <span class="ot">&lt;-</span> <span class="fu">marginal_effects</span>(forests, <span class="at">eval =</span> <span class="st">"atmean"</span>) <span class="co"># Try also 'eval = "atmean"' and 'eval = "mean"'.</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">print</span>(me_atmean) <span class="co"># Try also 'latex = TRUE'.</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>ocf marginal effects results </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>Data info<span class="sc">:</span> </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>Number of classes<span class="sc">:</span>    <span class="dv">3</span> </span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>Sample size<span class="sc">:</span>          <span class="dv">50</span> </span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>Tuning parameters<span class="sc">:</span> </span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>Evaluation<span class="sc">:</span>           atmean </span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>Bandwidth<span class="sc">:</span>            <span class="fl">0.1</span> </span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>Number of trees<span class="sc">:</span>      <span class="dv">2000</span> </span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>Honest forests<span class="sc">:</span>       <span class="cn">FALSE</span> </span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>Honesty fraction<span class="sc">:</span>     <span class="dv">0</span> </span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>Marginal Effects<span class="sc">:</span> </span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>   P<span class="st">'(Y=1) P'</span>(<span class="at">Y=</span><span class="dv">2</span>) P<span class="st">'(Y=3)</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="st">x1  -0.119  -0.283   0.402</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="st">x2  -0.986   0.724   0.262</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="st">x3  -0.058  -0.027   0.085</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="st">x4  -0.507  -1.498   2.006</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="st">x5   0.028   0.048  -0.075</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="st">x6   0.000   0.000   0.000</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="st">plot(me_atmean)</span></span></code></pre></div>
+<p><img src="ocf-short-tutorial_files/figure-html/adaptive-me-1.png" width="700"></p>
+<p>Sometimes, we are only interested in the marginal effects of a subset
+of the available covariates. To spare some time, we can use the
+<code>these_covariates</code> argument to estimate marginal effects of
+only those covariates. This argument also allows the user to declare
+whether the covariates are to be treated as <code>"continuous"</code> of
+<code>"discrete"</code> (marginal effect estimation is handled
+differently according to the covariate’s nature).
+<code>these_covariates</code> must be a named list, with entries’ names
+specifying the target covariates and entries specifying the covariates’
+types. If not used, covariates’ types are inferred by the routine using
+basic heuristics (as in the example above).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Marginal effects at the mean.</span></span>
-<span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span> <span class="co"># Try also 'eval = "atmean"' and 'eval = "mean"'.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span> <span class="co"># Try also 'latex = TRUE'.</span></span>
-<span><span class="co">#&gt; ocf marginal effects results </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Number of classes:    3 </span></span>
-<span><span class="co">#&gt; Sample size:          50 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Tuning parameters: </span></span>
-<span><span class="co">#&gt; Evaluation:           atmean </span></span>
-<span><span class="co">#&gt; Bandwidth:            0.1 </span></span>
-<span><span class="co">#&gt; Number of trees:      2000 </span></span>
-<span><span class="co">#&gt; Honest forests:       FALSE </span></span>
-<span><span class="co">#&gt; Honesty fraction:     0 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal Effects: </span></span>
-<span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; x1  -0.100  -0.311   0.411</span></span>
-<span><span class="co">#&gt; x2  -0.078   0.065   0.013</span></span>
-<span><span class="co">#&gt; x3  -0.048  -0.013   0.060</span></span>
-<span><span class="co">#&gt; x4  -0.024  -0.175   0.198</span></span>
-<span><span class="co">#&gt; x5   0.033   0.049  -0.082</span></span>
-<span><span class="co">#&gt; x6  -0.006   0.010  -0.004</span></span></code></pre></div>
+<span><span class="va">target_covariates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"x1"</span> <span class="op">=</span> <span class="st">"continuous"</span>, <span class="st">"x2"</span> <span class="op">=</span> <span class="st">"discrete"</span>, <span class="st">"x4"</span> <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span></span>
+<span><span class="va">me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, these_covariates <span class="op">=</span> <span class="va">target_covariates</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">me_atmean</span><span class="op">)</span></span></code></pre></div>
+<p><img src="ocf-short-tutorial_files/figure-html/adaptive-me-target-1.png" width="700"></p>
 <p>As before, we can set the <code>inference</code> argument to TRUE to
 estimate the standard errors. Again, this requires the use of honest
 forests and can considerably slow down the routine.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Compute standard errors.</span></span>
-<span><span class="va">honest_me_atmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me_atmean</span><span class="op">)</span> <span class="co"># Try also 'latex = TRUE'.</span></span>
-<span><span class="co">#&gt; ocf marginal effects results </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Data info: </span></span>
-<span><span class="co">#&gt; Number of classes:    3 </span></span>
-<span><span class="co">#&gt; Sample size:          50 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Tuning parameters: </span></span>
-<span><span class="co">#&gt; Evaluation:           atmean </span></span>
-<span><span class="co">#&gt; Bandwidth:            0.1 </span></span>
-<span><span class="co">#&gt; Number of trees:      2000 </span></span>
-<span><span class="co">#&gt; Honest forests:       TRUE </span></span>
-<span><span class="co">#&gt; Honesty fraction:     0.5 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal Effects: </span></span>
-<span><span class="co">#&gt;    P'(Y=1) P'(Y=2) P'(Y=3)</span></span>
-<span><span class="co">#&gt; x1  -0.017   0.000   0.017</span></span>
-<span><span class="co">#&gt; x2  -0.036   0.013   0.023</span></span>
-<span><span class="co">#&gt; x3  -0.011   0.009   0.002</span></span>
-<span><span class="co">#&gt; x4  -0.014  -0.053   0.067</span></span>
-<span><span class="co">#&gt; x5  -0.006   0.026  -0.020</span></span>
-<span><span class="co">#&gt; x6  -0.002  -0.003   0.005</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## Compute standard errors.</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>honest_me_atmean <span class="ot">&lt;-</span> <span class="fu">marginal_effects</span>(honest_forests, <span class="at">eval =</span> <span class="st">"atmean"</span>, <span class="at">inference =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">print</span>(honest_me_atmean) <span class="co"># Try also 'latex = TRUE'.</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>ocf marginal effects results </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>Data info<span class="sc">:</span> </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>Number of classes<span class="sc">:</span>    <span class="dv">3</span> </span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>Sample size<span class="sc">:</span>          <span class="dv">50</span> </span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>Tuning parameters<span class="sc">:</span> </span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>Evaluation<span class="sc">:</span>           atmean </span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>Bandwidth<span class="sc">:</span>            <span class="fl">0.1</span> </span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>Number of trees<span class="sc">:</span>      <span class="dv">2000</span> </span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>Honest forests<span class="sc">:</span>       <span class="cn">TRUE</span> </span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>Honesty fraction<span class="sc">:</span>     <span class="fl">0.5</span> </span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>Marginal Effects<span class="sc">:</span> </span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>   P<span class="st">'(Y=1) P'</span>(<span class="at">Y=</span><span class="dv">2</span>) P<span class="st">'(Y=3)</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="st">x1  -0.018  -0.009   0.027</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="st">x2  -0.368   0.115   0.254</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="st">x3  -0.015   0.006   0.009</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="st">x4  -0.132  -0.490   0.622</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="st">x5  -0.003   0.030  -0.027</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="st">x6   0.000   0.000   0.000</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="st">plot(me_atmean)</span></span></code></pre></div>
+<p><img src="ocf-short-tutorial_files/figure-html/honest-me-1.png" width="700"></p>
 </div>
 </div>
   </div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">marginal_effects</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  which_covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  these_covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  eval <span class="op">=</span> <span class="st">"atmean"</span>,</span>
 <span>  bandwitdh <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  inference <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -75,8 +75,8 @@
 <dd><p>Data set of class <code>data.frame</code> to estimate marginal effects. It must contain at least the same covariates used to train the forests. If <code>NULL</code>, marginal effects are estimated on <code>object$full_data</code>.</p></dd>
 
 
-<dt id="arg-which-covariates">which_covariates<a class="anchor" aria-label="anchor" href="#arg-which-covariates"></a></dt>
-<dd><p>Character vector storing the names of the covariates for which marginal effect estimation is desired. If empty (the default), marginal effects are estimated for all covariates.</p></dd>
+<dt id="arg-these-covariates">these_covariates<a class="anchor" aria-label="anchor" href="#arg-these-covariates"></a></dt>
+<dd><p>Named list with covariates' names as keys and strings denoting covariates' types as entries. Strings must be either <code>"continuous"</code> or <code>"discrete"</code>. The names of the list indicate the covariates for which marginal effect estimation is desired. If <code>NULL</code> (the default), marginal effects are estimated for all covariates and covariates' types are inferred by the routine.</p></dd>
 
 
 <dt id="arg-eval">eval<a class="anchor" aria-label="anchor" href="#arg-eval"></a></dt>
@@ -99,13 +99,12 @@
     <h2>Details</h2>
     <p><code>marginal_effects</code> can estimate mean marginal effects, marginal effects at the mean, or marginal effects at the
 median, according to the <code>eval</code> argument.<br></p>
-<p>The routine assumes that covariates with more than ten unique values are continuous. Otherwise, covariates are assumed to
-be discrete.<br></p>
+<p>If <code>these_covariates</code> is <code>NULL</code> (the default), the routine assumes that covariates with with at most ten unique values are categorical and treats the remaining covariates as continuous.<br></p>
     </div>
     <div id="references">
     <h2>References</h2>
 
-<ul><li><p>Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint <a href="https://arxiv.org/abs/2309.08755" class="external-link">arXiv:2309.08755</a>.</p></li>
+<ul><li><p>Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. <a href="https://doi.org/10.1080/07474938.2024.2429596" class="external-link">https://doi.org/10.1080/07474938.2024.2429596</a>.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -148,12 +147,12 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x1   0.008  -0.167   0.159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x2  -0.034   0.066  -0.033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x3  -0.089   0.014   0.075</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x4  -0.047  -0.148   0.194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x5  -0.022   0.027  -0.004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x6   0.009  -0.027   0.018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x1  -0.020  -0.086   0.106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2  -0.497   0.701  -0.204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x3  -0.090  -0.004   0.094</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x4  -0.564  -1.294   1.858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x5  -0.036   0.043  -0.007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x6   0.000   0.000   0.000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
@@ -168,12 +167,12 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; 0.008 &amp; -0.167 &amp; 0.159 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.034 &amp; 0.066 &amp; -0.033 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.089 &amp; 0.014 &amp; 0.075 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.047 &amp; -0.148 &amp; 0.194 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.022 &amp; 0.027 &amp; -0.004 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; 0.009 &amp; -0.027 &amp; 0.018 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.02 &amp; -0.086 &amp; 0.106 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.497 &amp; 0.701 &amp; -0.204 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.09 &amp; -0.004 &amp; 0.094 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.564 &amp; -1.294 &amp; 1.858 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.036 &amp; 0.043 &amp; -0.007 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; 0 &amp; 0 &amp; 0 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -184,10 +183,11 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:ocf.marginal.effects}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="marginal_effects-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -204,18 +204,18 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.064 &amp; -0.117 &amp; 0.181 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.032) &amp; (0.136) &amp; (0.09) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.004 &amp; 0.009 &amp; -0.005 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.028) &amp; (0.052) &amp; (0.016) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.065 &amp; 0.003 &amp; 0.062 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.049) &amp; (0.078) &amp; (0.081) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.025 &amp; -0.021 &amp; 0.045 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.01) &amp; (0.037) &amp; (0.033) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.029 &amp; 0.028 &amp; 0.001 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.022) &amp; (0.019) &amp; (0.009) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; -0.002 &amp; -0.009 &amp; 0.011 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.019) &amp; (0.043) &amp; (0.028) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.1 &amp; -0.146 &amp; 0.246 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.033) &amp; (0.141) &amp; (0.144) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.057 &amp; 0.119 &amp; -0.062 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.276) &amp; (0.509) &amp; (0.209) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.057 &amp; 0.009 &amp; 0.048 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.05) &amp; (0.093) &amp; (0.076) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.286 &amp; -0.114 &amp; 0.399 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.125) &amp; (0.422) &amp; (0.338) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.041 &amp; 0.035 &amp; 0.006 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.034) &amp; (0.024) &amp; (0.012) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; 0 &amp; 0 &amp; 0 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0) &amp; (0) &amp; (0) \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -226,6 +226,34 @@ be discrete.<br></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:ocf.marginal.effects}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">honest_me</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="marginal_effects-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subset covariates and select covariates' types.</span></span></span>
+<span class="r-in"><span><span class="va">my_covariates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"x1"</span> <span class="op">=</span> <span class="st">"continuous"</span>, <span class="st">"x2"</span> <span class="op">=</span> <span class="st">"discrete"</span>, <span class="st">"x4"</span> <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu">marginal_effects</span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                              these_covariates <span class="op">=</span> <span class="va">my_covariates</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ocf marginal effects results </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data info: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes:    3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size:          100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation:           atmean </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bandwidth:            0.1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of trees:      2000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Honest forests:       TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Honesty fraction:     0.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x1  -0.100  -0.146   0.246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2  -0.006   0.012  -0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x4  -0.028  -0.011   0.040</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">honest_me</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="marginal_effects-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

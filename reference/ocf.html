@@ -18,7 +18,7 @@ splitting criterion to build a collection of forests, each estimating the condit
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span>  honesty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  honesty.fraction <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  inference <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  n.trees <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  min.node.size <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -135,7 +135,7 @@ splitting criterion to build a collection of forests, each estimating the condit
     <div id="references">
     <h2>References</h2>
 
-<ul><li><p>Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint <a href="https://arxiv.org/abs/2309.08755" class="external-link">arXiv:2309.08755</a>.</p></li>
+<ul><li><p>Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. <a href="https://doi.org/10.1080/07474938.2024.2429596" class="external-link">https://doi.org/10.1080/07474938.2024.2429596</a>.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -180,7 +180,7 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative variable importance: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x1    x2    x3    x4    x5    x6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.353 0.059 0.266 0.092 0.206 0.024 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.369 0.075 0.253 0.101 0.172 0.030 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. trees:           2000 </span>
@@ -200,7 +200,7 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative variable importance: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x1    x2    x3    x4    x5    x6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.353 0.059 0.266 0.092 0.206 0.024 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.369 0.075 0.253 0.101 0.172 0.030 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tuning parameters: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N. trees:           2000 </span>
@@ -212,29 +212,29 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4224274 0.4548215 0.12275111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4786262 0.4133636 0.10801015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1446138 0.4064470 0.44893918</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6215123 0.3249310 0.05355674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4359897 0.3503095 0.21370084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6224514 0.3216924 0.05585619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3543743 0.5375517 0.10807401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4571570 0.4057421 0.13710091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1173914 0.4803692 0.40223943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6342519 0.3132168 0.05253126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.3482501 0.3873043 0.26444560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6284292 0.2999011 0.07166965</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Y_test</span>, <span class="va">predictions</span><span class="op">$</span><span class="va">classification</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Y_test  1  2  3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1 11  4  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2  7  4  8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3  3  1 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1 12  3  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2  6  6  7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3  3  2 10</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu">ocf</span><span class="op">(</span><span class="va">Y_tr</span>, <span class="va">X_tr</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">honest_forests</span><span class="op">$</span><span class="va">predictions</span><span class="op">$</span><span class="va">standard.errors</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)    P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.15222731 0.11070564 0.1296048</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.25687762 0.12911868 0.0855497</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.09584680 0.08474158 0.1777998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.08506775 0.10642352 0.1795780</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.07534241 0.07390018 0.1754728</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.08414576 0.11421756 0.1380961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          P(Y=1)     P(Y=2)     P(Y=3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.14707811 0.10843407 0.12503924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.25424513 0.12183948 0.08781877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.09562321 0.08456940 0.17198078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.08479858 0.10601795 0.17985686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.07368632 0.07498043 0.17513137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.08458887 0.11259881 0.13967386</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Marginal effects.</span></span></span>
 <span class="r-in"><span><span class="va">me</span> <span class="op">&lt;-</span> <span class="fu"><a href="marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span><span class="op">)</span></span></span>
@@ -254,12 +254,12 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Marginal Effects: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    P'(Y=1) P'(Y=2) P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x1  -0.100  -0.311   0.411</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x2  -0.078   0.065   0.013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x3  -0.048  -0.013   0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x4  -0.024  -0.175   0.198</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x5   0.033   0.049  -0.082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x6  -0.006   0.010  -0.004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x1  -0.119  -0.283   0.402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x2  -0.986   0.724   0.262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x3  -0.058  -0.027   0.085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x4  -0.507  -1.498   2.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x5   0.028   0.048  -0.075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x6   0.000   0.000   0.000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
@@ -274,12 +274,12 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.1 &amp; -0.311 &amp; 0.411 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.078 &amp; 0.065 &amp; 0.013 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.048 &amp; -0.013 &amp; 0.06 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.024 &amp; -0.175 &amp; 0.198 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; 0.033 &amp; 0.049 &amp; -0.082 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; -0.006 &amp; 0.01 &amp; -0.004 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.119 &amp; -0.283 &amp; 0.402 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.986 &amp; 0.724 &amp; 0.262 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.058 &amp; -0.027 &amp; 0.085 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.507 &amp; -1.498 &amp; 2.006 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; 0.028 &amp; 0.048 &amp; -0.075 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; 0 &amp; 0 &amp; 0 \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -290,17 +290,11 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:ocf.marginal.effects}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ocf-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Compute standard errors. This requires honest forests.</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu"><a href="marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">honest_me</span><span class="op">$</span><span class="va">standard.errors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        P'(Y=1)    P'(Y=2)     P'(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x1 0.020994263 0.01995347 0.002127984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x2 0.023534434 0.04554165 0.012388880</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x3 0.046477600 0.04247743 0.000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x4 0.011836598 0.04421252 0.051962839</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x5 0.023905929 0.02908331 0.027563358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x6 0.009801362 0.02172657 0.012120712</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">honest_me</span>, latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \setlength{\tabcolsep}{8pt}</span>
@@ -315,18 +309,18 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[2pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \hline \\[-1.8ex] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.017 &amp; 0 &amp; 0.017 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.021) &amp; (0.02) &amp; (0.002) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.036 &amp; 0.013 &amp; 0.023 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.024) &amp; (0.046) &amp; (0.012) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.011 &amp; 0.009 &amp; 0.002 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.046) &amp; (0.042) &amp; (0) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.014 &amp; -0.053 &amp; 0.067 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.012) &amp; (0.044) &amp; (0.052) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.006 &amp; 0.026 &amp; -0.02 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.024) &amp; (0.029) &amp; (0.028) \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; -0.002 &amp; -0.003 &amp; 0.005 \\ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.01) &amp; (0.022) &amp; (0.012) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x1} &amp; -0.018 &amp; -0.009 &amp; 0.027 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.019) &amp; (0.02) &amp; (0.008) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x2} &amp; -0.368 &amp; 0.115 &amp; 0.254 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.232) &amp; (0.49) &amp; (0.174) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x3} &amp; -0.015 &amp; 0.006 &amp; 0.009 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.052) &amp; (0.053) &amp; (0.008) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x4} &amp; -0.132 &amp; -0.49 &amp; 0.622 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.134) &amp; (0.43) &amp; (0.503) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x5} &amp; -0.003 &amp; 0.03 &amp; -0.027 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0.025) &amp; (0.033) &amp; (0.036) \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         \texttt{x6} &amp; 0 &amp; 0 &amp; 0 \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &amp; (0) &amp; (0) &amp; (0) \\ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \addlinespace[3pt]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \\[-1.8ex]\hline</span>
@@ -337,6 +331,8 @@ splitting criterion to build a collection of forests, each estimating the condit
 <span class="r-out co"><span class="r-pr">#&gt;</span>         \label{table:ocf.marginal.effects}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     \end{table}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">honest_me</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ocf-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

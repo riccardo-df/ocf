@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ocf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ labels. If forests are honest, the predicted probabilities are honest.<br></p>
     <div id="references">
     <h2>References</h2>
 
-<ul><li><p>Di Francesco, R. (2023). Ordered Correlation Forest. arXiv preprint <a href="https://arxiv.org/abs/2309.08755" class="external-link">arXiv:2309.08755</a>.</p></li>
+<ul><li><p>Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. <a href="https://doi.org/10.1080/07474938.2024.2429596" class="external-link">https://doi.org/10.1080/07474938.2024.2429596</a>.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -127,41 +127,41 @@ labels. If forests are honest, the predicted probabilities are honest.<br></p>
 <span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">$</span><span class="va">probabilities</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         P(Y=1)    P(Y=2)     P(Y=3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4224274 0.4548215 0.12275111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4786262 0.4133636 0.10801015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1446138 0.4064470 0.44893918</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6215123 0.3249310 0.05355674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4359897 0.3503095 0.21370084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6224514 0.3216924 0.05585619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3543743 0.5375517 0.10807401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4571570 0.4057421 0.13710091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1173914 0.4803692 0.40223943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.6342519 0.3132168 0.05253126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.3482501 0.3873043 0.26444560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.6284292 0.2999011 0.07166965</span>
 <span class="r-in"><span><span class="va">predictions</span><span class="op">$</span><span class="va">classification</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2 1 3 1 1 1 3 1 2 1 3 1 1 3 1 1 2 3 3 1 3 3 3 3 2 1 1 3 1 2 1 2 1 3 3 3 2 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2 1 2 1 2 1 3 1 2 1 3 1 1 3 1 1 2 3 3 1 3 3 3 3 2 1 1 3 1 2 1 2 1 3 3 3 1 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [39] 1 2 1 3 3 3 2 3 3 1 1 1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Get terminal nodes.</span></span></span>
 <span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">forests</span>, <span class="va">X_test</span>, type <span class="op">=</span> <span class="st">"terminalNodes"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">predictions</span><span class="op">$</span><span class="va">forest.1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span> <span class="co"># Rows are observations, columns are forests.</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   12    6    6    5    3    5    1    9    7    11     5     5    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   14    9    5    5    3    3    6    9    7    11     5     5     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]   10    6    6    6    8    6    6   12    6    12     7     9     6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]   13    3    7    3    1    3    6    7   12     7     3     3     7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]   14    9    5    5    3    3    1    6    7    11     5     5     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]   13    4    7    3    3    5    6    8    7     7     3     3     9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    6   10    5    5    6   12    6    6    6    12     8    12     7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]   13    4    8    3    8    5    6    8    7     7     3     3     6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   12    6    8    3    8    6    6    4    6     7     4    11     6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    4    4    7    4    8    5    6    8    7     4     3     3     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    8    6    6    5    7    5    3   10    3    11     5     5     9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    9    9    5    5    6    3    4    9    3    11     5     5     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]   10    6    6    6    6    6    7   10    6    12     7     9     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]   10    3    7    3    3    3    5    7    9     7     3     3     7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    9    9    5    5    6    3    4    6    4    10     5     5     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    9    4    7    3    4    5    3    8    3     7     3     3     9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    6   10    5    5    6   10    7    6    6    10     8    10     7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    6    4    8    4    4    5    3    8    4     7     3     3     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    6    6    8    4    4    6    7    4    6     8     4    10     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    4    4    7    4    4    5    3    8    3     4     3     3     6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,14] [,15] [,16] [,17] [,18] [,19] [,20]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]     3     3     6     3     4     6     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]     5     3     3     4     5     7     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]     3     3     6     3     4     5     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]     5     3     7     3     6    10     3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]     7     6     6     9     2     6     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]     9     5     9     5     2     9     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]     5     3     3     4     5     7     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]     7     3     5     5     4     6     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    10     2    10     7     2     9     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]     9     2     5     5     4     6     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]     9     2     6    10     2     6     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]     5     2     5     5     4     6     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]     9     5     7     5     2    12     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]     5     3     7     3     6    10     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]     7     3     5     5     4     5     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    10     2     4     7     2    10     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]     9     2     5     5     4     5     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]     9     2     6    10     2     5     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]     5     2     5     5     4     5     3</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
