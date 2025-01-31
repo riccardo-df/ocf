@@ -22,7 +22,8 @@ Imports:
     ranger,
     dplyr,
     tidyr,
-    ggplot2
+    ggplot2,
+    magrittr
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.3.2
 Suggests: 

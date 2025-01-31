@@ -37,7 +37,7 @@ me <- marginal_effects(forests, eval = "atmean")
 plot(me)
 
 ## Add standard errors.
-honest_forests <- ocf(Y, X, n.trees = 4000, honesty = TRUE)
+honest_forests <- ocf(Y, X, honesty = TRUE)
 honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 plot(honest_me)}
 

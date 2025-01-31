@@ -513,7 +513,10 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' @details 
 #' If standard errors have been estimated, 95\% confidence intervals are shown.
 #' 
-#' @import dplyr tidyr ggplot2
+#' @import tidyr ggplot2
+#' @importFrom dplyr mutate
+#' @importFrom dplyr left_join
+#' @importFrom magrittr %>%
 #' 
 #' @author Riccardo Di Francesco
 #' 
