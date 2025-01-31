@@ -10,7 +10,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = ""
+  comment = "R>"
 )
 
 library(ocf)
@@ -116,6 +116,7 @@ To estimate the covariates' marginal effects, we post-process the conditional pr
 ## Marginal effects at the mean.
 me_atmean <- marginal_effects(forests, eval = "atmean") # Try also 'eval = "atmean"' and 'eval = "mean"'.
 print(me_atmean) # Try also 'latex = TRUE'.
+
 plot(me_atmean)
 ```
 
@@ -125,6 +126,7 @@ Sometimes, we are only interested in the marginal effects of a subset of the ava
 ## Marginal effects at the mean.
 target_covariates <- list("x1" = "continuous", "x2" = "discrete", "x4" = "discrete")
 me_atmean <- marginal_effects(forests, eval = "atmean", these_covariates = target_covariates) 
+
 plot(me_atmean)
 ```
 
@@ -134,5 +136,6 @@ As before, we can set the `inference` argument to TRUE to estimate the standard 
 ## Compute standard errors.
 honest_me_atmean <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 print(honest_me_atmean) # Try also 'latex = TRUE'.
-plot(me_atmean)
+
+plot(honest_me_atmean)
 ```

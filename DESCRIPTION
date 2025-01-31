@@ -21,7 +21,8 @@ Imports:
     glmnet,
     ranger,
     dplyr,
-    tidyr
+    tidyr,
+    ggplot2
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.3.2
 Suggests: 

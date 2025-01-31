@@ -456,7 +456,7 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' print(me, latex = TRUE)
 #' 
 #' ## Add standard errors.
-#' honest_forests <- ocf(Y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(Y, X, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' print(honest_me, latex = TRUE)}
 #' 
@@ -506,7 +506,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' plot(me)
 #' 
 #' ## Add standard errors.
-#' honest_forests <- ocf(Y, X, n.trees = 4000, honesty = TRUE)
+#' honest_forests <- ocf(Y, X, honesty = TRUE)
 #' honest_me <- marginal_effects(honest_forests, eval = "atmean", inference = TRUE)
 #' plot(honest_me)}
 #' 
@@ -526,6 +526,12 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' 
 #' @export
 plot.ocf.marginal <- function(x, ...) {
+  CI_lower <- NULL
+  CI_upper <- NULL 
+  covariate <- NULL 
+  marginal_effect <- NULL 
+  standard_error <- NULL
+  
   ## Pivot longer for marginal effects and standard errors (latter only if honesty is TRUE).
   long_me <- x$marginal.effects %>%
     as.data.frame() %>%
