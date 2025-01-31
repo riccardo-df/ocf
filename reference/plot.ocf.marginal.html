@@ -110,7 +110,7 @@
 <span class="r-plt img"><img src="plot.ocf.marginal-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add standard errors.</span></span></span>
-<span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X</span>, n.trees <span class="op">=</span> <span class="fl">4000</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">honest_forests</span> <span class="op">&lt;-</span> <span class="fu"><a href="ocf.html">ocf</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X</span>, honesty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">honest_me</span> <span class="op">&lt;-</span> <span class="fu"><a href="marginal_effects.html">marginal_effects</a></span><span class="op">(</span><span class="va">honest_forests</span>, eval <span class="op">=</span> <span class="st">"atmean"</span>, inference <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">honest_me</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.ocf.marginal-2.png" alt="" width="700" height="433"></span>
