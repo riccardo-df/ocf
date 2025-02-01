@@ -52,7 +52,7 @@
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -127,7 +127,7 @@ predict.ocf <- function(object, data = NULL, type = "response", ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #' 
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -252,7 +252,7 @@ predict.ocf.forest <- function(object, data, type = "response", ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}
@@ -309,7 +309,7 @@ summary.ocf <- function(object, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}
@@ -361,7 +361,7 @@ print.ocf <- function(x, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
@@ -468,7 +468,7 @@ summary.ocf.marginal <- function(object, latex = FALSE, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
@@ -522,7 +522,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
@@ -630,7 +630,7 @@ plot.ocf.marginal <- function(x, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
@@ -713,7 +713,7 @@ predict.mml <- function(object, data = NULL, ...) {
 #' 
 #' @references
 #' \itemize{
-#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \href{https://doi.org/10.1080/07474938.2024.2429596}{https://doi.org/10.1080/07474938.2024.2429596}.
+#'   \item Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews, 1–17. \doi{10.1080/07474938.2024.2429596}.
 #' }
 #'
 #' @seealso \code{\link{multinomial_ml}}, \code{\link{ordered_ml}}
