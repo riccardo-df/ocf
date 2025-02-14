@@ -33,7 +33,7 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 
 - Di Francesco, R. (2025). 
 <b>Ordered Correlation Forest.</b>
-<i>Econometric Reviews</i>.
+<i>Econometric Reviews</i>. 44(4).
 [<a href="https://doi.org/10.1080/07474938.2024.2429596">paper</a>]
 
 - Lechner, M., & Mareckova, J. (2022). 
