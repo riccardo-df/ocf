@@ -4,8 +4,6 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/ocf)](https://CRAN.R-project.org/package=ocf) 
 [![Downloads](https://cranlogs.r-pkg.org/badges/ocf)](https://CRAN.R-project.org/package=ocf)
 
-## Overview
-
 `ocf` implements the *ordered correlation forest* estimator, a machine learning estimator specifically designed for predictive modeling of ordered non-numeric outcomes.
 
 The package delivers:
