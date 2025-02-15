@@ -1,6 +1,6 @@
 #' Multinomial Machine Learning
 #' 
-#' Estimation strategy to estimate conditional choice probabilities for ordered non-numeric outcomes.
+#' Estimation strategy to estimate conditional choice probabilities for multinomial outcomes.
 #'
 #' @param Y Outcome vector.
 #' @param X Covariate matrix (no intercept).
