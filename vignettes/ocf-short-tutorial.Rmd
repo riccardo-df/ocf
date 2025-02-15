@@ -17,15 +17,18 @@ knitr::opts_chunk$set(
 library(ocf)
 ```
 
-In this tutorial, we show how to use the `ocf` package to estimate and make inference about the conditional choice probabilities and the covariates' marginal effects. 
+## Introduction
 
-Before diving in the coding, we provide an overview of the statistical problem at hand.
+This tutorial provides an overview of the core functions in the `ocf` package, which facilitates predictive modeling of ordered non-numeric outcomes:
+
+-   `ocf()` for estimation and inference about conditional choice probabilities
+-   `marginal_effects()` for estimation and inference about covariates' marginal effects
 
 ## Ordered Choice Models
+
 We postulate the existence of a latent and continuous outcome variable $Y_i^*$, assumed to obey the following regression model:
 
-$$ Y_i^* = g \left( X_i \right) + \epsilon_i  $$
-where $X_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $X_i$. 
+$$ Y_i^* = g \left( X_i \right) + \epsilon_i  $$ where $X_i$ consists of a set of raw covariates, $g \left( \cdot \right)$ is a potentially non-linear regression function, and $\epsilon_i$ is independent of $X_i$.
 
 An observational rule links the observed outcome $Y_i$ to the latent outcome $Y_{i}^*$ using unknown threshold parameters $- \infty = \zeta_0 < \zeta_1 < \dots < \zeta_{M - 1} < \zeta_M = \infty$ that define intervals on the support of $Y_i^*$, with each interval corresponding to one of the $M$ categories or classes of $Y_i$:
 
@@ -43,10 +46,10 @@ $$
     \frac{\partial p_m \left( x \right)}{\partial x_j}, & \text{if } x_j \text{ is continuous}  \\
     p_m \left( \lceil x_j \rceil \right) - p_m \left( \lfloor x_j \rfloor \right), & \text{if } x_j \text{ is discrete}
   \end{cases}
-$$
-where $x_j$ is the $j$-th element of the vector $x$ and $\lceil x_j \rceil$ and $\lfloor x_j \rfloor$ correspond to $x$ with its $j$-th element rounded up and down to the closest integer.
+$$ where $x_j$ is the $j$-th element of the vector $x$ and $\lceil x_j \rceil$ and $\lfloor x_j \rfloor$ correspond to $x$ with its $j$-th element rounded up and down to the closest integer.
 
 ## Code
+
 For illustration purposes, we generate a synthetic data set. Details about the employed DGP can be retrieved by running `help(generate_ordered_data)`.
 
 ```{r data-generation, eval = TRUE}
@@ -66,7 +69,8 @@ head(X)
 ```
 
 ### Conditional Probabilities
-To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `Y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class). 
+
+To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `Y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class).
 
 ```{r adaptive-ocf, eval = TRUE}
 ## Training-test split.
@@ -111,6 +115,7 @@ To estimate standard errors for the predicted probabilities, we need to set the 
 ```
 
 ### Covariates' Marginal Effects
+
 To estimate the covariates' marginal effects, we post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
 
 ```{r adaptive-me, eval = TRUE}
