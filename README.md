@@ -10,18 +10,18 @@ The package delivers:
 
 ✔ **Forest-based estimation** of conditional choice probabilities.\
 ✔ **Marginal effects** of covariates on the outcome probabilities.\
-✔ **Standard error estimation**, leveraging the weight-based structure of random forest predictions.
+✔ **Standard error estimation** leveraging the weight-based structure of random forest predictions.
 
 ------------------------------------------------------------------------
 
 ## Why Use `ocf`?
 
-| Feature                            | Benefit                                                                              |
-|------------------------|------------------------------------------------|
-| **Optimized for Ordered Outcomes** | Unlike traditional random forests, `ocf` correctly handles ordered categorical data. |
-| **Interpretable Marginal Effects** | Understand how covariates correlate with outcome probabilities.                      |
-| **Easy to Use**                    | Integrates seamlessly into existing machine learning workflows.                      |
-| **Active Development & Support**   | Open-source and actively maintained.                                                 |
+| Feature                            | Benefit                                                                                       |
+|-------------------------|-----------------------------------------------|
+| **Optimized for ordered outcomes** | Unlike traditional machine learning models, `ocf` correctly handles ordered categorical data. |
+| **Interpretable marginal effects** | Understand how covariates correlate with outcome probabilities.                               |
+| **Easy to use**                    | Integrates seamlessly into existing machine learning workflows.                               |
+| **Active development & support**   | Open-source and actively maintained.                                                          |
 
 ------------------------------------------------------------------------
 
@@ -45,13 +45,12 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 
 We welcome contributions! If you encounter issues, have feature requests, or want to contribute to the package, please follow the guidelines below.
 
-📌 **Report an Issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub:\
-[Submit an Issue](https://github.com/riccardo-df/ocf/issues)
+📌 **Report an Issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an Issue](https://github.com/riccardo-df/ocf/issues)
 
 📌 **Contribute Code:** We encourage contributions via pull requests. Before submitting, please:\
 1. Fork the repository and create a new branch.\
 2. Ensure that your code follows the existing style and documentation conventions.\
-3. Run tests and check for package integrity.\
+3. Run tests and check for package integrity.    
 4. Submit a pull request with a clear description of your changes.
 
 📌 **Feature Requests:** If you have ideas for new features or extensions, feel free to discuss them by opening an issue.
