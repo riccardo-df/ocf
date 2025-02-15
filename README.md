@@ -17,7 +17,7 @@ The package delivers:
 ## Why Use `ocf`?
 
 | Feature                            | Benefit                                                                                       |
-|-------------------------|-----------------------------------------------|
+|-------------------------|----------------------------------------------|
 | **Optimized for ordered outcomes** | Unlike traditional machine learning models, `ocf` correctly handles ordered categorical data. |
 | **Interpretable marginal effects** | Understand how covariates correlate with outcome probabilities.                               |
 | **Easy to use**                    | Integrates seamlessly into existing machine learning workflows.                               |
@@ -47,10 +47,10 @@ We welcome contributions! If you encounter issues, have feature requests, or wan
 
 📌 **Report an Issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an Issue](https://github.com/riccardo-df/ocf/issues)
 
-📌 **Contribute Code:** We encourage contributions via pull requests. Before submitting, please:\
-1. Fork the repository and create a new branch.\
-2. Ensure that your code follows the existing style and documentation conventions.\
-3. Run tests and check for package integrity.    
+📌 **Contribute Code:** We encourage contributions via pull requests. Before submitting, please:
+1. Fork the repository and create a new branch.
+2. Ensure that your code follows the existing style and documentation conventions.
+3. Run tests and check for package integrity.
 4. Submit a pull request with a clear description of your changes.
 
 📌 **Feature Requests:** If you have ideas for new features or extensions, feel free to discuss them by opening an issue.
