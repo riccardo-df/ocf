@@ -47,7 +47,7 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 
 We welcome contributions! If you encounter issues, have feature requests, or want to contribute to the package, please follow the guidelines below.
 
-📌 **Report an issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an Issue](https://github.com/riccardo-df/ocf/issues)
+📌 **Report an issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an issue](https://github.com/riccardo-df/ocf/issues)
 
 📌 **Contribute code:** We encourage contributions via pull requests. Before submitting, please:
 1. Fork the repository and create a new branch.
