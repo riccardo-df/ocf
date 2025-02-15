@@ -1,5 +1,6 @@
 ---
 title: "Short Tutorial"
+author: "Riccardo Di Francesco"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Short Tutorial}
