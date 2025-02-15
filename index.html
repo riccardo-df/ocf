@@ -70,31 +70,79 @@
 <div class="page-header"><h1 id="ordered-correlation-forest-">Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="reference/figures/logo.svg" align="right" height="130"></a>
 <a class="anchor" aria-label="anchor" href="#ordered-correlation-forest-"></a>
 </h1></div>
-<!-- badges: start -->
-
-<p>R package to implement <em>ordered correlation forest</em>, a machine learning estimator specifically optimized for predictive modeling of ordered non-numeric outcomes.</p>
-<p><code>ocf</code> provides forest-based estimation of the conditional choice probabilities and the covariates’ marginal effects. Under an “honesty” condition, the estimates are consistent and asymptotically normal and standard errors can be obtained by leveraging the weight-based representation of the random forest predictions. Please reference the use as <a href="https://doi.org/10.1080/07474938.2024.2429596" class="external-link">Di Francesco (2025)</a>.</p>
-<p>To get started, please check the online <a href="https://riccardo-df.github.io/ocf/articles/ocf-short-tutorial.html">short tutorial</a>.</p>
+<p><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a> <a href="https://CRAN.R-project.org/package=ocf" class="external-link"><img src="https://www.r-pkg.org/badges/version/ocf" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=ocf" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/ocf" alt="Downloads"></a></p>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The package can be downloaded from CRAN:</p>
+<p><code>ocf</code> implements the <em>ordered correlation forest</em> estimator, a machine learning estimator specifically designed for predictive modeling of ordered non-numeric outcomes.</p>
+<p>The package delivers:</p>
+<p>✔ <strong>Forest-based estimation</strong> of conditional choice probabilities.<br>
+✔ <strong>Marginal effects</strong> of covariates on the outcome probabilities.<br>
+✔ <strong>Standard error estimation</strong>, leveraging the weight-based structure of random forest predictions.</p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="why-use-ocf">Why Use <code>ocf</code>?<a class="anchor" aria-label="anchor" href="#why-use-ocf"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="66%">
+</colgroup>
+<thead><tr class="header">
+<th>Feature</th>
+<th>Benefit</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Optimized for Ordered Outcomes</strong></td>
+<td>Unlike traditional random forests, <code>ocf</code> correctly handles ordered categorical data.</td>
+</tr>
+<tr class="even">
+<td><strong>Interpretable Marginal Effects</strong></td>
+<td>Understand how covariates correlate with outcome probabilities.</td>
+</tr>
+<tr class="odd">
+<td><strong>Easy to Use</strong></td>
+<td>Integrates seamlessly into existing machine learning workflows.</td>
+</tr>
+<tr class="even">
+<td><strong>Active Development &amp; Support</strong></td>
+<td>Open-source and actively maintained.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="id_-installation">🚀 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
+</h2>
+<p>To install the latest stable version from CRAN:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ocf"</span><span class="op">)</span></span></code></pre>
 <p>Alternatively, the current development version of the package can be installed using the <code>devtools</code> package:</p>
 <pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"riccardo-df/ocf"</span><span class="op">)</span> <span class="co"># run install.packages("devtools") if needed.</span></span></code></pre>
+<hr>
 </div>
 <div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<ul>
-<li><p>Athey, S., Tibshirani, J., &amp; Wager, S. (2019). <b>Generalized Random Forests.</b> <i>Annals of Statistics</i>, 47(2). [<a href="https://doi.org/10.1214/18-AOS1709" class="external-link">paper</a>]</p></li>
-<li><p>Di Francesco, R. (2025). <b>Ordered Correlation Forest.</b> <i>Econometric Reviews</i>. 44(4). [<a href="https://doi.org/10.1080/07474938.2024.2429596" class="external-link">paper</a>]</p></li>
-<li><p>Lechner, M., &amp; Mareckova, J. (2022). <b>Modified Causal Forest.</b> <i>arXiv preprint arXiv:2209.03744</i>. [<a href="https://doi.org/10.48550/arXiv.2209.03744" class="external-link">paper</a>]</p></li>
-<li><p>Lechner, M., &amp; Okasa, G. (2024). <b>Random Forest Estimation of the Ordered Choice Model.</b> <i>Empirical Economics</i>. [<a href="https://doi.org/10.1007/s00181-024-02646-4" class="external-link">paper</a>]</p></li>
-<li><p>Peracchi, F. (2014). <b>Econometric methods for ordered responses: Some recent developments.</b> <i>In Econometric methods and their applications in finance, macro and related fields(pp. 133–165). World Scientific</i>. [<a href="https://doi.org/10.1142/9789814513470_0006" class="external-link">paper</a>]</p></li>
-<li><p>Wager, S., &amp; Athey, S. (2018). <b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b> <i>Journal of the American Statistical Association</i>, 113(523). [<a href="https://doi.org/10.1080/01621459.2017.1319839" class="external-link">paper</a>]</p></li>
-<li><p>Wright, M. N. &amp; Ziegler, A. (2017). <b>ranger: A fast implementation of random forests for high dimensional data in C++ and R.</b> <i>Journal of Statistical Software</i>, 77(1). [<a href="https://doi.org/10.18637/jss.v077.i01" class="external-link">paper</a>]</p></li>
-</ul>
+<p>We welcome contributions! If you encounter issues, have feature requests, or want to contribute to the package, please follow the guidelines below.</p>
+<p>📌 <strong>Report an Issue:</strong> If you encounter a bug or have a suggestion, please open an issue on GitHub:<br><a href="https://github.com/riccardo-df/ocf/issues" class="external-link">Submit an Issue</a></p>
+<p>📌 <strong>Contribute Code:</strong> We encourage contributions via pull requests. Before submitting, please:<br>
+1. Fork the repository and create a new branch.<br>
+2. Ensure that your code follows the existing style and documentation conventions.<br>
+3. Run tests and check for package integrity.<br>
+4. Submit a pull request with a clear description of your changes.</p>
+<p>📌 <strong>Feature Requests:</strong> If you have ideas for new features or extensions, feel free to discuss them by opening an issue.</p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use <code>ocf</code> in your research, please cite the corresponding paper:</p>
+<blockquote>
+<p>Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews 44(4).</p>
+</blockquote>
 </div>
 </div>
   </div>
@@ -132,12 +180,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=ocf" class="external-link"><img src="https://www.r-pkg.org/badges/version/ocf" alt="CRAN status"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
