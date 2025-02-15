@@ -1,6 +1,8 @@
 # Ordered Correlation Forest <a href="https://riccardo-df.github.io/ocf/"><img src="man/figures/logo.svg" align="right" height="130"/></a>
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![CRAN status](https://www.r-pkg.org/badges/version/ocf)](https://CRAN.R-project.org/package=ocf) [![Downloads](https://cranlogs.r-pkg.org/badges/ocf)](https://CRAN.R-project.org/package=ocf)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) 
+[![CRAN status](https://www.r-pkg.org/badges/version/ocf)](https://CRAN.R-project.org/package=ocf) 
+[![Downloads](https://cranlogs.r-pkg.org/badges/ocf)](https://CRAN.R-project.org/package=ocf)
 
 ## Overview
 
@@ -14,7 +16,7 @@ The package delivers:
 
 ------------------------------------------------------------------------
 
-## Why Use `ocf`?
+## Why use `ocf`?
 
 | Feature                            | Benefit                                                                                       |
 |-------------------------|----------------------------------------------|
@@ -45,15 +47,15 @@ devtools::install_github("riccardo-df/ocf") # run install.packages("devtools") i
 
 We welcome contributions! If you encounter issues, have feature requests, or want to contribute to the package, please follow the guidelines below.
 
-📌 **Report an Issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an Issue](https://github.com/riccardo-df/ocf/issues)
+📌 **Report an issue:** If you encounter a bug or have a suggestion, please open an issue on GitHub: [Submit an Issue](https://github.com/riccardo-df/ocf/issues)
 
-📌 **Contribute Code:** We encourage contributions via pull requests. Before submitting, please:
+📌 **Contribute code:** We encourage contributions via pull requests. Before submitting, please:
 1. Fork the repository and create a new branch.
 2. Ensure that your code follows the existing style and documentation conventions.
 3. Run tests and check for package integrity.
 4. Submit a pull request with a clear description of your changes.
 
-📌 **Feature Requests:** If you have ideas for new features or extensions, feel free to discuss them by opening an issue.
+📌 **Feature requests:** If you have ideas for new features or extensions, feel free to discuss them by opening an issue.
 
 ------------------------------------------------------------------------
 

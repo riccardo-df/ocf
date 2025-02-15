@@ -24,7 +24,7 @@ This tutorial provides an overview of the core functions in the `ocf` package, w
 -   `ocf()` for estimation and inference about conditional choice probabilities
 -   `marginal_effects()` for estimation and inference about covariates' marginal effects
 
-## Ordered Choice Models
+## Ordered choice models
 
 We postulate the existence of a latent and continuous outcome variable $Y_i^*$, assumed to obey the following regression model:
 
@@ -68,7 +68,7 @@ table(Y)
 head(X)
 ```
 
-### Conditional Probabilities
+### Conditional probabilities
 
 To estimate the conditional probabilities, the `ocf` function constructs a collection of forests, one for each category of `Y` (three in this case). We can then use the forests to predict out-of-sample using the `predict` method. `predict` returns a matrix with the predicted probabilities and a vector of predicted class labels (each observation is labelled to the highest-probability class).
 
@@ -114,7 +114,7 @@ To estimate standard errors for the predicted probabilities, we need to set the 
 # head(honest_forests$predictions$standard.errors)
 ```
 
-### Covariates' Marginal Effects
+### Covariates' marginal effects
 
 To estimate the covariates' marginal effects, we post-process the conditional probability predictions. This is performed by the `marginal_effects` function that can estimate mean marginal effects, marginal effects at the mean, and marginal effects at the median, according to the `eval` argument.
 
