@@ -6,7 +6,7 @@ template:
 navbar:
   type: default
   left:
-  - text: "Get started"
+  - text: "Tutorial"
     href: articles/ocf-short-tutorial.html
   - text: "Reference"
     href: reference/index.html
