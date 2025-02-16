@@ -19,7 +19,7 @@ The package delivers:
 | Feature                            | Benefit                                                                                       |
 |-------------------------|----------------------------------------------|
 | **Optimized for ordered outcomes** | Unlike traditional machine learning models, `ocf` correctly handles ordered categorical data. |
-| **Interpretable marginal effects** | Understand how covariates correlate with outcome probabilities.                               |
+| **Interpretable marginal effects** | Understand how covariates correlate with choice probabilities.                               |
 | **Easy to use**                    | Integrates seamlessly into existing machine learning workflows.                               |
 | **Active development & support**   | Open-source and actively maintained.                                                          |
 
