@@ -9,7 +9,7 @@
 The package delivers:
 
 ✔ **Forest-based estimation** of conditional choice probabilities.\
-✔ **Marginal effects** of covariates on the outcome probabilities.\
+✔ **Marginal effects** of covariates on the choice probabilities.\
 ✔ **Standard error estimation** leveraging the weight-based structure of random forest predictions.
 
 ------------------------------------------------------------------------
