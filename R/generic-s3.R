@@ -533,7 +533,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @export
-plot.ocf.marginal <- function(x, class_names = NULL, point_size = 2, facet_text_size = 12, legend_text_size = 10, ...) {
+plot.ocf.marginal <- function(x, class_names = NULL, point_size = 3, facet_text_size = 10, legend_text_size = 10, ...) {
   ## Handling inputs and checks.
   CI_lower <- NULL
   CI_upper <- NULL 
