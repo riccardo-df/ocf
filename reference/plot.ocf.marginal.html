@@ -54,7 +54,14 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'ocf.marginal'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  class_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  point_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  facet_text_size <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  legend_text_size <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,6 +70,22 @@
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>An <code>ocf.marginal</code> object.</p></dd>
+
+
+<dt id="arg-class-names">class_names<a class="anchor" aria-label="anchor" href="#arg-class-names"></a></dt>
+<dd><p>Character vector of length equal to <code>x$n.classes</code> to set class names in the plot.</p></dd>
+
+
+<dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
+<dd><p>Controls the points' size.</p></dd>
+
+
+<dt id="arg-facet-text-size">facet_text_size<a class="anchor" aria-label="anchor" href="#arg-facet-text-size"></a></dt>
+<dd><p>Controls the facets' labels' size.</p></dd>
+
+
+<dt id="arg-legend-text-size">legend_text_size<a class="anchor" aria-label="anchor" href="#arg-legend-text-size"></a></dt>
+<dd><p>Controls the legends' size.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
