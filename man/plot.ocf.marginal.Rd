@@ -4,10 +4,25 @@
 \alias{plot.ocf.marginal}
 \title{Plot Method for ocf.marginal Objects}
 \usage{
-\method{plot}{ocf.marginal}(x, ...)
+\method{plot}{ocf.marginal}(
+  x,
+  class_names = NULL,
+  point_size = 2,
+  facet_text_size = 12,
+  legend_text_size = 10,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{ocf.marginal} object.}
+
+\item{class_names}{Character vector of length equal to \code{x$n.classes} to set class names in the plot.}
+
+\item{point_size}{Controls the points' size.}
+
+\item{facet_text_size}{Controls the facets' labels' size.}
+
+\item{legend_text_size}{Controls the legends' size.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

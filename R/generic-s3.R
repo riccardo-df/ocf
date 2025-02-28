@@ -485,6 +485,10 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #'
 #' @param x An \code{ocf.marginal} object.
 #' @param class_names Character vector of length equal to \code{x$n.classes} to set class names in the plot.
+#' @param point_size Controls the points' size.
+#' @param facet_text_size Controls the facets' labels' size.
+#' @param legend_text_size Controls the legends' size.
+#' 
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
@@ -529,7 +533,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @export
-plot.ocf.marginal <- function(x, class_names = NULL, ...) {
+plot.ocf.marginal <- function(x, class_names = NULL, point_size = 2, facet_text_size = 12, legend_text_size = 10, ...) {
   ## Handling inputs and checks.
   CI_lower <- NULL
   CI_upper <- NULL 
@@ -581,7 +585,7 @@ plot.ocf.marginal <- function(x, class_names = NULL, ...) {
     dplyr::mutate(class = factor(class, levels = class_names),
                   class_reversed = factor(class, levels = rev(levels(class)))) %>%
     ggplot2::ggplot(ggplot2::aes(x = marginal_effect, y = interaction(class_reversed, covariate), color = class)) +
-    ggplot2::geom_point(size = 2, shape = 4, position = ggplot2::position_dodge(width = 0.7)) +
+    ggplot2::geom_point(size = point_size, shape = 4, position = ggplot2::position_dodge(width = 0.7)) +
     ggplot2::geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, position = ggplot2::position_dodge(width = 0.7)) + 
     ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
     ggplot2::facet_grid(covariate ~ ., switch = "y", scales = "free_y", space = "free_y") +
@@ -589,9 +593,10 @@ plot.ocf.marginal <- function(x, class_names = NULL, ...) {
     ggthemes::theme_tufte() + 
     ggplot2::theme(legend.position = "right", 
                    legend.title = ggplot2::element_blank(),
+                   legend.text = ggplot2::element_text(size = legend_text_size),
                    axis.ticks.y = ggplot2::element_blank(),
                    axis.text.y = ggplot2::element_blank(),
-                   strip.text = element_text(face = "italic"),
+                   strip.text = element_text(face = "italic", size = facet_text_size),
                    strip.background = element_rect(fill = "gray90", color = "black"))
 }
 

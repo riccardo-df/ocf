@@ -19,7 +19,7 @@ multinomial_ml(Y = NULL, X = NULL, learner = "forest", scale = TRUE)
 Object of class \code{mml}.
 }
 \description{
-Estimation strategy to estimate conditional choice probabilities for ordered non-numeric outcomes.
+Estimation strategy to estimate conditional choice probabilities for multinomial outcomes.
 }
 \details{
 Multinomial machine learning expresses conditional choice probabilities as expectations of binary variables:
