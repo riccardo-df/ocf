@@ -61,4 +61,4 @@ We welcome contributions! If you encounter issues, have feature requests, or wan
 
 If you use `ocf` in your research, please cite the corresponding paper:
 
-> Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews 44(4).
+> Di Francesco, R. (2025). Ordered Correlation Forest. Econometric Reviews 44(4), 416-432.

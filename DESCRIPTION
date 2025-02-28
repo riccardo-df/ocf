@@ -23,7 +23,8 @@ Imports:
     dplyr,
     tidyr,
     ggplot2,
-    magrittr
+    magrittr,
+    ggthemes
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 7.3.2
 Suggests: 

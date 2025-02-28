@@ -484,6 +484,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' Plots an \code{ocf.marginal} object.
 #'
 #' @param x An \code{ocf.marginal} object.
+#' @param class_names Character vector of length equal to \code{x$n.classes} to set class names in the plot.
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return 
@@ -513,7 +514,7 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' @details 
 #' If standard errors have been estimated, 95\% confidence intervals are shown.
 #' 
-#' @import tidyr ggplot2
+#' @import tidyr ggplot2 ggthemes
 #' @importFrom dplyr mutate
 #' @importFrom dplyr left_join
 #' @importFrom magrittr %>%
@@ -528,12 +529,21 @@ print.ocf.marginal <- function(x, latex = FALSE, ...) {
 #' @seealso \code{\link{ocf}}, \code{\link{marginal_effects}}.
 #' 
 #' @export
-plot.ocf.marginal <- function(x, ...) {
+plot.ocf.marginal <- function(x, class_names = NULL, ...) {
+  ## Handling inputs and checks.
   CI_lower <- NULL
   CI_upper <- NULL 
   covariate <- NULL 
   marginal_effect <- NULL 
   standard_error <- NULL
+  
+  n_classes <- x$n.classes
+  
+  if (is.null(class_names)) {
+    class_names <- paste0("Class ", seq_len(n_classes))
+  } else {
+    if (!is.character(class_names) || length(class_names) != n_classes) stop(paste("class_names must be a character vector of length", n_classes))
+  }
   
   ## Pivot longer for marginal effects and standard errors (latter only if honesty is TRUE).
   long_me <- x$marginal.effects %>%
@@ -562,21 +572,27 @@ plot.ocf.marginal <- function(x, ...) {
                   CI_lower = marginal_effect - 1.96 * standard_error)
   
   ## Rename classes.
-  n_classes <- x$n.classes
-
   for (m in seq_len(n_classes)) {
-    plot_dta$class[grepl(m, plot_dta$class)] <- paste0("Class ", m)
+    plot_dta$class[grepl(m, plot_dta$class)] <- class_names[m]
   }
   
   ## Generate plot.
   plot_dta %>%
-    ggplot2::ggplot(ggplot2::aes(x = marginal_effect, y = covariate, color = class)) +
+    dplyr::mutate(class = factor(class, levels = class_names),
+                  class_reversed = factor(class, levels = rev(levels(class)))) %>%
+    ggplot2::ggplot(ggplot2::aes(x = marginal_effect, y = interaction(class_reversed, covariate), color = class)) +
     ggplot2::geom_point(size = 2, shape = 4, position = ggplot2::position_dodge(width = 0.7)) +
     ggplot2::geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, position = ggplot2::position_dodge(width = 0.7)) + 
     ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::facet_grid(covariate ~ ., switch = "y", scales = "free_y", space = "free_y") +
     ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::ggtitle("") +
-    ggplot2::theme_bw() + 
-    ggplot2::theme(legend.position = "right", legend.title = ggplot2::element_blank())
+    ggthemes::theme_tufte() + 
+    ggplot2::theme(legend.position = "right", 
+                   legend.title = ggplot2::element_blank(),
+                   axis.ticks.y = ggplot2::element_blank(),
+                   axis.text.y = ggplot2::element_blank(),
+                   strip.text = element_text(face = "italic"),
+                   strip.background = element_rect(fill = "gray90", color = "black"))
 }
 
 
