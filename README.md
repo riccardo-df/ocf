@@ -9,7 +9,7 @@
 The package delivers:
 
 ✔ **Forest-based estimation** of conditional choice probabilities.\
-✔ **Marginal effects** of covariates on the outcome probabilities.\
+✔ **Marginal effects** of covariates on the choice probabilities.\
 ✔ **Standard error estimation** leveraging the weight-based structure of random forest predictions.
 
 ------------------------------------------------------------------------
@@ -19,7 +19,7 @@ The package delivers:
 | Feature                            | Benefit                                                                                       |
 |-------------------------|----------------------------------------------|
 | **Optimized for ordered outcomes** | Unlike traditional machine learning models, `ocf` correctly handles ordered categorical data. |
-| **Interpretable marginal effects** | Understand how covariates correlate with outcome probabilities.                               |
+| **Interpretable marginal effects** | Understand how covariates correlate with choice probabilities.                               |
 | **Easy to use**                    | Integrates seamlessly into existing machine learning workflows.                               |
 | **Active development & support**   | Open-source and actively maintained.                                                          |
 
