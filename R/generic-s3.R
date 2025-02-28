@@ -580,6 +580,12 @@ plot.ocf.marginal <- function(x, class_names = NULL, point_size = 2, facet_text_
     plot_dta$class[grepl(m, plot_dta$class)] <- class_names[m]
   }
   
+  ## Prepare for shading.
+  shade_data <- plot_dta %>%
+    dplyr::group_by(covariate) %>%
+    dplyr::summarize(ymin = min(as.numeric(as.factor(class))) - 0.6, ymax = max(as.numeric(as.factor(class))) + 0.6, .groups = "drop") %>%
+    dplyr::mutate(xmin = -Inf, xmax = Inf)
+  
   ## Generate plot.
   plot_dta %>%
     dplyr::mutate(class = factor(class, levels = class_names),
@@ -588,6 +594,7 @@ plot.ocf.marginal <- function(x, class_names = NULL, point_size = 2, facet_text_
     ggplot2::geom_point(size = point_size, shape = 4, position = ggplot2::position_dodge(width = 0.7)) +
     ggplot2::geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, position = ggplot2::position_dodge(width = 0.7)) + 
     ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::geom_rect(data = shade_data, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "gray80", alpha = 0.3, inherit.aes = FALSE) +
     ggplot2::facet_grid(covariate ~ ., switch = "y", scales = "free_y", space = "free_y") +
     ggplot2::xlab("") + ggplot2::ylab("") + ggplot2::ggtitle("") +
     ggthemes::theme_tufte() + 
