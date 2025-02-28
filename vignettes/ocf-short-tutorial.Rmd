@@ -56,7 +56,7 @@ For illustration purposes, we generate a synthetic data set. Details about the e
 ## Generate synthetic data.
 set.seed(1986)
 
-n <- 100
+n <- 2000
 data <- generate_ordered_data(n)
 
 sample <- data$sample
